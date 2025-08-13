@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>طقس محافظة معان</title>
+<style>
+:root{
+  --bg:#f3faf7;
+  --card:#ffffff;
+  --text:#0f172a;
+  --muted:#64748b;
+  --brand:#10b981;
+  --soft:#d1fae5;
+  --shadow:0 8px 24px rgba(2,6,23,.08);
+  --radius:18px;
+  --cyan:#06b6d4;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:system-ui,"Noto Kufi Arabic",sans-serif;
+  background:radial-gradient(1200px 600px at 50% -200px, #e6fcf3 0%, transparent 60%), var(--bg);
+  color:var(--text);
+}
+.buttons{display:flex;gap:10px;margin-bottom:10px;flex-wrap:wrap;}
+.btn{background:var(--brand);color:#fff;padding:12px 14px;border:none;border-radius:14px;cursor:pointer;font-weight:700}
+.container{max-width:1100px;margin:0 auto;padding:18px}
+.row{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.brand{font-weight:800;font-size:20px}
+.brand small{display:block;font-weight:500;font-size:12px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:300px 1fr;gap:18px;margin-top:18px}
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}
+.muted{color:var(--muted)}
+.now{display:grid;grid-template-columns:160px 1fr;gap:14px;align-items:center}
+.iconBox{width:160px;height:160px;border-radius:16px;background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:68px}
+.big{font-size:44px;font-weight:900}
+.meta{display:flex;flex-wrap:wrap;gap:10px;color:var(--muted)}
+.meta span{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;background:#f8fafc;border-radius:10px}
+.list{display:flex;flex-direction:column;gap:10px}
+.item{background:#f8fafc;border-radius:14px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center}
+.days{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.day{padding:12px;border-radius:14px;background:#f8fafc;text-align:center}
+.day .w{font-size:28px}
+.header-box{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:var(--card);
+  padding:14px 18px;
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  margin-bottom:18px;
+}
+.header-box .title{font-weight:800;font-size:20px}
+.header-box .home{color:var(--cyan);font-weight:700;font-size:14px}
+footer{margin:26px 0;color:var(--muted);text-align:center}
+.spinner{width:32px;height:32px;border:3px solid var(--soft);border-top-color:var(--brand);border-radius:50%;animation:spin 1s linear infinite;margin:auto;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.error{background:#fee2e2;color:#b91c1c;padding:10px;border-radius:10px;text-align:center;font-weight:600;margin:10px 0;}
+@media (max-width:900px){
+  .grid{grid-template-columns:1fr}
+  .now{grid-template-columns:1fr}
+  .iconBox{width:120px;height:120px;font-size:54px;margin:0 auto}
+  .buttons{justify-content:center}
+  .header-box{flex-direction:column;align-items:flex-start;gap:6px}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="container row">
+    <div class="brand">—</div>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- المربع الجديد للصفحة الرئيسية وطقس معان -->
+  <div class="header-box">
+    <div class="title">طقس محافظة معان</div>
+    <div class="home">الصفحة الرئيسية</div>
+  </div>
+
+  <div class="buttons">
+    <span class="muted" style="font-weight:700;margin-right:10px;">المناطق الجنوبية:</span>
+    <button class="btn" onclick="runCity('Maan')">معان</button>
+    <button class="btn" onclick="runCity('Tafileh')">الطفيلة</button>
+    <button class="btn" onclick="runCity('Aqaba')">العقبة</button>
+    <button class="btn" onclick="runCity('Karak')">الكرك</button>
+  </div>
+
+  <div class="grid">
+    <aside class="card">
+      <h3>تفاصيل إضافية</h3>
+      <div class="list" id="extra">
+        <div class="item"><span class="muted">شروق الشمس</span><strong id="sunrise">--:--</strong></div>
+        <div class="item"><span class="muted">غروب الشمس</span><strong id="sunset">--:--</strong></div>
+        <div class="item"><span class="muted">أعلى درجة اليوم</span><strong id="temp_max">--°C</strong></div>
+        <div class="item"><span class="muted">أدنى درجة اليوم</span><strong id="temp_min">--°C</strong></div>
+      </div>
+    </aside>
+
+    <section class="card">
+      <div id="errorBox"></div>
+      <div class="now">
+        <div class="iconBox" id="icon">⛅</div>
+        <div>
+          <div class="muted" id="place">—</div>
+          <div class="big" id="temp">—</div>
+          <div class="meta">
+            <span>🌡️ المحسوس: <b id="apparent">—</b></span>
+            <span>💧 رطوبة: <b id="humidity">—</b></span>
+            <span>🌬️ رياح: <b id="wind">—</b></span>
+            <span>🧭 اتجاه: <b id="winddir">—</b></span>
+          </div>
+          <div class="muted" style="margin-top:8px">عرض يومي (عظمى / صغرى)</div>
+        </div>
+      </div>
+      <h3 style="margin-top:10px">توقعات 5 أيام</h3>
+      <div class="days" id="days"></div>
+    </section>
+  </div>
+
+  <footer>تم التطوير بواسطة أحمد المحتسب</footer>
+</main>
+
+<script>
+const $ = id => document.getElementById(id);
+function showSpinner(){ $('temp').innerHTML = '<div class="spinner"></div>'; $('errorBox').innerHTML=''; }
+function showError(msg){ $('errorBox').innerHTML = `<div class="error">${msg}</div>`; }
+
+function iconFromCode(code){
+  if(code=='clear') return '☀️';
+  if(code=='partly_cloudy') return '⛅';
+  if(code=='cloudy') return '☁️';
+  if(code=='rain') return '🌧️';
+  if(code=='snow') return '❄️';
+  if(code=='fog') return '🌫️';
+  return '⛅';
+}
+
+const cities = {
+  'Maan': {lat:30.2, lon:35.73, name:'معان'},
+  'Tafileh': {lat:30.85, lon:35.56, name:'الطفيلة'},
+  'Aqaba': {lat:29.53, lon:35.01, name:'العقبة'},
+  'Karak': {lat:31.18, lon:35.70, name:'الكرك'}
+};
+
+async function runCity(key){
+  try{
+    showSpinner();
+    const city = cities[key];
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${city.lat}&longitude=${city.lon}&daily=temperature_2m_max,temperature_2m_min,weathercode,sunrise,sunset&current_weather=true&timezone=auto`;
+    const res = await fetch(url);
+    const data = await res.json();
+
+    const cw = data.current_weather;
+    $('place').textContent = `${city.name}, الأردن`;
+    $('temp').textContent = `${Math.round(cw.temperature)}°C — ${iconFromCode(weatherCodeToStr(cw.weathercode))}`;
+    $('apparent').textContent = `${Math.round(cw.temperature)}°C`;
+    $('humidity').textContent = '--';
+    $('wind').textContent = `${cw.windspeed} م/ث`;
+    $('winddir').textContent = `${cw.winddirection}°`;
+    $('icon').textContent = iconFromCode(weatherCodeToStr(cw.weathercode));
+
+    const sunrise = new Date(data.daily.sunrise[0]);
+    const sunset = new Date(data.daily.sunset[0]);
+    $('sunrise').textContent = sunrise.toLocaleTimeString('ar',{hour:'2-digit',minute:'2-digit'});
+    $('sunset').textContent = sunset.toLocaleTimeString('ar',{hour:'2-digit',minute:'2-digit'});
+    $('temp_max').textContent = Math.round(data.daily.temperature_2m_max[0]) + '°C';
+    $('temp_min').textContent = Math.round(data.daily.temperature_2m_min[0]) + '°C';
+
+    const daysBox = $('days');
+    daysBox.innerHTML='';
+    for(let i=0;i<5;i++){
+      const dayName = new Date(data.daily.time[i]).toLocaleDateString('ar',{weekday:'short'});
+      const max = Math.round(data.daily.temperature_2m_max[i]);
+      const min = Math.round(data.daily.temperature_2m_min[i]);
+      const code = weatherCodeToStr(data.daily.weathercode[i]);
+      daysBox.innerHTML += `<div class="day">
+        <div class="muted">${dayName}</div>
+        <div class="w">${iconFromCode(code)}</div>
+        <div style="font-weight:800">${max}° / ${min}°</div>
+      </div>`;
+    }
+
+  }catch(e){
+    showError(e.message);
+  }
+}
+
+function weatherCodeToStr(code){
+  if([0].includes(code)) return 'clear';
+  if([1,2,3].includes(code)) return 'partly_cloudy';
+  if([45,48].includes(code)) return 'fog';
+  if([51,53,55,56,57,61,63,65,66,67,80,81,82].includes(code)) return 'rain';
+  if([71,73,75,77,85,86].includes(code)) return 'snow';
+  if([95,96,99].includes(code)) return 'rain';
+  return 'clear';
+}
+
+runCity('Maan');
+</script>
+
+</body>
+</html>
