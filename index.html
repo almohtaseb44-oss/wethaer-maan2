@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>طقس محافظة معان | MA’AN WEATHER</title>
   <meta name="description" content="طقس محافظة معان ومناطق محددة — بيانات جوية حقيقية وتخطيط ذكي للأنشطة والفعاليات اليومية.">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     :root{
       --teal:#16b8c2; --teal-dark:#087b88; --teal-soft:#e9fbfc;
@@ -99,6 +100,14 @@
     .metric:last-child{border-bottom:0}
     .metric b{color:#31586b}
     .metric span{font-weight:800}
+
+    /* Chart Controls & Component Styles */
+    .chart-container-box { margin-top: 20px; padding: 18px 20px; background: rgba(255,255,255,0.6); border-radius: 18px; border: 1px solid #e2f1f3; }
+    .chart-btn-group { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
+    .chart-tab-btn { flex: 1; min-width: 100px; padding: 10px 14px; border-radius: 12px; border: 1px solid #bce6eb; background: #fff; color: var(--teal-dark); font-weight: 800; font-size: 13px; cursor: pointer; transition: all 0.25s ease; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.02); }
+    .chart-tab-btn:hover { background: var(--teal-soft); border-color: var(--teal); }
+    .chart-tab-btn.active { background: linear-gradient(135deg, var(--teal), var(--teal-dark)); color: #fff; border-color: var(--teal-dark); box-shadow: 0 4px 12px rgba(22,184,194,0.25); }
+    .chart-canvas-wrapper { position: relative; width: 100%; height: 260px; }
 
     .section{background:#fff;border:1px solid #edf4f5;border-radius:var(--radius);box-shadow:var(--shadow);margin-top:20px;padding:24px}
     .section h2{margin:0 0 18px;font-size:20px;color:var(--ink)}
@@ -335,6 +344,18 @@
     </div>
   </section>
 
+  <!-- Today Weather Chart Container -->
+  <div class="chart-container-box">
+    <div class="chart-btn-group">
+      <button class="chart-tab-btn active" onclick="switchTodayChart('temp')" id="btnTodayTemp" data-i18n="chart_btn_temp">🌡️ درجة الحرارة</button>
+      <button class="chart-tab-btn" onclick="switchTodayChart('pop')" id="btnTodayPop" data-i18n="chart_btn_pop">🌧️ المطر</button>
+      <button class="chart-tab-btn" onclick="switchTodayChart('wind')" id="btnTodayWind" data-i18n="chart_btn_wind">💨 الرياح</button>
+    </div>
+    <div class="chart-canvas-wrapper">
+      <canvas id="todayChart"></canvas>
+    </div>
+  </div>
+
   <div class="weather-explanation-box">
     <h3 data-i18n="summary_title">🌤️ ملخص حالة الطقس</h3>
     <p class="weather-explanation-content" id="aiText" data-i18n="summary_loading">جاري تحميل ملخص الطقس البسيط...</p>
@@ -353,6 +374,19 @@
   <section class="section" id="daysSection">
     <h2 data-i18n="days_title">📅 توقعات الأيام القادمة (اسحب يميناً أو يساراً للاطلاع)</h2>
     <div class="days-horizontal" id="daysListHz"></div>
+    
+    <!-- Upcoming Days Chart Container -->
+    <div class="chart-container-box">
+      <div class="chart-btn-group">
+        <button class="chart-tab-btn active" onclick="switchDaysChart('temp')" id="btnDaysTemp" data-i18n="chart_btn_temp">🌡️ درجة الحرارة</button>
+        <button class="chart-tab-btn" onclick="switchDaysChart('pop')" id="btnDaysPop" data-i18n="chart_btn_pop">🌧️ المطر</button>
+        <button class="chart-tab-btn" onclick="switchDaysChart('wind')" id="btnDaysWind" data-i18n="chart_btn_wind">💨 الرياح</button>
+      </div>
+      <div class="chart-canvas-wrapper">
+        <canvas id="daysChart"></canvas>
+      </div>
+    </div>
+
     <div class="days-popup-box" id="daysPopupBox" data-i18n="days_hint">
       اختر يوماً من الشريط أعلاه لعرض تقريره المفصل هنا.
     </div>
@@ -589,7 +623,8 @@ const translations = {
     loading: "جاري التحميل...",
     ai_title: "🤖 المحلل الذكي للطقس",
     ai_q_label: "اسأل المحلل الذكي عن الطقس", ai_input_placeholder: "مثلاً: هل الجو مناسب للخروج اليوم؟", ai_btn: "اسأل 🤖", ai_answer_default: "اكتب سؤالك وسأحلله بناءً على بيانات الطقس الحالية للموقع المختار.",
-    footer_copy: "طقس محافظة معان © 2026", footer_source: "بيانات الطقس: Open-Meteo", footer_dev: "تم التطوير بواسطة أحمد المحتسب"
+    footer_copy: "طقس محافظة معان © 2026", footer_source: "بيانات الطقس: Open-Meteo", footer_dev: "تم التطوير بواسطة أحمد المحتسب",
+    chart_btn_temp: "🌡️ درجة الحرارة", chart_btn_pop: "🌧️ المطر", chart_btn_wind: "💨 الرياح"
   },
   en: {
     nav_home: "Home", nav_current: "Current Weather", nav_alarm: "Weather Alarm", nav_activities: "Activity Index", nav_compare: "Compare Areas",
@@ -619,7 +654,8 @@ const translations = {
     loading: "Loading...",
     ai_title: "🤖 AI Weather Assistant",
     ai_q_label: "Ask AI Assistant about the weather", ai_input_placeholder: "e.g., Is the weather good for going out today?", ai_btn: "Ask 🤖", ai_answer_default: "Type your question and I will analyze it based on current weather data.",
-    footer_copy: "Ma'an Weather © 2026", footer_source: "Weather Data: Open-Meteo", footer_dev: "Developed by Ahmed Al-Muhtasib"
+    footer_copy: "Ma'an Weather © 2026", footer_source: "Weather Data: Open-Meteo", footer_dev: "Developed by Ahmed Al-Muhtasib",
+    chart_btn_temp: "🌡️ Temperature", chart_btn_pop: "🌧️ Rain", chart_btn_wind: "💨 Wind"
   },
   tr: {
     nav_home: "Ana Sayfa", nav_current: "Anlık Hava", nav_alarm: "Hava Alarmı", nav_activities: "Aktivite Endeksi", nav_compare: "Bölge Karşılaştır",
@@ -649,7 +685,8 @@ const translations = {
     loading: "Yükleniyor...",
     ai_title: "🤖 Yapay Zeka Hava Asistanı",
     ai_q_label: "Hava durumu hakkında yapay zekaya sorun", ai_input_placeholder: "örn: Bugün dışarı çıkmak için hava uygun mu?", ai_btn: "Sor 🤖", ai_answer_default: "Sorunuzu yazın, seçilen konumun anlık hava verilerine göre analiz edeyim.",
-    footer_copy: "Maan Hava Durumu © 2026", footer_source: "Hava Verileri: Open-Meteo", footer_dev: "Ahmed Al-Muhtasib tarafından geliştirilmiştir"
+    footer_copy: "Maan Hava Durumu © 2026", footer_source: "Hava Verileri: Open-Meteo", footer_dev: "Ahmed Al-Muhtasib tarafından geliştirilmiştir",
+    chart_btn_temp: "🌡️ Sıcaklık", chart_btn_pop: "🌧️ Yağmur", chart_btn_wind: "💨 Rüzgar"
   }
 };
 
@@ -663,6 +700,10 @@ const defaultLocations = {
 
 let selected = "maan";
 let latestWeather = null;
+let todayChartInstance = null;
+let daysChartInstance = null;
+let currentTodayMetric = 'temp';
+let currentDaysMetric = 'temp';
 
 const $ = id => document.getElementById(id);
 
@@ -700,6 +741,8 @@ function setLanguage(lang) {
     $("aiText").textContent = aiSummary(latestWeather, loc);
     renderHourly(latestWeather);
     renderDaysHorizontal(latestWeather);
+    renderTodayChart();
+    renderDaysChart();
     calculateSmartAlarm();
   }
 }
@@ -765,7 +808,7 @@ function weatherIconSVG(code, isDay = 1) {
 
   if (code === 0) {
     if (isDay) {
-      return `<svg ${strokeAttrs}><circle cx="12" cy="12" r="4.5" fill="currentColor" fill-opacity="0.25"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="6.34" y2="6.34"/><line x1="17.66" y1="17.66" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="6.34" y2="17.66"/><line x1="17.66" y1="6.34" x2="19.07" y2="4.93"/></svg>`;
+      return `<svg ${strokeAttrs}><circle cx="12" cy="12" r="4.5" fill="currentColor" fill-opacity="0.25"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="6.34" y2="6.34"/><line x1="17.66" y1="17.66" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="23" y2="12"/><line x1="4.93" y1="19.07" x2="6.34" y2="17.66"/><line x1="17.66" y1="6.34" x2="19.07" y2="4.93"/></svg>`;
     } else {
       return `<svg ${strokeAttrs}><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="currentColor" fill-opacity="0.25"/><path d="M18 3.5l.6 1.2 1.4.2-1 1 .2 1.4-1.2-.7-1.2.7.2-1.4-1-1 1.4-.2z" fill="currentColor" stroke="none"/></svg>`;
     }
@@ -1138,6 +1181,8 @@ function fetchWeather(locKey){
       renderCurrent(data, loc);
       renderHourly(data);
       renderDaysHorizontal(data);
+      renderTodayChart();
+      renderDaysChart();
       calculateSmartAlarm();
       updateComparison();
     })
@@ -1175,142 +1220,292 @@ function renderCurrent(data, loc){
 
 function aiSummary(data, loc) {
   const c = data.current;
-  const temp = Math.round(c.temperature_2m);
-  const cond = weatherText(c.weather_code);
-  const wind = Math.round(c.wind_speed_10m);
+  const t = Math.round(c.temperature_2m);
+  const w = Math.round(c.wind_speed_10m);
+  const code = c.weather_code;
+  const pop = data.daily.precipitation_probability_max[0] || 0;
 
-  if (currentLang === "en") {
-    return `Currently in ${loc.name}, weather is ${cond} with a temperature of ${temp}°C and wind speeds around ${wind} km/h.`;
-  } else if (currentLang === "tr") {
-    return `${loc.name} bölgesinde şu an hava ${cond}, sıcaklık ${temp}°C ve rüzgar hızı ${wind} km/s.`;
+  if (currentLang === "tr") {
+    return `${loc.name} bölgesinde hava sıcaklığı ${t}°C civarında ve ${weatherText(code)} görülüyor. Rüzgar hızı ${w} km/s, yağış ihtimali %${pop}.`;
   }
-  return `الطقس حالياً في ${loc.name}: الأجواء ${cond} وتبلغ درجة الحرارة ${temp}°م مع رياح بسرعة ${wind} كم/س.`;
+  if (currentLang === "en") {
+    return `In ${loc.name}, the temperature is around ${t}°C with ${weatherText(code)}. Wind speed is ${w} km/h and precipitation chance is ${pop}%.`;
+  }
+  return `في ${loc.name}، تبلغ درجة الحرارة الحالية حوالي ${t}°م مع أجواء ${weatherText(code)}. سرعة الرياح ${w} كم/س، واحتمالية الهطول ${pop}%.`;
 }
 
 function renderHourly(data) {
-  const list = $("hourlyList");
-  list.innerHTML = "";
+  const container = $("hourlyList");
+  container.innerHTML = "";
+  const hourly = data.hourly;
   
-  const h = data.hourly;
-  const now = new Date();
-
-  // البحث عن مؤشر الساعة الحالية
-  let startIndex = h.time.findIndex(t => new Date(t) >= now);
-  if (startIndex === -1) startIndex = 0;
-
-  // عرض 24 ساعة بدءاً من الساعة الحالية
-  const endIndex = Math.min(startIndex + 24, h.time.length);
-
-  for (let i = startIndex; i < endIndex; i++) {
-    const d = new Date(h.time[i]);
-    const hourLabel = d.toLocaleTimeString(currentLang === "ar" ? "ar-JO" : [], { hour: '2-digit', minute: '2-digit' });
-    const temp = Math.round(h.temperature_2m[i]);
-    const code = h.weather_code[i];
-    const wind = Math.round(h.wind_speed_10m[i]);
-    const pop = h.precipitation_probability ? h.precipitation_probability[i] : 0;
-    
-    // تقدير بسيط لليوم والليل بناءً على الساعة
-    const isDay = d.getHours() >= 6 && d.getHours() < 19 ? 1 : 0;
+  for (let i = 0; i < 24; i++) {
+    const timeStr = hourly.time[i];
+    const dateObj = new Date(timeStr);
+    const hourNum = dateObj.getHours();
+    const timeLabel = hourNum + ":00";
+    const temp = Math.round(hourly.temperature_2m[i]);
+    const code = hourly.weather_code ? hourly.weather_code[i] : 0;
+    const isDay = (hourNum >= 6 && hourNum < 19) ? 1 : 0;
 
     const div = document.createElement("div");
-    div.className = `hour ${i === startIndex ? 'active' : ''}`;
+    div.className = "hour" + (i === 0 ? " active" : "");
     div.innerHTML = `
-      <div>${hourLabel}</div>
+      <div>${timeLabel}</div>
       <div class="ico">
-        <div class="hour-ico-wrapper" style="background:${getAlertColor(code, wind, temp)}">
+        <div class="hour-ico-wrapper" style="background:${getAlertColor(code, hourly.wind_speed_10m[i], temp)}">
           ${weatherIconSVG(code, isDay)}
         </div>
       </div>
-      <strong>${temp}°</strong>
+      <strong>${temp}°م</strong>
     `;
 
     div.onclick = () => {
-      document.querySelectorAll(".hour").forEach(el => el.classList.remove("active"));
+      document.querySelectorAll(".hour").forEach(h => h.classList.remove("active"));
       div.classList.add("active");
-      
-      const popup = $("hourlyPopupBox");
-      popup.classList.add("show");
-      popup.innerHTML = `
-        📌 <b>تقرير الساعة (${hourLabel}):</b><br>
-        • درجة الحرارة المتوقعة: <b>${temp}°م</b><br>
-        • حالة الجو: <b>${weatherText(code)}</b><br>
-        • احتمالية الأمطار: <b>${pop}%</b><br>
-        • سرعة الرياح: <b>${wind} كم/س</b>
-      `;
+      showHourlyDetail(i, timeLabel, temp, code, hourly);
     };
 
-    list.appendChild(div);
+    container.appendChild(div);
   }
+}
+
+function showHourlyDetail(index, timeLabel, temp, code, hourly) {
+  const box = $("hourlyPopupBox");
+  const pop = hourly.precipitation_probability ? hourly.precipitation_probability[index] : 0;
+  const wind = Math.round(hourly.wind_speed_10m[index]);
+  const humidity = hourly.relative_humidity_2m[index];
+  
+  box.innerHTML = `
+    ⏱️ <b>التفاصيل الساعة (${timeLabel}):</b><br>
+    • الحالة الجوية: <b>${weatherText(code)}</b><br>
+    • الحرارة: <b>${temp}°م</b> | الرطوبة: <b>${humidity}%</b><br>
+    • احتمالية الهطول: <b>${pop}%</b> | سرعة الرياح: <b>${wind} كم/س</b>
+  `;
+  box.classList.add("show");
 }
 
 function renderDaysHorizontal(data) {
-  const list = $("daysListHz");
-  list.innerHTML = "";
-  const d = data.daily;
+  const container = $("daysListHz");
+  container.innerHTML = "";
+  const daily = data.daily;
 
-  for (let i = 0; i < d.time.length; i++) {
-    const dateObj = new Date(d.time[i]);
-    const dayName = dateObj.toLocaleDateString(currentLang === "ar" ? "ar-JO" : currentLang === "tr" ? "tr-TR" : "en-US", { weekday: 'short' });
-    const max = Math.round(d.temperature_2m_max[i]);
-    const min = Math.round(d.temperature_2m_min[i]);
-    const code = d.weather_code[i];
-    const wind = Math.round(d.wind_speed_10m_max[i]);
-    const pop = d.precipitation_probability_max ? d.precipitation_probability_max[i] : 0;
+  for (let i = 0; i < daily.time.length; i++) {
+    const d = new Date(daily.time[i]);
+    const dayName = d.toLocaleDateString(currentLang === "ar" ? "ar-JO" : currentLang === "tr" ? "tr-TR" : "en-US", { weekday: "short" });
+    const maxT = Math.round(daily.temperature_2m_max[i]);
+    const minT = Math.round(daily.temperature_2m_min[i]);
+    const code = daily.weather_code[i];
 
-    const div = document.createElement("div");
-    div.className = `day-card-hz ${i === 0 ? 'active' : ''}`;
-    div.innerHTML = `
-      <strong>${i === 0 ? (currentLang === "ar" ? "اليوم" : currentLang === "tr" ? "Bugün" : "Today") : dayName}</strong>
-      <div class="day-hz-ico" style="background:${getAlertColor(code, wind, max)}">
+    const card = document.createElement("div");
+    card.className = "day-card-hz" + (i === 0 ? " active" : "");
+    card.innerHTML = `
+      <div style="font-weight:bold; font-size:15px;">${dayName}</div>
+      <div class="day-hz-ico" style="background:${getAlertColor(code, daily.wind_speed_10m_max[i], maxT)}">
         ${weatherIconSVG(code, 1)}
       </div>
-      <div><b>${max}°</b> / <small style="color:var(--muted);">${min}°</small></div>
+      <div style="font-size:14px; font-weight:800;">${maxT}° / <span style="color:#64748b; font-weight:normal;">${minT}°</span></div>
     `;
 
-    div.onclick = () => {
-      document.querySelectorAll(".day-card-hz").forEach(el => el.classList.remove("active"));
-      div.classList.add("active");
-
-      const popup = $("daysPopupBox");
-      popup.classList.add("show");
-      popup.innerHTML = `
-        🗓️ <b>توقعات يوم (${dayName} - ${d.time[i]}):</b><br>
-        • الحرارة العظمى: <b>${max}°م</b> | الصغرى: <b>${min}°م</b><br>
-        • الحالة الجوية: <b>${weatherText(code)}</b><br>
-        • أعلى فرصة هطول: <b>${pop}%</b><br>
-        • أقصى سرعة للرياح: <b>${wind} كم/س</b>
-      `;
+    card.onclick = () => {
+      document.querySelectorAll(".day-card-hz").forEach(c => c.classList.remove("active"));
+      card.classList.add("active");
+      showDaysDetail(i, dayName, maxT, minT, code, daily);
     };
 
-    list.appendChild(div);
+    container.appendChild(card);
   }
 }
 
-function updateComparison() {
-  const city1Key = $("compareCity1").value;
-  const city2Key = $("compareCity2").value;
+function showDaysDetail(index, dayName, maxT, minT, code, daily) {
+  const box = $("daysPopupBox");
+  const popMax = daily.precipitation_probability_max ? daily.precipitation_probability_max[index] : 0;
+  const windMax = Math.round(daily.wind_speed_10m_max[index]);
 
-  fetchCityCompare(city1Key, "compareData1");
-  fetchCityCompare(city2Key, "compareData2");
+  box.innerHTML = `
+    📅 <b>تقرير يوم (${dayName}):</b><br>
+    • حالة الطقس المتوقعة: <b>${weatherText(code)}</b><br>
+    • الحرارة العظمى: <b>${maxT}°م</b> | الصغرى: <b>${minT}°م</b><br>
+    • أعلى فرصة هطول: <b>${popMax}%</b> | أقصى سرعة رياح: <b>${windMax} كم/س</b>
+  `;
+  box.classList.add("show");
 }
 
-function fetchCityCompare(key, elementId) {
-  const loc = defaultLocations[key];
-  const url = `https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m&timezone=auto`;
+/* Today Chart Implementation */
+function switchTodayChart(metric) {
+  currentTodayMetric = metric;
+  ['btnTodayTemp', 'btnTodayPop', 'btnTodayWind'].forEach(id => $(id).classList.remove('active'));
+  if (metric === 'temp') $('btnTodayTemp').classList.add('active');
+  if (metric === 'pop') $('btnTodayPop').classList.add('active');
+  if (metric === 'wind') $('btnTodayWind').classList.add('active');
+  renderTodayChart();
+}
+
+function renderTodayChart() {
+  if (!latestWeather || !latestWeather.hourly) return;
+  const ctx = $('todayChart').getContext('2d');
+  const hourly = latestWeather.hourly;
+  const labels = hourly.time.slice(0, 24).map(t => new Date(t).getHours() + ':00');
+
+  let dataPoints = [];
+  let labelText = '';
+  let borderColor = '#16b8c2';
+  let bgColor = 'rgba(22, 184, 194, 0.15)';
+
+  if (currentTodayMetric === 'temp') {
+    dataPoints = hourly.temperature_2m.slice(0, 24).map(v => Math.round(v));
+    labelText = currentLang === 'ar' ? 'درجة الحرارة (°م)' : currentLang === 'tr' ? 'Sıcaklık (°C)' : 'Temperature (°C)';
+    borderColor = '#f59e0b';
+    bgColor = 'rgba(245, 158, 11, 0.2)';
+  } else if (currentTodayMetric === 'pop') {
+    dataPoints = hourly.precipitation_probability.slice(0, 24);
+    labelText = currentLang === 'ar' ? 'احتمالية المطر (%)' : currentLang === 'tr' ? 'Yağış İhtimali (%)' : 'Rain Chance (%)';
+    borderColor = '#2563eb';
+    bgColor = 'rgba(37, 99, 235, 0.2)';
+  } else if (currentTodayMetric === 'wind') {
+    dataPoints = hourly.wind_speed_10m.slice(0, 24).map(v => Math.round(v));
+    labelText = currentLang === 'ar' ? 'سرعة الرياح (كم/س)' : currentLang === 'tr' ? 'Rüzgar Hızı (km/s)' : 'Wind Speed (km/h)';
+    borderColor = '#10b981';
+    bgColor = 'rgba(16, 185, 129, 0.2)';
+  }
+
+  if (todayChartInstance) todayChartInstance.destroy();
+
+  todayChartInstance = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: labelText,
+        data: dataPoints,
+        borderColor: borderColor,
+        backgroundColor: bgColor,
+        fill: true,
+        tension: 0.35,
+        borderWidth: 3,
+        pointRadius: 4,
+        pointBackgroundColor: borderColor
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: true, labels: { font: { family: 'Tahoma', size: 12, weight: 'bold' } } }
+      },
+      scales: {
+        x: { grid: { display: false } },
+        y: { grid: { color: '#edf5f6' } }
+      }
+    }
+  });
+}
+
+/* Days Chart Implementation */
+function switchDaysChart(metric) {
+  currentDaysMetric = metric;
+  ['btnDaysTemp', 'btnDaysPop', 'btnDaysWind'].forEach(id => $(id).classList.remove('active'));
+  if (metric === 'temp') $('btnDaysTemp').classList.add('active');
+  if (metric === 'pop') $('btnDaysPop').classList.add('active');
+  if (metric === 'wind') $('btnDaysWind').classList.add('active');
+  renderDaysChart();
+}
+
+function renderDaysChart() {
+  if (!latestWeather || !latestWeather.daily) return;
+  const ctx = $('daysChart').getContext('2d');
+  const daily = latestWeather.daily;
+  const labels = daily.time.map(t => new Date(t).toLocaleDateString(currentLang === "ar" ? "ar-JO" : currentLang === "tr" ? "tr-TR" : "en-US", { weekday: 'short' }));
+
+  let datasets = [];
+
+  if (currentDaysMetric === 'temp') {
+    datasets = [
+      {
+        label: currentLang === 'ar' ? 'العظمى (°م)' : currentLang === 'tr' ? 'Maks (°C)' : 'Max (°C)',
+        data: daily.temperature_2m_max.map(v => Math.round(v)),
+        borderColor: '#ef4444',
+        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+        fill: false,
+        tension: 0.3,
+        borderWidth: 3
+      },
+      {
+        label: currentLang === 'ar' ? 'الصغرى (°م)' : currentLang === 'tr' ? 'Min (°C)' : 'Min (°C)',
+        data: daily.temperature_2m_min.map(v => Math.round(v)),
+        borderColor: '#3b82f6',
+        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+        fill: false,
+        tension: 0.3,
+        borderWidth: 3
+      }
+    ];
+  } else if (currentDaysMetric === 'pop') {
+    datasets = [{
+      label: currentLang === 'ar' ? 'أقصى احتمال للمطر (%)' : currentLang === 'tr' ? 'Maks Yağış İhtimali (%)' : 'Max Rain Chance (%)',
+      data: daily.precipitation_probability_max,
+      borderColor: '#2563eb',
+      backgroundColor: 'rgba(37, 99, 235, 0.25)',
+      fill: true,
+      tension: 0.3,
+      borderWidth: 3
+    }];
+  } else if (currentDaysMetric === 'wind') {
+    datasets = [{
+      label: currentLang === 'ar' ? 'أقصى سرعة رياح (كم/س)' : currentLang === 'tr' ? 'Maks Rüzgar Hızı (km/s)' : 'Max Wind Speed (km/h)',
+      data: daily.wind_speed_10m_max.map(v => Math.round(v)),
+      borderColor: '#10b981',
+      backgroundColor: 'rgba(16, 185, 129, 0.25)',
+      fill: true,
+      tension: 0.3,
+      borderWidth: 3
+    }];
+  }
+
+  if (daysChartInstance) daysChartInstance.destroy();
+
+  daysChartInstance = new Chart(ctx, {
+    type: 'line',
+    data: { labels: labels, datasets: datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: true, labels: { font: { family: 'Tahoma', size: 12, weight: 'bold' } } }
+      },
+      scales: {
+        x: { grid: { display: false } },
+        y: { grid: { color: '#edf5f6' } }
+      }
+    }
+  });
+}
+
+function updateComparison() {
+  const c1Key = $("compareCity1").value;
+  const c2Key = $("compareCity2").value;
+
+  fetchCompData(c1Key, "compareData1");
+  fetchCompData(c2Key, "compareData2");
+}
+
+function fetchCompData(locKey, targetElemId) {
+  const loc = defaultLocations[locKey];
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=auto`;
 
   fetch(url)
     .then(res => res.json())
     .then(data => {
       const c = data.current;
-      $(elementId).innerHTML = `
-        📍 <b>${loc.name}</b> (${loc.country})<br>
-        🌡️ الحرارة: <b>${Math.round(c.temperature_2m)}°م</b> (المحسوسة ${Math.round(c.apparent_temperature)}°م)<br>
-        🌤️ الحالة: <b>${weatherText(c.weather_code)}</b><br>
-        💨 الرياح: <b>${Math.round(c.wind_speed_10m)} كم/س</b>
+      $(targetElemId).innerHTML = `
+        📍 <b>${loc.name}</b><br>
+        • الحرارة: <b>${Math.round(c.temperature_2m)}°م</b><br>
+        • الحالة: <b>${weatherText(c.weather_code)}</b><br>
+        • الرياح: <b>${Math.round(c.wind_speed_10m)} كم/س</b> | الرطوبة: <b>${c.relative_humidity_2m}%</b>
       `;
     })
     .catch(() => {
-      $(elementId).textContent = "تعذر جلب البيانات.";
+      $(targetElemId).textContent = "فشل تحميل البيانات";
     });
 }
 
@@ -1325,14 +1520,28 @@ function setupLocationButtons() {
   });
 }
 
-function setupSearch() {
-  const input = $("search");
-  const suggestions = $("searchSuggestions");
+function setupAiAssistant() {
+  $("askAi").onclick = () => {
+    const q = $("aiQuestion").value.trim();
+    if(!q || !latestWeather) return;
 
-  input.oninput = () => {
-    const query = input.value.trim().toLowerCase();
+    const loc = defaultLocations[selected];
+    const c = latestWeather.current;
+    const t = Math.round(c.temperature_2m);
+    const cond = weatherText(c.weather_code);
+
+    $("aiAnswer").textContent = currentLang==="tr" ? `[Yapay Zeka Analizi - ${loc.name}]: Şu an sıcaklık ${t}°C ve hava ${cond}. Sorunuz: "${q}" -> Dışarı çıkmak ve günlük planlarınızı yapmak için hava genel olarak uygundur.` : currentLang==="en" ? `[AI Analysis - ${loc.name}]: Current temp is ${t}°C with ${cond}. Regarding "${q}": The weather is generally fine for outdoor activities.` : `[تحليل الذكاء الاصطناعي - ${loc.name}]: الحرارة الحالية ${t}°م والأجواء ${cond}. رداً على سؤالك "${q}": تعتبر الأجواء مناسبة للقيام بأنشطتك اليومية المعتادة مع توخي الحذر حسب تقلبات الرياح.`;
+  };
+}
+
+function setupSearchSuggestions() {
+  const searchInput = $("search");
+  const suggestionsBox = $("searchSuggestions");
+
+  searchInput.oninput = () => {
+    const query = searchInput.value.trim().toLowerCase();
     if (!query) {
-      suggestions.style.display = "none";
+      suggestionsBox.style.display = "none";
       return;
     }
 
@@ -1341,70 +1550,50 @@ function setupSearch() {
       return loc.name.toLowerCase().includes(query) || loc.sub.toLowerCase().includes(query);
     });
 
-    if (matches.length > 0) {
-      suggestions.innerHTML = matches.map(key => `
-        <div class="search-suggestion-item" onclick="selectSearchLocation('${key}')">
-          <span>${defaultLocations[key].name}</span>
-          <small>${defaultLocations[key].sub}</small>
-        </div>
-      `).join('');
-      suggestions.style.display = "block";
-    } else {
-      suggestions.style.display = "none";
+    if (matches.length === 0) {
+      suggestionsBox.style.display = "none";
+      return;
     }
+
+    suggestionsBox.innerHTML = matches.map(key => {
+      const loc = defaultLocations[key];
+      return `<div class="search-suggestion-item" onclick="selectSearchLocation('${key}')">
+        <span>📍 ${loc.name}</span>
+        <small>${loc.sub}</small>
+      </div>`;
+    }).join('');
+
+    suggestionsBox.style.display = "block";
   };
 
   document.addEventListener("click", (e) => {
-    if (!input.contains(e.target) && !suggestions.contains(e.target)) {
-      suggestions.style.display = "none";
+    if (!searchInput.contains(e.target) && !suggestionsBox.contains(e.target)) {
+      suggestionsBox.style.display = "none";
     }
   });
 }
 
-function selectSearchLocation(key) {
-  selected = key;
-  $("search").value = "";
+function selectSearchLocation(locKey) {
+  selected = locKey;
   $("searchSuggestions").style.display = "none";
-  fetchWeather(key);
+  $("search").value = "";
+  
+  document.querySelectorAll(".location-btn").forEach(b => {
+    b.classList.toggle("active", b.dataset.location === locKey);
+  });
+
+  fetchWeather(locKey);
 }
 
-function setupAI() {
-  $("askAi").onclick = () => {
-    const q = $("aiQuestion").value.trim();
-    if (!q) return;
-
-    const answerBox = $("aiAnswer");
-    answerBox.textContent = currentLang === "ar" ? "جاري التحليل مع المحلل الذكي..." : "Analyzing...";
-
-    setTimeout(() => {
-      if (!latestWeather) {
-        answerBox.textContent = "البيانات غير متوفرة حالياً.";
-        return;
-      }
-      const c = latestWeather.current;
-      const temp = Math.round(c.temperature_2m);
-      const wind = Math.round(c.wind_speed_10m);
-
-      answerBox.innerHTML = `🤖 <b>تحليل المحلل الذكي للإجابة على سؤالك (${q}):</b><br>` +
-        `بناءً على التحديث المباشر للموقع المختار (الحرارة ${temp}°م والرياح ${wind} كم/س)، ` +
-        (temp > 15 && temp < 30 && wind < 30 
-          ? "الأجواء ممتازة جداً ومناسبة للخروج والأنشطة الخارجية بكافة أنواعها!" 
-          : "الظروف الجوية تتطلب الانتباه؛ يُفضل مراعاة التوصيات المذكورة في دليل الملبس ومؤشر الأنشطة قبل الخروج.");
-    }, 600);
-  };
-}
-
-// Initial Initialization
 window.onload = () => {
   setupLangSwitcher();
   setupCustomSelect();
   setupLocationButtons();
-  setupSearch();
-  setupAI();
+  setupAiAssistant();
+  setupSearchSuggestions();
   setLanguage(currentLang);
   fetchWeather(selected);
 };
 </script>
-
 </body>
 </html>
