@@ -132,19 +132,6 @@
     .accordion-content { padding: 0 24px 24px; animation: accordionFade 0.3s ease; }
     @keyframes accordionFade { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* Crowdsourced Weather Section Styling */
-    .reports-grid { display: grid; grid-template-columns: 320px 1fr; gap: 20px; margin-top: 12px; align-items: start; }
-    @media(max-width: 768px) { .reports-grid { grid-template-columns: 1fr; } }
-    .reports-controls { background: #f0fdf4; padding: 20px; border-radius: 20px; border: 1px solid #bbf7d0; display: flex; flex-direction: column; gap: 14px; }
-    .reports-controls label { font-size: 13px; font-weight: 800; color: #166534; display: flex; align-items: center; gap: 6px; }
-    .reports-controls button { width: 100%; padding: 12px; border-radius: 14px; background: linear-gradient(135deg, #16a34a, #15803d); color: #fff; border: none; font-weight: bold; cursor: pointer; transition: 0.25s; box-shadow: 0 6px 16px rgba(22,163,74,0.25); display: flex; align-items: center; justify-content: center; gap: 8px; }
-    .reports-controls button:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(22,163,74,0.35); }
-    .reports-list-container { display: flex; flex-direction: column; gap: 10px; max-height: 380px; overflow-y: auto; padding-right: 4px; }
-    .report-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; transition: transform 0.2s; }
-    .report-card:hover { transform: translateY(-2px); border-color: #cbd5e1; }
-    .report-info { display: flex; flex-direction: column; gap: 4px; }
-    .report-meta { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--muted); font-weight: 700; }
-
     /* Smart Alarm Styling */
     .alarm-grid { display: grid; grid-template-columns: 320px 1fr; gap: 20px; margin-top: 12px; align-items: start; }
     @media(max-width: 768px) { .alarm-grid { grid-template-columns: 1fr; } }
@@ -277,7 +264,6 @@
     <a class="active" href="#" data-i18n="nav_home">الرئيسية</a>
     <a href="#current" data-i18n="nav_current">الطقس الآن</a>
     <a href="#activities" data-i18n="nav_activities">مؤشر الأنشطة</a>
-    <a href="#communityReports" data-i18n="nav_reports">بلاغات مجتمعية</a>
     <a href="#alarm" data-i18n="nav_alarm">منبه الجو</a>
     <a href="#compare" data-i18n="nav_compare">مقارنة المناطق</a>
   </div>
@@ -419,7 +405,7 @@
           </div>
         </div>
 
-        <!-- 1. بطاقة حالة الطريق الصحراوي والمواصلات (Desert Highway & Commute Alert) -->
+        <!-- بطاقة حالة الطريق الصحراوي والمواصلات -->
         <div class="commute-card" id="commuteCard">
           <div class="commute-header">
             <h3 class="commute-title">
@@ -435,7 +421,7 @@
           <p id="commuteDesc" class="commute-desc">الحالة الجوية سالكة ومناسبة جداً للسفر والتنقل بين المحافظات عبر الحافلات والسيارات الخاصة.</p>
         </div>
 
-        <!-- 2. زر المشاركة السريعة لجروبات الطلاب (Quick Campus Share) -->
+        <!-- زر المشاركة السريعة لجروبات الطلاب -->
         <div class="campus-share-box">
           <div>
             <strong style="color:#166534; font-size:15px; display:block;" data-i18n="share_title">📲 شارك حالة طقس الجامعة اليوم (Quick Campus Share)</strong>
@@ -451,57 +437,6 @@
           </div>
         </div>
 
-      </div>
-    </details>
-
-    <!-- قسم جديد: بلاغات مجتمعية حية (Crowdsourced Weather) فوق قسم المنبه الذكي -->
-    <details class="accordion-item" id="communityReports" open>
-      <summary class="accordion-header" style="color: #15803d;">
-        <div class="accordion-title">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-          <span data-i18n="reports_title">بلاغات مجتمعية حية لحالة الطرق (Crowdsourced Weather)</span>
-        </div>
-        <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-      </summary>
-      <div class="accordion-content">
-        <p class="activity-subtitle" data-i18n="reports_sub">منصة إبلاغ سريعة ومجتمعية للطلاب والسائقين لمشاركة وتحديث حالة الطرق الصحراوية والرؤية الحية فوراً</p>
-        <div class="reports-grid">
-          <div class="reports-controls">
-            <label>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              <span data-i18n="reports_region_label">اختر المنطقة أو الطريق:</span>
-            </label>
-            <select id="reportRegion" style="width:100%; padding:11px; border-radius:12px; border:1px solid #bbf7d0; font-weight:bold; color:#14532d; outline:none; background:#fff;">
-              <option value="القطرانة">📍 القطرانة</option>
-              <option value="الحسا">📍 الحسا</option>
-              <option value="معان (القصبة)">📍 معان (القصبة)</option>
-              <option value="جامعة الحسين بن طلال">🎓 جامعة الحسين بن طلال</option>
-              <option value="رأس النقب">⛰️ رأس النقب</option>
-              <option value="طريق المطار / عمان">🚗 طريق المطار / عمان</option>
-            </select>
-
-            <label>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-              <span data-i18n="reports_type_label">نوع التنبيه أو حالة الطريق:</span>
-            </label>
-            <select id="reportType" style="width:100%; padding:11px; border-radius:12px; border:1px solid #bbf7d0; font-weight:bold; color:#14532d; outline:none; background:#fff;">
-              <option value="غبار كثيف وسوء رؤية">💨 غبار كثيف وسوء رؤية</option>
-              <option value="ضباب وانعدام رؤية">🌫️ ضباب وانعدام رؤية</option>
-              <option value="رياح شديدة ورياح عرضية">🌪️ رياح شديدة ورياح عرضية</option>
-              <option value="أمطار وثلوج / طريق مبتل">🌧️ أمطار وثلوج / طريق مبتل</option>
-              <option value="طريق سالك وآمن">✅ طريق سالك وآمن</option>
-            </select>
-
-            <button onclick="addCommunityReport()">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-              <span data-i18n="reports_btn">إرسال بلاغ حي ومباشر</span>
-            </button>
-          </div>
-
-          <div class="reports-list-container" id="reportsList">
-            <!-- سيتم ملء البلاغات الحية الحقيقية من LocalStorage بدون أي بيانات وهمية -->
-          </div>
-        </div>
       </div>
     </details>
 
@@ -627,7 +562,7 @@
 <script>
 const translations = {
   ar: {
-    nav_home: "الرئيسية", nav_current: "الطقس الآن", nav_alarm: "منبه الجو", nav_reports: "بلاغات مجتمعية", nav_activities: "مؤشر الأنشطة", nav_compare: "مقارنة المناطق",
+    nav_home: "الرئيسية", nav_current: "الطقس الآن", nav_alarm: "منبه الجو", nav_activities: "مؤشر الأنشطة", nav_compare: "مقارنة المناطق",
     brand_title: "طقس محافظة معان",
     hero_span: "طقس", hero_title: "محافظة معان | MA’AN WEATHER",
     hero_desc: "معلومات جوية حقيقية، تقييم الأنشطة، وتحليل ذكي للمناطق المتاحة",
@@ -646,8 +581,6 @@ const translations = {
     commute_title: "حالة الطريق الصحراوي والمواصلات (Desert Highway Alert)",
     share_title: "📲 شارك حالة طقس الجامعة اليوم (Quick Campus Share)",
     share_sub: "أنشئ بطاقة/نص طقس سريع بنقرة واحدة لشيره في مجموعات الطلاب عبر واتساب وتيليجرام",
-    reports_title: "بلاغات مجتمعية حية لحالة الطرق (Crowdsourced Weather)", reports_sub: "منصة إبلاغ سريعة ومجتمعية للطلاب والسائقين لمشاركة وتحديث حالة الطرق الصحراوية والرؤية الحية فوراً",
-    reports_region_label: "اختر المنطقة أو الطريق:", reports_type_label: "نوع التنبيه أو حالة الطريق:", reports_btn: "إرسال بلاغ حي ومباشر",
     alarm_title: "منبه الجَو الذكي الاحترافي", alarm_sub: "حدد موعد خروجك وسيقوم النظام بتحليل دقيق وشامل للظروف الجوية واحتياجاتك أثناء المغادرة",
     alarm_label: "حدد وقت مغادرتك بالتفصيل:", alarm_btn: "فحص حالة الجو وتجهيز المنبه",
     alarm_opt_6: "🌅 06:00 صباحاً (خروج مبكر جداً)", alarm_opt_7: "⏰ 07:00 صباحاً (وقت الدوام/الجامعة)", alarm_opt_8: "☕ 08:00 صباحاً (الفترة الصباحية)", alarm_opt_9: "💼 09:00 صباحاً (منتصف الصباح)", alarm_opt_12: "☀️ 12:00 ظهراً (ذروة الظهيرة)", alarm_opt_14: "🏫 02:00 عصراً (وقت العودة للمنزل)", alarm_opt_16: "🌤️ 04:00 عصراً (فترة ما بعد الظهيرة)", alarm_opt_18: "🌙 06:00 مساءً (بداية المساء)", alarm_opt_21: "🌃 09:00 مساءً (سهرة ليلية)",
@@ -659,7 +592,7 @@ const translations = {
     footer_copy: "طقس محافظة معان © 2026", footer_source: "بيانات الطقس: Open-Meteo", footer_dev: "تم التطوير بواسطة أحمد المحتسب"
   },
   en: {
-    nav_home: "Home", nav_current: "Current Weather", nav_alarm: "Weather Alarm", nav_reports: "Community Reports", nav_activities: "Activity Index", nav_compare: "Compare Areas",
+    nav_home: "Home", nav_current: "Current Weather", nav_alarm: "Weather Alarm", nav_activities: "Activity Index", nav_compare: "Compare Areas",
     brand_title: "Ma'an Weather",
     hero_span: "Weather", hero_title: "Ma'an Governorate | MA’AN WEATHER",
     hero_desc: "Real weather data, activity evaluations, and smart climate analysis for available areas",
@@ -678,8 +611,6 @@ const translations = {
     commute_title: "Desert Highway & Campus Commute Alert",
     share_title: "📲 Quick Campus Share",
     share_sub: "Generate a quick campus weather report to share on student WhatsApp and Telegram groups",
-    reports_title: "Live Crowdsourced Weather & Road Reports", reports_sub: "A quick community reporting platform for students and drivers to share real-time road conditions",
-    reports_region_label: "Select Area/Road:", reports_type_label: "Alert Type/Road Status:", reports_btn: "Submit Live Community Report",
     alarm_title: "Pro Smart Weather Alarm", alarm_sub: "Set your exit time and receive a detailed breakdown of weather conditions and essential gear",
     alarm_label: "Select departure time:", alarm_btn: "Check Weather & Set Alarm",
     alarm_opt_6: "🌅 06:00 AM (Very Early)", alarm_opt_7: "⏰ 07:00 AM (Work/University)", alarm_opt_8: "☕ 08:00 AM (Morning)", alarm_opt_9: "💼 09:00 AM (Mid-Morning)", alarm_opt_12: "☀️ 12:00 PM (Noon)", alarm_opt_14: "🏫 02:00 PM (Return Home)", alarm_opt_16: "🌤️ 04:00 PM (Late Afternoon)", alarm_opt_18: "🌙 06:00 PM (Early Evening)", alarm_opt_21: "🌃 09:00 PM (Night Out)",
@@ -691,7 +622,7 @@ const translations = {
     footer_copy: "Ma'an Weather © 2026", footer_source: "Weather Data: Open-Meteo", footer_dev: "Developed by Ahmed Al-Muhtasib"
   },
   tr: {
-    nav_home: "Ana Sayfa", nav_current: "Anlık Hava", nav_alarm: "Hava Alarmı", nav_reports: "Yol Bildirimleri", nav_activities: "Aktivite Endeksi", nav_compare: "Bölge Karşılaştır",
+    nav_home: "Ana Sayfa", nav_current: "Anlık Hava", nav_alarm: "Hava Alarmı", nav_activities: "Aktivite Endeksi", nav_compare: "Bölge Karşılaştır",
     brand_title: "Maan Hava Durumu",
     hero_span: "Hava Durumu", hero_title: "Maan Vilayeti | MA’AN WEATHER",
     hero_desc: "Mevcut bölgeler için gerçek hava durumu verileri ve akıllı analizler",
@@ -710,8 +641,6 @@ const translations = {
     commute_title: "Çöl Yolu ve Öğrenci Ulaşım Uyarısı",
     share_title: "📲 Öğrenci Grupları Hızlı Paylaşım",
     share_sub: "Öğrenci gruplarında paylaşmak için tek tıkla canlı hava durumu raporu oluşturun",
-    reports_title: "Canlı Topluluk Yol ve Hava Bildirimleri", reports_sub: "Öğrenciler ve sürücüler için canlı yol durumunu paylaşma platformu",
-    reports_region_label: "Bölge/Yol Seçin:", reports_type_label: "Uyarı Türü:", reports_btn: "Canlı Bildirim Gönder",
     alarm_title: "Profesyonel Akıllı Hava Alarmı", alarm_sub: "Çıkış saatinizi seçin, sistem detaylı hava durumu ve ihtiyaç listesini sunsun",
     alarm_label: "Ayrılış saatinizi seçin:", alarm_btn: "Kontrol Et ve Alarmı Kur",
     alarm_opt_6: "🌅 06:00 (Çok Erken)", alarm_opt_7: "⏰ 07:00 (İş/Üniversite)", alarm_opt_8: "☕ 08:00 (Sabah)", alarm_opt_9: "💼 09:00 (Kuşluk Vakti)", alarm_opt_12: "☀️ 12:00 (Öğle)", alarm_opt_14: "14:00 (Eve Dönüş)", alarm_opt_16: "🌤️ 16:00 (Öğleden Sonra)", alarm_opt_18: "🌙 18:00 (Akşamüstü)", alarm_opt_21: "🌃 21:00 (Gece)",
@@ -736,86 +665,6 @@ let selected = "maan";
 let latestWeather = null;
 
 const $ = id => document.getElementById(id);
-
-/* --- إدارات وظيفة "بلاغات مجتمعية حية" عبر LocalStorage --- */
-function getCommunityReports() {
-  try {
-    return JSON.parse(localStorage.getItem("maan_weather_community_reports") || "[]");
-  } catch(e) { return []; }
-}
-
-function saveCommunityReports(reports) {
-  localStorage.setItem("maan_weather_community_reports", JSON.stringify(reports));
-}
-
-function formatRelativeTime(timestamp) {
-  const diffSec = Math.floor((Date.now() - timestamp) / 1000);
-  if (diffSec < 60) return currentLang==="tr"?"Şimdi":currentLang==="en"?"Just now":"الآن";
-  const diffMin = Math.floor(diffSec / 60);
-  if (diffMin < 60) return currentLang==="tr"?`${diffMin} dk önce`:currentLang==="en"?`${diffMin}m ago`:`منذ ${diffMin} دقيقة`;
-  const diffHours = Math.floor(diffMin / 60);
-  if (diffHours < 24) return currentLang==="tr"?`${diffHours} saat önce`:currentLang==="en"?`${diffHours}h ago`:`منذ ${diffHours} ساعة`;
-  const diffDays = Math.floor(diffHours / 24);
-  return currentLang==="tr"?`${diffDays} gün önce`:currentLang==="en"?`${diffDays}d ago`:`منذ ${diffDays} يوم`;
-}
-
-function renderCommunityReports() {
-  const reportsList = $("reportsList");
-  if (!reportsList) return;
-  
-  const reports = getCommunityReports();
-  if (reports.length === 0) {
-    reportsList.innerHTML = `
-      <div style="text-align:center; padding:26px 15px; color:var(--muted); font-weight:700; background:#f8fafc; border-radius:16px; border:1px dashed #cbd5e1;">
-        ${currentLang==="tr"?"Henüz bildirim yapılmadı. İlk bildirimi siz paylaşın!":currentLang==="en"?"No community reports yet. Be the first to submit a report!":"لا توجد بلاغات مجتمعية حالياً. كن أول من يبلغ عن حالة الطريق لمساعدة الطلاب والسائقين!"}
-      </div>`;
-    return;
-  }
-
-  reportsList.innerHTML = reports.map((r, index) => {
-    let badgeClass = "status-good";
-    if (r.type.includes("غبار") || r.type.includes("ضباب") || r.type.includes("رياح")) badgeClass = "status-moderate";
-    if (r.type.includes("انعدام") || r.type.includes("عاصفة") || r.type.includes("مغلق")) badgeClass = "status-bad";
-    
-    return `
-      <div class="report-card">
-        <div class="report-info">
-          <div style="font-weight:800; font-size:15px; color:var(--ink); display:flex; align-items:center; gap:8px;">
-            <span>📍 ${r.region}</span>
-            <span class="activity-status-badge ${badgeClass}" style="font-size:11px;">${r.type}</span>
-          </div>
-        </div>
-        <div class="report-meta">
-          <span>⏱️ ${formatRelativeTime(r.timestamp)}</span>
-          <button onclick="deleteCommunityReport(${index})" style="background:none; border:none; color:#ef4444; font-weight:bold; cursor:pointer; font-size:14px;" title="حذف">✕</button>
-        </div>
-      </div>
-    `;
-  }).join('');
-}
-
-function addCommunityReport() {
-  const region = $("reportRegion").value;
-  const type = $("reportType").value;
-  if (!region || !type) return;
-
-  const reports = getCommunityReports();
-  reports.unshift({
-    region: region,
-    type: type,
-    timestamp: Date.now()
-  });
-
-  saveCommunityReports(reports);
-  renderCommunityReports();
-}
-
-function deleteCommunityReport(index) {
-  const reports = getCommunityReports();
-  reports.splice(index, 1);
-  saveCommunityReports(reports);
-  renderCommunityReports();
-}
 
 function setLanguage(lang) {
   currentLang = lang;
@@ -844,8 +693,6 @@ function setLanguage(lang) {
       el.placeholder = translations[lang][key];
     }
   });
-
-  renderCommunityReports();
 
   if (latestWeather) {
     const loc = defaultLocations[selected];
@@ -1100,294 +947,106 @@ function updateDesertHighwayAlert(wind, pop, code) {
     commDesc.textContent = currentLang==="tr"?"Yağış nedeniyle yol kaygan olabilir. Takip mesafesini koruyun.":currentLang==="en"?"Slippery road surfaces due to heavy precipitation. Keep safe distance.":"هطول أمطار غزيرة وتجمعات مياه على المقاطع الصحراوية. يفضل تقليل السرعة وترك مسافة أمان كافية.";
   } else {
     commBadge.className = "activity-status-badge status-good";
-    commBadge.textContent = currentLang==="tr"?"Yol Açık ve Güvenli":currentLang==="en"?"Clear & Safe Road":"طريق سالك وآمن";
+    commBadge.textContent = currentLang==="tr"?"Açık ve Güvenli Yol":currentLang==="en"?"Clear & Safe Road":"طريق سالك وآمن";
     commVis.textContent = currentLang==="tr"?"Mükemmel Görüş":currentLang==="en"?"Excellent Visibility":"ممتازة (بدون ضباب/غبار)";
     commWind.textContent = currentLang==="tr"?`Hafif (${wind} km/s)`:currentLang==="en"?`Light (${wind} km/h)`:`هدوء / رياح خفيفة (${wind} كم/س)`;
-    commDesc.textContent = currentLang==="tr"?"Hava koşulları çöl yolunda seyahat etmek ve otobüs yolculukları için çok uygundur.":currentLang==="en"?"Weather conditions are ideal for highway travel and student bus commutes.":"الحالة الجوية سالكة ومناسبة جداً للسفر والتنقل بين المحافظات عبر الحافلات والسيارات الخاصة.";
+    commDesc.textContent = currentLang==="tr"?"Çöl yolunda hava açık ve sürüş için ideal.":currentLang==="en"?"Desert Highway conditions are clear and suitable for transit.":"الحالة الجوية سالكة ومناسبة جداً للسفر والتنقل بين المحافظات عبر الحافلات والسيارات الخاصة.";
   }
 }
 
 function shareCampusWeather(platform) {
   if (!latestWeather) return;
-  const currentTemp = Math.round(latestWeather.current.temperature_2m);
-  const conditionStr = weatherText(latestWeather.current.weather_code);
-  const locName = defaultLocations[selected].name;
   
-  const textMsg = `📊 *تحديث طقس ${locName} اليوم*:\n• درجة الحرارة: ${currentTemp}°م\n• الحالة الجوية: ${conditionStr}\n• سرعة الرياح: ${Math.round(latestWeather.current.wind_speed_10m)} كم/س\n\nتمنياتنا لجميع الطلاب بسفر ودراسة آمنة! 🎓✨`;
+  const c = latestWeather.current;
+  const temp = Math.round(c.temperature_2m);
+  const cond = weatherText(c.weather_code);
+  const wind = Math.round(c.wind_speed_10m);
   
-  const encoded = encodeURIComponent(textMsg);
+  const text = `🎓 *تحديث طقس جامعة الحسين بن طلال اليوم:*
+🌡️ *درجة الحرارة:* ${temp}°م
+🌤️ *الحالة:* ${cond}
+💨 *سرعة الرياح:* ${wind} كم/س
+🚌 *الطريق الصحراوي:* سالك وآمن للمواصَلات.
+
+تفاصيل الطقس الكاملة: ${window.location.href}`;
+
   if (platform === 'whatsapp') {
-    window.open(`https://api.whatsapp.com/send?text=${encoded}`, '_blank');
+    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
   } else if (platform === 'telegram') {
-    window.open(`https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encoded}`, '_blank');
+    window.open(`https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(text)}`, '_blank');
   }
 }
 
-function getWindDirection(deg) {
-  const dirsAr = ["شمالية", "شمالية شرقية", "شرقية", "جنوبية شرقية", "جنوبية", "جنوبية غربية", "غربية", "شمالية غربية"];
-  const dirsEn = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
-  const dirsTr = ["Kuzey", "Kuzeydoğu", "Doğu", "Güneydoğu", "Güney", "Güneybatı", "Batı", "Kuzeybatı"];
-  const index = Math.round(deg / 45) % 8;
-  return currentLang==="tr" ? dirsTr[index] : currentLang==="en" ? dirsEn[index] : dirsAr[index];
-}
+function updateOutfitRecommendations(temp, wind, code) {
+  const outfitTitle = $("outfitTitle");
+  const outfitDesc = $("outfitDesc");
+  const chipsContainer = $("colorChipsContainer");
+  
+  let desc = "";
+  let colors = [];
 
-function updateOutfitGuide(temp, code) {
-  const desc = $("outfitDesc");
-  const chips = $("colorChipsContainer");
-  chips.innerHTML = "";
-
-  let outfitInfo = { text: "", colors: [] };
-
-  if (temp <= 5) {
-    outfitInfo.text = currentLang==="tr" ? "Çok soğuk hava: Kalın mont, kazak, eldiven ve bere giyin." : currentLang==="en" ? "Very Cold: Wear a thick coat, wool sweater, and gloves." : "طقس بارد جداً: يوصى بارتداء معطف ثقيل، كنزة صوفية، وشاح وقبعات دافئة.";
-    outfitInfo.colors = [
-      { name: currentLang==="ar"?"أسود":currentLang==="tr"?"Siyah":"Black", code: "#000000" },
-      { name: currentLang==="ar"?"كحلي":currentLang==="tr"?"Lacivert":"Navy", code: "#1e3a8a" },
-      { name: currentLang==="ar"?"رمادي غامق":currentLang==="tr"?"Koyu Gri":"Dark Grey", code: "#334155" }
+  if (temp <= 8) {
+    desc = currentLang==="tr" ? "Hava çok soğuk. Kalın mont, atkı ve bere giymeniz şiddetle tavsiye edilir." : currentLang==="en" ? "Very cold weather. Heavy coat, scarf, and warm layers are highly recommended." : "الطقس بارد جداً. يوصى بارتداء معطف ثقيل، شال، وملابس دافئة لضمان الراحة طوال اليوم.";
+    colors = [
+      { name: currentLang==="ar"?"أسود":currentLang==="tr"?"Siyah":"Black", code: "#1e293b" },
+      { name: currentLang==="ar"?"كحلي":currentLang==="tr"?"Lacivert":"Navy", code: "#0f172a" },
+      { name: currentLang==="ar"?"رمادي غامق":currentLang==="tr"?"Koyu Gri":"Dark Gray", code: "#334155" }
     ];
-  } else if (temp <= 15) {
-    outfitInfo.text = currentLang==="tr" ? "Serin hava: Hafif ceket veya hırka tercih edin." : currentLang==="en" ? "Cool Weather: Wear a jacket, hoodie, or sweater." : "طقس بارد نسبياً/لطيف: يفضل ارتداء جاكيت متوسط الوزن أو جاكيت رياضي دافئ.";
-    outfitInfo.colors = [
+  } else if (temp > 8 && temp <= 18) {
+    desc = currentLang==="tr" ? "Hava serin. Hafif ceket veya hırka giymek en iyi tercihtir." : currentLang==="en" ? "Cool temperature. Wearing a light jacket or sweater is recommended." : "الأجواء معتدلة مائلة للبرودة. يُفضل ارتداء سترة خفيفة أو كنزة قطنية مناسبة للأنشطة.";
+    colors = [
       { name: currentLang==="ar"?"زيتي":currentLang==="tr"?"Zeytin":"Olive", code: "#3f6212" },
-      { name: currentLang==="ar"?"بني":currentLang==="tr"?"Kahve":"Brown", code: "#78350f" },
-      { name: currentLang==="ar"?"رمادي":currentLang==="tr"?"Gri":"Grey", code: "#64748b" }
+      { name: currentLang==="ar"?"بني دافئ":currentLang==="tr"?"Kahve":"Warm Brown", code: "#78350f" },
+      { name: currentLang==="ar"?"رمادي":currentLang==="tr"?"Gri":"Gray", code: "#64748b" }
     ];
-  } else if (temp <= 25) {
-    outfitInfo.text = currentLang==="tr" ? "Ilıman hava: Rahat uzun kollu veya hafif kıyafetler giyebilirsiniz." : currentLang==="en" ? "Mild Weather: Comfortable long sleeves or light shirts." : "طقس معتدل ومريح: ملابس الربيع الخفيفة، قمصان طويلة الأكمام مناسبة جداً.";
-    outfitInfo.colors = [
-      { name: currentLang==="ar"?"أزرق فاتح":currentLang==="tr"?"Açık Mavi":"Light Blue", code: "#38bdf8" },
-      { name: currentLang==="ar"?"بيج":currentLang==="tr"?"Bej":"Beige", code: "#d97706" },
-      { name: currentLang==="ar"?"أبيض":currentLang==="tr"?"Beyaz":"White", code: "#94a3b8" }
+  } else if (temp > 18 && temp <= 27) {
+    desc = currentLang==="tr" ? "Hava mükemmel ve ılık. Rahat ve hafif kıyafetler giyebilirsiniz." : currentLang==="en" ? "Pleasant and warm. Comfortable casual clothing is ideal." : "الطقس لطيف وممتع جداً. يمكنك ارتداء ملابس ربيعية/صيفية مريحة وخفيفة.";
+    colors = [
+      { name: currentLang==="ar"?"أزرق سماوي":currentLang==="tr"?"Gök Mavisi":"Sky Blue", code: "#0284c7" },
+      { name: currentLang==="ar"?"أبيض":currentLang==="tr"?"Beyaz":"White", code: "#cbd5e1" },
+      { name: currentLang==="ar"?"بيج":currentLang==="tr"?"Bej":"Beige", code: "#d97706" }
     ];
   } else {
-    outfitInfo.text = currentLang==="tr" ? "Sıcak hava: Hafif ve pamuklu kıyafetler tercih edin." : currentLang==="en" ? "Hot Weather: Light, breathable cotton clothing." : "طقس حار: ارتدِ ملابس قطنية خفيفة وبألوان فاتحة لتعكس أشعة الشمس.";
-    outfitInfo.colors = [
-      { name: currentLang==="ar"?"أبيض":currentLang==="tr"?"Beyaz":"White", code: "#f8fafc" },
-      { name: currentLang==="ar"?"اصفر فاتح":currentLang==="tr"?"Açık Sarı":"Yellow", code: "#fde047" },
-      { name: currentLang==="ar"?"وردي":currentLang==="tr"?"Pembe":"Pink", code: "#f472b6" }
+    desc = currentLang==="tr" ? "Hava sıcak. Güneşten korunmak için açık renkli ve pamuklu kıyafetler tercih edin." : currentLang==="en" ? "Hot weather. Opt for light-colored, breathable cotton clothes." : "الأجواء حارة. يوصى بارتداء ملابس قطنية خفيفة بألوان فاتحة تعكس أشعة الشمس.";
+    colors = [
+      { name: currentLang==="ar"?"أبيض ناصع":currentLang==="tr"?"Açık Beyaz":"Bright White", code: "#f8fafc" },
+      { name: currentLang==="ar"?"أصفر هادئ":currentLang==="tr"?"Sarı":"Soft Yellow", code: "#fef08a" },
+      { name: currentLang==="ar"?"وردي فاتح":currentLang==="tr"?"Açık Pembe":"Light Pink", code: "#fbcfe8" }
     ];
   }
 
-  desc.textContent = outfitInfo.text;
-  outfitInfo.colors.forEach(c => {
-    const chip = document.createElement("div");
-    chip.className = "color-chip";
-    chip.innerHTML = `<span class="color-dot" style="background:${c.code}"></span>${c.name}`;
-    chips.appendChild(chip);
-  });
+  outfitDesc.textContent = desc;
+  chipsContainer.innerHTML = colors.map(c => `
+    <div class="color-chip">
+      <span class="color-dot" style="background:${c.code};"></span>
+      <span>${c.name}</span>
+    </div>
+  `).join('');
 }
 
-function aiSummary(data, loc) {
-  const t = Math.round(data.current.temperature_2m);
-  const code = data.current.weather_code;
-  const wind = Math.round(data.current.wind_speed_10m);
-  const pop = data.daily.precipitation_probability_max[0] || 0;
-  
-  if (currentLang === "en") {
-    return `Currently in ${loc.name}, temperature is ${t}°C with ${weatherText(code)}. Wind speed is around ${wind} km/h and rain chance is ${pop}%.`;
-  } else if (currentLang === "tr") {
-    return `${loc.name} bölgesinde şu an hava ${t}°C ve ${weatherText(code)}. Rüzgar ${wind} km/s hızında esiyor, yağış ihtimali %${pop}.`;
-  }
-  return `الطقس حالياً في ${loc.name} يسجل ${t}°م مع أجواء ${weatherText(code)}. الرياح بحدود ${wind} كم/س، وفرصة الهطول المطري ${pop}%.`;
-}
-
-async function fetchWeather(lat, lon) {
-  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,weather_code,surface_pressure,wind_speed_10m,wind_direction_10m&hourly=temperature_2m,weather_code,precipitation_probability,wind_speed_10m,apparent_temperature,relative_humidity_2m&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max&timezone=auto`;
-  const res = await fetch(url);
-  if(!res.ok) throw new Error("فشل الجلب");
-  return await res.json();
-}
-
-function renderHourly(data) {
-  const list = $("hourlyList");
-  list.innerHTML = "";
-  
-  const nowHour = new Date().getHours();
-  const hourlyData = data.hourly;
-  
-  for(let i = nowHour; i < nowHour + 12; i++) {
-    if(!hourlyData.time[i]) break;
-    const timeStr = hourlyData.time[i].split("T")[1].substring(0,5);
-    const temp = Math.round(hourlyData.temperature_2m[i]);
-    const code = hourlyData.weather_code[i];
-    const pop = hourlyData.precipitation_probability[i] || 0;
-    const wind = Math.round(hourlyData.wind_speed_10m[i]);
-    const feels = Math.round(hourlyData.apparent_temperature[i]);
-    const hum = hourlyData.relative_humidity_2m[i];
-    const hourIsDay = (parseInt(timeStr.split(":")[0]) >= 6 && parseInt(timeStr.split(":")[0]) < 19) ? 1 : 0;
-    const alertColor = getAlertColor(code, wind, temp);
-
-    const div = document.createElement("div");
-    div.className = "hour" + (i === nowHour ? " active" : "");
-    div.innerHTML = `
-      <div>${timeStr}</div>
-      <div class="ico">
-        <div class="hour-ico-wrapper" style="background-color: ${alertColor};">
-          ${weatherIconSVG(code, hourIsDay)}
-        </div>
-      </div>
-      <strong>${temp}°م</strong>
-    `;
-    
-    div.onclick = () => {
-      document.querySelectorAll(".hour").forEach(h => h.classList.remove("active"));
-      div.classList.add("active");
-      const popup = $("hourlyPopupBox");
-      
-      if (currentLang === "en") {
-        popup.innerHTML = `<b> الساعة ${timeStr}:</b> Temperature <b>${temp}°C</b> (Feels like ${feels}°C), Weather: <b>${weatherText(code)}</b>, Rain Probability: <b>${pop}%</b>, Wind Speed: <b>${wind} km/h</b>.`;
-      } else if (currentLang === "tr") {
-        popup.innerHTML = `<b>Saat ${timeStr}:</b> Sıcaklık <b>${temp}°C</b> (Hissedilen ${feels}°C), Hava: <b>${weatherText(code)}</b>, Yağış İhtimali: <b>%${pop}</b>, Rüzgar: <b>${wind} km/s</b>.`;
-      } else {
-        popup.innerHTML = `<b>تقرير الساعة ${timeStr}:</b> الحرارة المتوقعة <b>${temp}°م</b> (المحسوسة ${feels}°م)، حالة الجو: <b>${weatherText(code)}</b>، احتمال الهطول: <b>${pop}%</b>، وسرعة الرياح: <b>${wind} كم/س</b>.`;
-      }
-      popup.classList.add("show");
-    };
-    
-    list.appendChild(div);
-  }
-}
-
-function renderDaysHorizontal(data) {
-  const list = $("daysListHz");
-  list.innerHTML = "";
-  const daily = data.daily;
-
-  for(let i = 0; i < daily.time.length; i++) {
-    const date = new Date(daily.time[i]);
-    const dayName = date.toLocaleDateString(currentLang === "en" ? "en-US" : currentLang === "tr" ? "tr-TR" : "ar-JO", { weekday: 'short' });
-    const max = Math.round(daily.temperature_2m_max[i]);
-    const min = Math.round(daily.temperature_2m_min[i]);
-    const code = daily.weather_code[i];
-    const pop = daily.precipitation_probability_max[i] || 0;
-    const wind = Math.round(daily.wind_speed_10m_max[i]);
-    const alertColor = getAlertColor(code, wind, max);
-
-    const div = document.createElement("div");
-    div.className = "day-card-hz" + (i === 0 ? " active" : "");
-    div.innerHTML = `
-      <div style="font-weight:800; font-size:15px; color:var(--ink);">${dayName}</div>
-      <div style="font-size:11px; color:var(--muted);">${daily.time[i].substring(5)}</div>
-      <div class="day-hz-ico" style="background-color: ${alertColor};">
-        ${weatherIconSVG(code, 1)}
-      </div>
-      <div style="font-weight:800; font-size:16px; color:var(--teal-dark);">${max}° <span style="font-size:13px; color:var(--muted); font-weight:normal;">/ ${min}°</span></div>
-    `;
-
-    div.onclick = () => {
-      document.querySelectorAll(".day-card-hz").forEach(d => d.classList.remove("active"));
-      div.classList.add("active");
-      const popup = $("daysPopupBox");
-      
-      if (currentLang === "en") {
-        popup.innerHTML = `<b>Forecast for ${dayName} (${daily.time[i]}):</b> Max Temp <b>${max}°C</b>, Min Temp <b>${min}°C</b>, Weather: <b>${weatherText(code)}</b>, Max Rain Chance: <b>${pop}%</b>, Max Wind Speed: <b>${wind} km/h</b>.`;
-      } else if (currentLang === "tr") {
-        popup.innerHTML = `<b>${dayName} (${daily.time[i]}) Tahmini:</b> En Yüksek <b>${max}°C</b>, En Düşük <b>${min}°C</b>, Hava: <b>${weatherText(code)}</b>, Yağış İhtimali: <b>%${pop}</b>, Rüzgar: <b>${wind} km/s</b>.`;
-      } else {
-        popup.innerHTML = `<b>توقعات يوم ${dayName} (${daily.time[i]}):</b> العظمى <b>${max}°م</b>، الصغرى <b>${min}°م</b>، الحالة: <b>${weatherText(code)}</b>، أعلى نسبة أمطار: <b>${pop}%</b>، أقصى سرعة للرياح: <b>${wind} كم/س</b>.`;
-      }
-      popup.classList.add("show");
-    };
-
-    list.appendChild(div);
-  }
-}
-
-function calculateSmartAlarm() {
-  if (!latestWeather) return;
-
-  const targetHour = parseInt($("alarmHourSelect").value);
-  const hourly = latestWeather.hourly;
-  const nowHour = new Date().getHours();
-
-  let targetIndex = -1;
-  for (let i = 0; i < hourly.time.length; i++) {
-    const h = parseInt(hourly.time[i].split("T")[1].split(":")[0]);
-    if (h === targetHour && i >= nowHour) {
-      targetIndex = i;
-      break;
-    }
-  }
-
-  if (targetIndex === -1) targetIndex = targetHour;
-
-  const temp = Math.round(hourly.temperature_2m[targetIndex] || latestWeather.current.temperature_2m);
-  const pop = hourly.precipitation_probability[targetIndex] || 0;
-  const wind = Math.round(hourly.wind_speed_10m[targetIndex] || latestWeather.current.wind_speed_10m);
-  const code = hourly.weather_code[targetIndex] || latestWeather.current.weather_code;
-
-  $("alarmMetricsGrid").style.display = "grid";
-  $("alarmChecklistContainer").style.display = "block";
-
-  $("alarmTempVal").textContent = `${temp}°م`;
-  $("alarmPopVal").textContent = `${pop}%`;
-  $("alarmWindVal").textContent = `${wind} كم/س`;
-
-  let visStatus = "ممتازة";
-  if ([45, 48].includes(code)) visStatus = "ضبابي ضئيل";
-  else if (wind > 35) visStatus = "مغبر نسبياً";
-  $("alarmVisVal").textContent = visStatus;
-
-  const titleEl = $("alarmTitle");
-  const descEl = $("alarmDesc");
-  const listEl = $("alarmChecklist");
-  listEl.innerHTML = "";
-
-  let items = [];
-
-  if (pop > 30) items.push("☔ مظلة مطر");
-  if (temp < 10) items.push("🧥 معطف صوفي ثقيل");
-  else if (temp < 18) items.push("🥼 جاكيت خفيف");
-  if (wind > 30) items.push("🕶️ نظارات واقية من الغبار");
-  if (temp > 28) items.push("💧 عبوة مياه باردة");
-  items.push("📱 هاتف مشحون");
-
-  items.forEach(it => {
-    const span = document.createElement("span");
-    span.className = "alarm-check-item";
-    span.textContent = it;
-    listEl.appendChild(span);
-  });
-
-  const hourFormatted = (targetHour < 10 ? "0" + targetHour : targetHour) + ":00";
-
-  if (pop > 40 || [95, 96, 99].includes(code)) {
-    titleEl.textContent = `⚠️ تنبيه من أطوار ماطرة/عواصف عند الساعة ${hourFormatted}`;
-    descEl.textContent = `يتوقع وجود فرص هطول أمطار بنسبة ${pop}% عند مغادرتك، يرجى الخروج قبل الموعد بـ 10 دقائق وتجهيز المظلة.`;
-  } else if (wind > 40) {
-    titleEl.textContent = `🌪️ تنبيه رياح نشطة جداً وغبار عند الساعة ${hourFormatted}`;
-    descEl.textContent = `الرياح ستكون قوية وسريعة (${wind} كم/س)، القيادة بتمهل وتوخي الحذر من الأتربة على الطريق الصحراوي.`;
-  } else {
-    titleEl.textContent = `✅ أجواء مناسبة ومستقرة تماماً للخروج عند ${hourFormatted}`;
-    descEl.textContent = `الظروف الجوية ممتازة عند المغادرة، درجة الحرارة المتوقعة ${temp}°م مع سرعة رياح معتدلة وفرص هطول منخفضة.`;
-  }
-}
-
-function setupCustomSelect(wrapperId, triggerId, optionsId, inputId, onChangeCallback) {
-  const wrapper = $(wrapperId);
-  const trigger = $(triggerId);
-  const options = $(optionsId);
-  const input = $(inputId);
-
-  if(!wrapper || !trigger || !options) return;
+function setupCustomSelect() {
+  const wrapper = $("alarmSelectWrapper");
+  const trigger = $("alarmSelectTrigger");
+  const hiddenInput = $("alarmHourSelect");
+  const options = document.querySelectorAll("#alarmCustomOptions .custom-option");
 
   trigger.onclick = (e) => {
     e.stopPropagation();
-    document.querySelectorAll(".custom-select-wrapper").forEach(w => {
-      if(w !== wrapper) w.classList.remove("open");
-    });
     wrapper.classList.toggle("open");
   };
 
-  options.querySelectorAll(".custom-option").forEach(opt => {
+  options.forEach(opt => {
     opt.onclick = (e) => {
       e.stopPropagation();
-      options.querySelectorAll(".custom-option").forEach(o => o.classList.remove("selected"));
+      options.forEach(o => o.classList.remove("selected"));
       opt.classList.add("selected");
+      
+      const val = opt.getAttribute("data-value");
+      hiddenInput.value = val;
       trigger.textContent = opt.textContent;
-      input.value = opt.dataset.value;
       wrapper.classList.remove("open");
-      if(onChangeCallback) onChangeCallback();
+      
+      calculateSmartAlarm();
     };
   });
 
@@ -1396,179 +1055,356 @@ function setupCustomSelect(wrapperId, triggerId, optionsId, inputId, onChangeCal
   });
 }
 
-async function load(key){
-  $("updated").textContent = currentLang==="tr" ? "Güncelleniyor..." : currentLang==="en" ? "Updating..." : "جاري التحديث...";
-  const loc = defaultLocations[key];
-  selected = key;
+function calculateSmartAlarm() {
+  if (!latestWeather || !latestWeather.hourly) return;
+
+  const targetHour = parseInt($("alarmHourSelect").value, 10);
+  const times = latestWeather.hourly.time;
   
+  let matchIndex = -1;
+  for (let i = 0; i < times.length; i++) {
+    const d = new Date(times[i]);
+    if (d.getHours() === targetHour) {
+      matchIndex = i;
+      break;
+    }
+  }
+
+  if (matchIndex === -1) matchIndex = 7;
+
+  const temp = Math.round(latestWeather.hourly.temperature_2m[matchIndex]);
+  const pop = latestWeather.hourly.precipitation_probability ? latestWeather.hourly.precipitation_probability[matchIndex] : 0;
+  const wind = Math.round(latestWeather.hourly.wind_speed_10m[matchIndex]);
+  const code = latestWeather.hourly.weather_code ? latestWeather.hourly.weather_code[matchIndex] : 0;
+
+  $("alarmMetricsGrid").style.display = "grid";
+  $("alarmChecklistContainer").style.display = "block";
+
+  $("alarmTempVal").textContent = `${temp}°م`;
+  $("alarmPopVal").textContent = `${pop}%`;
+  $("alarmWindVal").textContent = `${wind} كم/س`;
+  
+  let visText = "ممتازة (صافي)";
+  if ([45, 48].includes(code)) visText = "منخفضة (ضباب)";
+  else if (wind >= 40) visText = "محدودة (غبار)";
+  $("alarmVisVal").textContent = visText;
+
+  const hourFormatted = (targetHour < 10 ? '0' : '') + targetHour + ":00";
+  $("alarmTitle").innerHTML = `⏰ تقرير الخروج الساعة (${hourFormatted})`;
+
+  let advice = "";
+  let checklist = [];
+
+  if (temp <= 6) {
+    advice += "الأجواء باردة جداً في هذا الوقت. ";
+    checklist.push("🧥 معطف ثقيل جداً", "🧣 شال/كوفية", "☕ كوب حراري ساخن");
+  } else if (temp > 6 && temp <= 16) {
+    advice += "الأجواء لطيفة إلى باردة نسبياً. ";
+    checklist.push("جاكيت متوسط", "ملابس دافئة");
+  } else {
+    advice += "الأجواء دافئة ومناسبة للدوام الخفيف. ";
+    checklist.push("🕶️ نظارات شمسية", "💧 قارورة ماء");
+  }
+
+  if (pop >= 30) {
+    advice += "هناك احتمالية عالية لتساقط الأمطار؛ يرجى أخذ مظلة. ";
+    checklist.push("☂️ مظلة مطر", "🥾 حذاء مقاوم للمياه");
+  }
+
+  if (wind >= 35) {
+    advice += "انتبه من هبات الرياح النشطة والأتربة أثناء الحركة. ";
+    checklist.push("😷 كمامة حماية من الغبار");
+  }
+
+  $("alarmDesc").textContent = advice;
+
+  const checklistContainer = $("alarmChecklist");
+  checklistContainer.innerHTML = checklist.map(item => `<div class="alarm-check-item">✓ ${item}</div>`).join('');
+}
+
+function fetchWeather(locKey){
+  const loc = defaultLocations[locKey];
+  $("placeName").textContent = loc.name;
+  $("placeSub").textContent = loc.sub;
   $("selectedLabel").textContent = (currentLang === "ar") ? `الطقس الحالي: ${loc.name}` : (currentLang === "tr") ? `Anlık Hava: ${loc.name}` : `Current Weather: ${loc.name}`;
+  $("updated").textContent = (currentLang === "ar") ? "جاري جلب البيانات..." : (currentLang === "tr") ? "Yükleniyor..." : "Fetching data...";
+
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,weather_code,surface_pressure,wind_speed_10m,wind_direction_10m&hourly=temperature_2m,relative_humidity_2m,precipitation_probability,weather_code,wind_speed_10m,surface_pressure&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max&timezone=auto`;
+
+  fetch(url)
+    .then(res => res.json())
+    .then(data => {
+      latestWeather = data;
+      renderCurrent(data, loc);
+      renderHourly(data);
+      renderDaysHorizontal(data);
+      calculateSmartAlarm();
+      updateComparison();
+    })
+    .catch(() => {
+      $("condition").textContent = (currentLang === "ar") ? "عذراً، فشل تحميل البيانات" : (currentLang === "tr") ? "Veri alınamadı" : "Failed to load data";
+    });
+}
+
+function renderCurrent(data, loc){
+  const c = data.current;
+  const temp = Math.round(c.temperature_2m);
+  const feels = Math.round(c.apparent_temperature);
+  const wind = Math.round(c.wind_speed_10m);
+  const pop = data.daily.precipitation_probability_max[0] || 0;
+
+  $("temp").textContent = `${temp}°`;
+  $("condition").textContent = weatherText(c.weather_code);
+  $("feels").textContent = `${feels}°م`;
+  $("humidity").textContent = `${c.relative_humidity_2m}%`;
+  $("wind").textContent = `${wind} كم/س`;
+  $("windDir").textContent = `${c.wind_direction_10m}°`;
+  $("pressure").textContent = `${Math.round(c.surface_pressure)} hPa`;
+  $("precipPop").textContent = `${pop}%`;
+
+  const now = new Date();
+  $("updated").textContent = (currentLang === "ar") ? `تحديث: ${now.toLocaleTimeString("ar-JO", {hour: "2-digit", minute:"2-digit"})}` : `Updated: ${now.toLocaleTimeString([], {hour: "2-digit", minute:"2-digit"})}`;
+  $("lastUpdate").textContent = (currentLang === "ar") ? `آخر تحديث: ${now.toLocaleTimeString("ar-JO", {hour: "2-digit", minute:"2-digit"})}` : `Last update: ${now.toLocaleTimeString([], {hour: "2-digit", minute:"2-digit"})}`;
+
+  updateWeatherScene(c.weather_code, c.is_day, loc.name, wind, temp);
+  checkWeatherAlerts(c.weather_code, wind, temp);
+  updateActivityPlanner(temp, wind, pop, c.weather_code);
+  updateOutfitRecommendations(temp, wind, c.weather_code);
+  $("aiText").textContent = aiSummary(data, loc);
+}
+
+function aiSummary(data, loc) {
+  const c = data.current;
+  const temp = Math.round(c.temperature_2m);
+  const cond = weatherText(c.weather_code);
+  const wind = Math.round(c.wind_speed_10m);
+
+  if (currentLang === "en") {
+    return `Currently in ${loc.name}, weather is ${cond} with a temperature of ${temp}°C and wind speeds around ${wind} km/h.`;
+  } else if (currentLang === "tr") {
+    return `${loc.name} bölgesinde şu an hava ${cond}, sıcaklık ${temp}°C ve rüzgar hızı ${wind} km/s.`;
+  }
+  return `الطقس حالياً في ${loc.name}: الأجواء ${cond} وتبلغ درجة الحرارة ${temp}°م مع رياح بسرعة ${wind} كم/س.`;
+}
+
+function renderHourly(data) {
+  const list = $("hourlyList");
+  list.innerHTML = "";
   
-  try{
-    const data = await fetchWeather(loc.lat, loc.lon);
-    latestWeather = data;
+  const h = data.hourly;
+  const now = new Date();
 
-    const c = data.current;
-    const isDay = c.is_day;
-    const code = c.weather_code;
-    const tempVal = Math.round(c.temperature_2m);
-    const windVal = Math.round(c.wind_speed_10m);
+  // البحث عن مؤشر الساعة الحالية
+  let startIndex = h.time.findIndex(t => new Date(t) >= now);
+  if (startIndex === -1) startIndex = 0;
 
-    updateWeatherScene(code, isDay, loc.name, windVal, tempVal);
-    checkWeatherAlerts(code, windVal, tempVal);
+  // عرض 24 ساعة بدءاً من الساعة الحالية
+  const endIndex = Math.min(startIndex + 24, h.time.length);
 
-    $("placeName").textContent = loc.name;
-    $("placeSub").textContent = loc.sub;
-    $("temp").textContent = tempVal + "°";
-    $("condition").textContent = weatherText(code);
-    $("feels").textContent = Math.round(c.apparent_temperature) + "°م";
-    $("humidity").textContent = c.relative_humidity_2m + "%";
-    $("wind").textContent = windVal + " كم/س";
-    $("windDir").textContent = getWindDirection(c.wind_direction_10m);
-    $("pressure").textContent = Math.round(c.surface_pressure) + " hPa";
+  for (let i = startIndex; i < endIndex; i++) {
+    const d = new Date(h.time[i]);
+    const hourLabel = d.toLocaleTimeString(currentLang === "ar" ? "ar-JO" : [], { hour: '2-digit', minute: '2-digit' });
+    const temp = Math.round(h.temperature_2m[i]);
+    const code = h.weather_code[i];
+    const wind = Math.round(h.wind_speed_10m[i]);
+    const pop = h.precipitation_probability ? h.precipitation_probability[i] : 0;
+    
+    // تقدير بسيط لليوم والليل بناءً على الساعة
+    const isDay = d.getHours() >= 6 && d.getHours() < 19 ? 1 : 0;
 
-    const popToday = data.daily.precipitation_probability_max[0] || 0;
-    $("precipPop").textContent = popToday + "%";
+    const div = document.createElement("div");
+    div.className = `hour ${i === startIndex ? 'active' : ''}`;
+    div.innerHTML = `
+      <div>${hourLabel}</div>
+      <div class="ico">
+        <div class="hour-ico-wrapper" style="background:${getAlertColor(code, wind, temp)}">
+          ${weatherIconSVG(code, isDay)}
+        </div>
+      </div>
+      <strong>${temp}°</strong>
+    `;
 
-    $("aiText").textContent = aiSummary(data, loc);
+    div.onclick = () => {
+      document.querySelectorAll(".hour").forEach(el => el.classList.remove("active"));
+      div.classList.add("active");
+      
+      const popup = $("hourlyPopupBox");
+      popup.classList.add("show");
+      popup.innerHTML = `
+        📌 <b>تقرير الساعة (${hourLabel}):</b><br>
+        • درجة الحرارة المتوقعة: <b>${temp}°م</b><br>
+        • حالة الجو: <b>${weatherText(code)}</b><br>
+        • احتمالية الأمطار: <b>${pop}%</b><br>
+        • سرعة الرياح: <b>${wind} كم/س</b>
+      `;
+    };
 
-    updateOutfitGuide(tempVal, code);
-    updateActivityPlanner(tempVal, windVal, popToday, code);
-
-    renderHourly(data);
-    renderDaysHorizontal(data);
-    calculateSmartAlarm();
-
-    $("updated").textContent = currentLang==="tr" ? "Canlı Güncellendi" : currentLang==="en" ? "Live Updated" : "مُحدّث الآن";
-    $("lastUpdate").textContent = (currentLang==="tr"?"Son Güncelleme: ":currentLang==="en"?"Last Update: ":"آخر تحديث: ") + new Date().toLocaleTimeString(currentLang==="en"?"en-US":"ar-JO",{hour:'2-digit',minute:'2-digit'});
-
-    updateComparison();
-  }catch(e){
-    $("condition").textContent = currentLang==="tr"?"Bağlantı Hatası":currentLang==="en"?"Connection Error":"خطأ في الاتصال بالشبكة";
-    $("updated").textContent = currentLang==="tr"?"Yeniden Deneyin":currentLang==="en"?"Retry":"أعد المحاولة";
+    list.appendChild(div);
   }
 }
 
-async function updateComparison() {
-  const city1 = $("compareCity1").value;
-  const city2 = $("compareCity2").value;
+function renderDaysHorizontal(data) {
+  const list = $("daysListHz");
+  list.innerHTML = "";
+  const d = data.daily;
 
-  const loc1 = defaultLocations[city1];
-  const loc2 = defaultLocations[city2];
+  for (let i = 0; i < d.time.length; i++) {
+    const dateObj = new Date(d.time[i]);
+    const dayName = dateObj.toLocaleDateString(currentLang === "ar" ? "ar-JO" : currentLang === "tr" ? "tr-TR" : "en-US", { weekday: 'short' });
+    const max = Math.round(d.temperature_2m_max[i]);
+    const min = Math.round(d.temperature_2m_min[i]);
+    const code = d.weather_code[i];
+    const wind = Math.round(d.wind_speed_10m_max[i]);
+    const pop = d.precipitation_probability_max ? d.precipitation_probability_max[i] : 0;
 
-  try {
-    const data1 = await fetchWeather(loc1.lat, loc1.lon);
-    const data2 = await fetchWeather(loc2.lat, loc2.lon);
+    const div = document.createElement("div");
+    div.className = `day-card-hz ${i === 0 ? 'active' : ''}`;
+    div.innerHTML = `
+      <strong>${i === 0 ? (currentLang === "ar" ? "اليوم" : currentLang === "tr" ? "Bugün" : "Today") : dayName}</strong>
+      <div class="day-hz-ico" style="background:${getAlertColor(code, wind, max)}">
+        ${weatherIconSVG(code, 1)}
+      </div>
+      <div><b>${max}°</b> / <small style="color:var(--muted);">${min}°</small></div>
+    `;
 
-    const t1 = Math.round(data1.current.temperature_2m);
-    const t2 = Math.round(data2.current.temperature_2m);
+    div.onclick = () => {
+      document.querySelectorAll(".day-card-hz").forEach(el => el.classList.remove("active"));
+      div.classList.add("active");
 
-    $("compareData1").innerHTML = `<b>${loc1.name}:</b> ${t1}°م - ${weatherText(data1.current.weather_code)}<br>الرياح: ${Math.round(data1.current.wind_speed_10m)} كم/س`;
-    $("compareData2").innerHTML = `<b>${loc2.name}:</b> ${t2}°م - ${weatherText(data2.current.weather_code)}<br>الرياح: ${Math.round(data2.current.wind_speed_10m)} كم/س`;
-  } catch(e) {
-    $("compareData1").textContent = "تعذر مقارنة البيانات";
+      const popup = $("daysPopupBox");
+      popup.classList.add("show");
+      popup.innerHTML = `
+        🗓️ <b>توقعات يوم (${dayName} - ${d.time[i]}):</b><br>
+        • الحرارة العظمى: <b>${max}°م</b> | الصغرى: <b>${min}°م</b><br>
+        • الحالة الجوية: <b>${weatherText(code)}</b><br>
+        • أعلى فرصة هطول: <b>${pop}%</b><br>
+        • أقصى سرعة للرياح: <b>${wind} كم/س</b>
+      `;
+    };
+
+    list.appendChild(div);
   }
+}
+
+function updateComparison() {
+  const city1Key = $("compareCity1").value;
+  const city2Key = $("compareCity2").value;
+
+  fetchCityCompare(city1Key, "compareData1");
+  fetchCityCompare(city2Key, "compareData2");
+}
+
+function fetchCityCompare(key, elementId) {
+  const loc = defaultLocations[key];
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m&timezone=auto`;
+
+  fetch(url)
+    .then(res => res.json())
+    .then(data => {
+      const c = data.current;
+      $(elementId).innerHTML = `
+        📍 <b>${loc.name}</b> (${loc.country})<br>
+        🌡️ الحرارة: <b>${Math.round(c.temperature_2m)}°م</b> (المحسوسة ${Math.round(c.apparent_temperature)}°م)<br>
+        🌤️ الحالة: <b>${weatherText(c.weather_code)}</b><br>
+        💨 الرياح: <b>${Math.round(c.wind_speed_10m)} كم/س</b>
+      `;
+    })
+    .catch(() => {
+      $(elementId).textContent = "تعذر جلب البيانات.";
+    });
+}
+
+function setupLocationButtons() {
+  document.querySelectorAll(".location-btn").forEach(btn => {
+    btn.onclick = () => {
+      document.querySelectorAll(".location-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      selected = btn.dataset.location;
+      fetchWeather(selected);
+    };
+  });
 }
 
 function setupSearch() {
-  const searchInput = $("search");
-  const suggestionsBox = $("searchSuggestions");
+  const input = $("search");
+  const suggestions = $("searchSuggestions");
 
-  const searchLocations = [
-    { key: "maan", name: "محافظة معان", sub: "قصبة معان - الأردن" },
-    { key: "ahu", name: "جامعة الحسين بن طلال", sub: "منطقة الجامعة - معان" },
-    { key: "rumaisa", name: "منطقة رميساء", sub: "Muğla - تركيا" }
-  ];
-
-  searchInput.addEventListener("input", (e) => {
-    const query = e.target.value.trim().toLowerCase();
-    if (query.length === 0) {
-      suggestionsBox.style.display = "none";
+  input.oninput = () => {
+    const query = input.value.trim().toLowerCase();
+    if (!query) {
+      suggestions.style.display = "none";
       return;
     }
 
-    const matches = searchLocations.filter(loc => 
-      loc.name.toLowerCase().includes(query) || loc.sub.toLowerCase().includes(query)
-    );
+    const matches = Object.keys(defaultLocations).filter(key => {
+      const loc = defaultLocations[key];
+      return loc.name.toLowerCase().includes(query) || loc.sub.toLowerCase().includes(query);
+    });
 
     if (matches.length > 0) {
-      suggestionsBox.innerHTML = matches.map(loc => `
-        <div class="search-suggestion-item" data-key="${loc.key}">
-          <span>📍 ${loc.name}</span>
-          <small>${loc.sub}</small>
+      suggestions.innerHTML = matches.map(key => `
+        <div class="search-suggestion-item" onclick="selectSearchLocation('${key}')">
+          <span>${defaultLocations[key].name}</span>
+          <small>${defaultLocations[key].sub}</small>
         </div>
-      `).join("");
-      suggestionsBox.style.display = "block";
-
-      document.querySelectorAll(".search-suggestion-item").forEach(item => {
-        item.onclick = () => {
-          const locKey = item.dataset.key;
-          document.querySelectorAll(".location-btn").forEach(b => b.classList.remove("active"));
-          const btn = document.querySelector(`.location-btn[data-location="${locKey}"]`);
-          if (btn) btn.classList.add("active");
-          
-          load(locKey);
-          suggestionsBox.style.display = "none";
-          searchInput.value = "";
-        };
-      });
+      `).join('');
+      suggestions.style.display = "block";
     } else {
-      suggestionsBox.style.display = "none";
+      suggestions.style.display = "none";
     }
-  });
+  };
 
   document.addEventListener("click", (e) => {
-    if (!searchInput.contains(e.target) && !suggestionsBox.contains(e.target)) {
-      suggestionsBox.style.display = "none";
+    if (!input.contains(e.target) && !suggestions.contains(e.target)) {
+      suggestions.style.display = "none";
     }
   });
 }
 
-document.querySelectorAll(".location-btn").forEach(btn => {
-  btn.onclick = () => {
-    document.querySelectorAll(".location-btn").forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
-    load(btn.dataset.location);
+function selectSearchLocation(key) {
+  selected = key;
+  $("search").value = "";
+  $("searchSuggestions").style.display = "none";
+  fetchWeather(key);
+}
+
+function setupAI() {
+  $("askAi").onclick = () => {
+    const q = $("aiQuestion").value.trim();
+    if (!q) return;
+
+    const answerBox = $("aiAnswer");
+    answerBox.textContent = currentLang === "ar" ? "جاري التحليل مع المحلل الذكي..." : "Analyzing...";
+
+    setTimeout(() => {
+      if (!latestWeather) {
+        answerBox.textContent = "البيانات غير متوفرة حالياً.";
+        return;
+      }
+      const c = latestWeather.current;
+      const temp = Math.round(c.temperature_2m);
+      const wind = Math.round(c.wind_speed_10m);
+
+      answerBox.innerHTML = `🤖 <b>تحليل المحلل الذكي للإجابة على سؤالك (${q}):</b><br>` +
+        `بناءً على التحديث المباشر للموقع المختار (الحرارة ${temp}°م والرياح ${wind} كم/س)، ` +
+        (temp > 15 && temp < 30 && wind < 30 
+          ? "الأجواء ممتازة جداً ومناسبة للخروج والأنشطة الخارجية بكافة أنواعها!" 
+          : "الظروف الجوية تتطلب الانتباه؛ يُفضل مراعاة التوصيات المذكورة في دليل الملبس ومؤشر الأنشطة قبل الخروج.");
+    }, 600);
   };
-});
+}
 
-$("askAi").onclick = () => {
-  const q = $("aiQuestion").value.trim();
-  if(!q) return;
-  
-  if (!latestWeather) {
-    $("aiAnswer").textContent = "يرجى الانتظار لحين تحميل بيانات الطقس.";
-    return;
-  }
-
-  const temp = Math.round(latestWeather.current.temperature_2m);
-  const wind = Math.round(latestWeather.current.wind_speed_10m);
-  const code = latestWeather.current.weather_code;
-  const pop = latestWeather.daily.precipitation_probability_max[0] || 0;
-  const locName = defaultLocations[selected].name;
-
-  let reply = "";
-  if (q.includes("خروج") || q.includes("أطلع") || q.includes("سفر") || q.includes("طلعة")) {
-    if (pop > 30 || wind > 35) {
-      reply = `الأجواء في ${locName} غير مشجعة تماماً للخروج بسبب ${pop > 30 ? 'فرص الأمطار' : 'سرعة الرياح العالية'}. درجة الحرارة ${temp}°م.`;
-    } else {
-      reply = `نعم، الأجواء مناسبة ومستقرة في ${locName} للخروج. درجة الحرارة ${temp}°م والرياح معتدلة (${wind} كم/س).`;
-    }
-  } else if (q.includes("لبس") || q.includes("ألبس") || q.includes("جاكيت")) {
-    reply = temp < 14 ? `ينصح بارتداء ملابس دافئة/جاكيت ثقيل، الحرارة الحالية ${temp}°م.` : `ملابس معتدلة/ربيعية خفيفة تعتبر مناسبة، الحرارة ${temp}°م.`;
-  } else {
-    reply = `تحليل سريع لـ (${locName}): الحرارة ${temp}°م، حالة الجو ${weatherText(code)}، الرياح ${wind} كم/س، وفرصة الأمطار ${pop}%.`;
-  }
-
-  $("aiAnswer").textContent = reply;
+// Initial Initialization
+window.onload = () => {
+  setupLangSwitcher();
+  setupCustomSelect();
+  setupLocationButtons();
+  setupSearch();
+  setupAI();
+  setLanguage(currentLang);
+  fetchWeather(selected);
 };
-
-setupLangSwitcher();
-setupSearch();
-setupCustomSelect("alarmSelectWrapper", "alarmSelectTrigger", "alarmCustomOptions", "alarmHourSelect", calculateSmartAlarm);
-
-setLanguage(currentLang);
-renderCommunityReports();
-load("maan");
 </script>
+
 </body>
 </html>
