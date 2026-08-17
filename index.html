@@ -575,6 +575,26 @@
     .footer{padding:24px 5%;background:#fff;border-top:1px solid #e9f1f2;color:#71818b;display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;font-size:13px; margin-top: 30px;}
     .dev-cred {font-weight: 800; color: var(--teal-dark); background: var(--teal-soft); padding: 8px 15px; border-radius: 12px;}
 
+    /* ========================================================
+       شريط اختصارات الأقسام - متناسق مع التصميم الحالي
+       ======================================================== */
+    .section-shortcuts{background:linear-gradient(135deg,rgba(255,255,255,.96),rgba(240,253,254,.96));border:1px solid #d9eef0;border-radius:22px;box-shadow:0 10px 30px rgba(13,91,105,.08);padding:14px;margin:0 0 18px;position:relative;z-index:5;backdrop-filter:blur(10px)}
+    .section-shortcuts-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;padding:0 4px}
+    .section-shortcuts-title{display:flex;align-items:center;gap:8px;color:var(--ink);font-size:14px;font-weight:900}
+    .section-shortcuts-title span:first-child{width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:11px;background:var(--teal-soft);border:1px solid #bce6eb;box-shadow:0 4px 12px rgba(22,184,194,.12)}
+    .section-shortcuts-hint{color:var(--muted);font-size:11px;font-weight:700}
+    .shortcut-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+    .section-shortcut-btn{min-height:52px;border:1px solid #dcecef;border-radius:15px;background:#fff;color:#24485b;padding:8px 10px;display:flex;align-items:center;justify-content:center;gap:7px;font-size:12px;font-weight:900;box-shadow:0 4px 12px rgba(13,91,105,.05);transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease,background .22s ease,color .22s ease;position:relative;overflow:hidden}
+    .section-shortcut-btn::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(22,184,194,.10),rgba(56,189,248,.04));opacity:0;transition:opacity .22s ease}
+    .section-shortcut-btn>*{position:relative;z-index:1}
+    .section-shortcut-btn .shortcut-icon{font-size:18px;line-height:1;filter:drop-shadow(0 3px 5px rgba(13,91,105,.12))}
+    .section-shortcut-btn:hover{transform:translateY(-2px);border-color:var(--teal);color:var(--teal-dark);box-shadow:0 10px 22px rgba(22,184,194,.15)}
+    .section-shortcut-btn:hover::before{opacity:1}
+    .section-shortcut-btn:active{transform:translateY(0) scale(.98)}
+    .section-shortcut-btn.featured{background:linear-gradient(135deg,#16b8c2,#0ca3b1);color:#fff;border-color:transparent;box-shadow:0 8px 20px rgba(22,184,194,.22)}
+    .section-shortcut-btn.featured:hover{color:#fff;box-shadow:0 12px 26px rgba(22,184,194,.30)}
+    @media(max-width:700px){.shortcut-grid{display:flex;overflow-x:auto;scroll-snap-type:x proximity;padding-bottom:4px;scrollbar-width:thin}.section-shortcut-btn{min-width:132px;flex:0 0 132px;scroll-snap-align:start}.section-shortcuts-header{align-items:flex-start}.section-shortcuts-hint{display:none}}
+
     @media(max-width:900px){
       .nav{display:none}.topbar{height:68px}.brand{font-size:18px}
       .weather-card{grid-template-columns:1fr; text-align:center;}
@@ -655,6 +675,22 @@
 
 <main class="content">
   <div class="status"><span id="selectedLabel" data-i18n="status_select">اختر منطقة لعرض حالة الطقس</span><span class="pill" id="updated" data-i18n="status_updating">جاري التحديث...</span></div>
+  <div class="section-shortcuts" aria-label="اختصارات أقسام الموقع">
+    <div class="section-shortcuts-header">
+      <div class="section-shortcuts-title"><span>⚡</span><span data-i18n="shortcuts_title">اختصارات سريعة للأقسام</span></div>
+      <span class="section-shortcuts-hint" data-i18n="shortcuts_hint">انتقل مباشرة للقسم الذي تحتاجه</span>
+    </div>
+    <div class="shortcut-grid">
+      <button type="button" class="section-shortcut-btn featured" onclick="scrollToSection('alertsCenter')"><span class="shortcut-icon">🛡️</span><span data-i18n="shortcut_alerts">التنبيهات</span></button>
+      <button type="button" class="section-shortcut-btn" onclick="scrollToSection('current')"><span class="shortcut-icon">🌤️</span><span data-i18n="shortcut_current">الطقس الآن</span></button>
+      <button type="button" class="section-shortcut-btn" onclick="scrollToSection('hourly')"><span class="shortcut-icon">🕐</span><span data-i18n="shortcut_hourly">الطقس الساعي</span></button>
+      <button type="button" class="section-shortcut-btn" onclick="scrollToSection('daysSection')"><span class="shortcut-icon">📅</span><span data-i18n="shortcut_days">الأيام القادمة</span></button>
+      <button type="button" class="section-shortcut-btn" onclick="scrollToSection('activities')"><span class="shortcut-icon">🎯</span><span data-i18n="shortcut_activities">الأنشطة</span></button>
+      <button type="button" class="section-shortcut-btn" onclick="scrollToSection('outfitSection')"><span class="shortcut-icon">👕</span><span data-i18n="shortcut_outfit">دليل الملبس</span></button>
+      <button type="button" class="section-shortcut-btn" onclick="scrollToSection('alarm')"><span class="shortcut-icon">⏰</span><span data-i18n="shortcut_alarm">منبه الجو</span></button>
+      <button type="button" class="section-shortcut-btn" onclick="scrollToSection('about')"><span class="shortcut-icon">ℹ️</span><span data-i18n="shortcut_about">عن الموقع</span></button>
+    </div>
+  </div>
 
   <!-- مركز التنبيهات الجوية بتصميم مستقبلي أنيق بنفس طابع قسم الطقس الحالي -->
   <section class="alerts-center-card" id="alertsCenter">
@@ -718,7 +754,7 @@
 
   <!-- دمج الطقس الساعي مع الرسم البياني الأسطوري والمحدث -->
   <section class="integrated-hourly-card" id="hourly">
-    <h2 data-i18n="hourly_title" style="margin: 0 0 16px; font-size: 20px; color: var(--ink);">🕐 توقعات الـ 24 ساعة القادمة</h2>
+    <h2 data-i18n="hourly_title" style="margin: 0 0 16px; font-size: 20px; color: var(--ink);">🕐 توقعات الـ 24 ساعة القادمة من الساعة الحالية</h2>
     
     <div class="chart-container-box">
       <div class="chart-btn-group">
@@ -996,6 +1032,7 @@
 const translations = {
   ar: {
     nav_home: "الرئيسية", nav_alerts: "مركز التنبيهات", nav_current: "الطقس الآن", nav_hourly: "الطقس الساعي", nav_alarm: "منبه الجو", nav_activities: "مؤشر الأنشطة", nav_outfit: "دليل الملبس",
+    shortcuts_title: "اختصارات سريعة للأقسام", shortcuts_hint: "انتقل مباشرة للقسم الذي تحتاجه", shortcut_alerts: "التنبيهات", shortcut_current: "الطقس الآن", shortcut_hourly: "الطقس الساعي", shortcut_days: "الأيام القادمة", shortcut_activities: "الأنشطة", shortcut_outfit: "دليل الملبس", shortcut_alarm: "منبه الجو", shortcut_about: "عن الموقع",
     brand_title: "طقس محافظة معان | Ma'an Weather",
     hero_span: "طقس", hero_title: "محافظة معان | WEATHER",
     hero_desc: "معلومات جوية حقيقية، نظام تنبيهات عالمي مخصص، وتخطيط كامل للأنشطة",
@@ -1007,7 +1044,7 @@ const translations = {
     loading_weather: "جارٍ تحميل الطقس...",
     metric_feels: "درجة الحرارة المحسوسة", metric_humidity: "الرطوبة", metric_wind: "سرعة الرياح", metric_wind_dir: "اتجاه الرياح", metric_pressure: "الضغط الجوي", metric_precip: "احتمالية الهطول (اليوم)",
     summary_title: "🌤️ ملخص حالة الطقس والتنقل", summary_loading: "جاري تحميل ملخص الطقس البسيط...",
-    hourly_title: "🕐 توقعات الـ 24 ساعة القادمة", hourly_hint: "اختر ساعة من الشريط أعلاه لعرض تقريرها المفصل هنا.",
+    hourly_title: "🕐 توقعات الـ 24 ساعة القادمة من الساعة الحالية", hourly_hint: "اختر ساعة من الشريط أعلاه لعرض تقريرها المفصل هنا.",
     days_title: "📅 توقعات الأيام القادمة (اسحب للاطلاع)", days_hint: "اختر يوماً من الشريط أعلاه لعرض تقريره المفصل هنا.",
     outfit_title: "دليل الملبس وتنسيق الملابس الذكي", outfit_loading: "جاري تحليل الملابس المناسبة حسب درجة الحرارة والنشاط...",
     activities_title: "🎯 مؤشر مدى ملائمة الطقس للأنشطة اليومية", activities_sub: "تقييم حي ومباشر لأنشطتك بناءً على درجات الحرارة، الرياح، واحتمالات الهطول",
@@ -1024,6 +1061,7 @@ const translations = {
   },
   en: {
     nav_home: "Home", nav_alerts: "Alerts Center", nav_current: "Current Weather", nav_hourly: "Hourly Weather", nav_alarm: "Weather Alarm", nav_activities: "Activity Index", nav_outfit: "Outfit Guide",
+    shortcuts_title: "Quick Section Shortcuts", shortcuts_hint: "Jump directly to the section you need", shortcut_alerts: "Alerts", shortcut_current: "Current Weather", shortcut_hourly: "Hourly Weather", shortcut_days: "Upcoming Days", shortcut_activities: "Activities", shortcut_outfit: "Outfit Guide", shortcut_alarm: "Weather Alarm", shortcut_about: "About",
     brand_title: "Ma'an Weather",
     hero_span: "WEATHER", hero_title: "MA'AN GOVERNORATE",
     hero_desc: "Real-time weather, custom alerts center, and smart activity planning",
@@ -1035,7 +1073,7 @@ const translations = {
     loading_weather: "Loading weather...",
     metric_feels: "Feels Like", metric_humidity: "Humidity", metric_wind: "Wind Speed", metric_wind_dir: "Wind Direction", metric_pressure: "Pressure", metric_precip: "Precip Probability (Today)",
     summary_title: "🌤️ Weather & Commute Summary", summary_loading: "Loading simple weather summary...",
-    hourly_title: "🕐 Next 24 Hours Forecast", hourly_hint: "Select an hour from above to view detailed report here.",
+    hourly_title: "🕐 Next 24 Hours From Now", hourly_hint: "Select an hour from above to view detailed report here.",
     days_title: "📅 Upcoming Days Forecast (Scroll to view)", days_hint: "Select a day from above to view detailed report here.",
     outfit_title: "Smart Outfit & Outfit Matcher", outfit_loading: "Analyzing recommended clothing based on weather and activity...",
     activities_title: "🎯 Daily Activity Suitability Index", activities_sub: "Live evaluation based on temperature, wind, and precipitation probability",
@@ -1091,6 +1129,7 @@ let todayChartInstance = null;
 let daysChartInstance = null;
 let activeTodayMetric = 'temp';
 let activeDaysMetric = 'temp';
+let hourlyForecastStartIndex = 0;
 
 const locations = {
   maan: { name: { ar: "محافظة معان", en: "Ma'an Governorate", tr: "Maan İli" }, sub: { ar: "قصبة معان", en: "Ma'an Center", tr: "Maan Merkez" }, lat: 30.1949, lon: 35.7342 },
@@ -1343,7 +1382,8 @@ function updateUI(curr, hourly, daily) {
   const feels = Math.round(curr.apparent_temperature);
   const maxTemp = Math.round(daily.temperature_2m_max[0]);
   const minTemp = Math.round(daily.temperature_2m_min[0]);
-  const pop = hourly.precipitation_probability ? hourly.precipitation_probability[0] : 0;
+  const currentHourIndex = getHourlyStartIndex(hourly);
+  const pop = hourly.precipitation_probability ? hourly.precipitation_probability[currentHourIndex] : 0;
 
   document.getElementById("temp").textContent = `${temp}°`;
   document.getElementById("maxTemp").textContent = `${maxTemp}°`;
@@ -1494,9 +1534,10 @@ function renderAlertsCenter(curr, daily, hourly) {
    تطوير رسم بياني أسطوري رهيب مع دعم هبات الرياح (Wind Gusts)
    ======================================================== */
 function renderCharts(hourly, daily) {
-  const hoursLabels = hourly.time.slice(0, 24).map(t => new Date(t).getHours() + ':00');
+  hourlyForecastStartIndex = getHourlyStartIndex(hourly);
+  const hourlyEndIndex = Math.min(hourlyForecastStartIndex + 24, hourly.time.length);
+  const hoursLabels = hourly.time.slice(hourlyForecastStartIndex, hourlyEndIndex).map(t => new Date(t).toLocaleTimeString(currentLang === 'ar' ? 'ar-JO' : (currentLang === 'tr' ? 'tr-TR' : 'en-US'), {hour: '2-digit', minute: '2-digit'}));
   const daysLabels = daily.time.map(t => new Date(t).toLocaleDateString(currentLang === 'ar' ? 'ar-JO' : 'en-US', {weekday: 'short'}));
-
   renderTodayChart(hoursLabels, hourly);
   renderDaysChart(daysLabels, daily);
 }
@@ -1508,7 +1549,9 @@ function switchTodayChart(metric) {
   if(document.getElementById(btnId)) document.getElementById(btnId).classList.add('active');
   
   if (currentHourlyData) {
-    const hoursLabels = currentHourlyData.time.slice(0, 24).map(t => new Date(t).getHours() + ':00');
+    hourlyForecastStartIndex = getHourlyStartIndex(currentHourlyData);
+    const endIndex = Math.min(hourlyForecastStartIndex + 24, currentHourlyData.time.length);
+    const hoursLabels = currentHourlyData.time.slice(hourlyForecastStartIndex, endIndex).map(t => new Date(t).toLocaleTimeString(currentLang === 'ar' ? 'ar-JO' : (currentLang === 'tr' ? 'tr-TR' : 'en-US'), {hour: '2-digit', minute: '2-digit'}));
     renderTodayChart(hoursLabels, currentHourlyData);
   }
 }
@@ -1539,7 +1582,7 @@ function renderTodayChart(labels, hourly) {
 
     datasets.push({
       label: 'درجة الحرارة (°م)',
-      data: hourly.temperature_2m.slice(0, 24),
+      data: hourly.temperature_2m.slice(hourlyForecastStartIndex, hourlyForecastStartIndex + 24),
       borderColor: '#38bdf8',
       backgroundColor: gradient,
       borderWidth: 3.5,
@@ -1557,7 +1600,7 @@ function renderTodayChart(labels, hourly) {
 
     datasets.push({
       label: 'الحرارة المحسوسة (°م)',
-      data: hourly.apparent_temperature.slice(0, 24),
+      data: hourly.apparent_temperature.slice(hourlyForecastStartIndex, hourlyForecastStartIndex + 24),
       borderColor: '#f97316',
       backgroundColor: gradient,
       borderWidth: 3.5,
@@ -1575,7 +1618,7 @@ function renderTodayChart(labels, hourly) {
 
     datasets.push({
       label: 'نسبة الرطوبة (%)',
-      data: hourly.relative_humidity_2m.slice(0, 24),
+      data: hourly.relative_humidity_2m.slice(hourlyForecastStartIndex, hourlyForecastStartIndex + 24),
       borderColor: '#10b981',
       backgroundColor: gradient,
       borderWidth: 3.5,
@@ -1589,7 +1632,7 @@ function renderTodayChart(labels, hourly) {
   } else if (activeTodayMetric === 'pop') {
     datasets.push({
       label: 'احتمال المطر (%)',
-      data: hourly.precipitation_probability.slice(0, 24),
+      data: hourly.precipitation_probability.slice(hourlyForecastStartIndex, hourlyForecastStartIndex + 24),
       backgroundColor: 'rgba(59, 130, 246, 0.75)',
       borderColor: '#60a5fa',
       borderWidth: 2,
@@ -1605,7 +1648,7 @@ function renderTodayChart(labels, hourly) {
 
     datasets.push({
       label: 'سرعة الرياح (كم/س)',
-      data: hourly.wind_speed_10m.slice(0, 24),
+      data: hourly.wind_speed_10m.slice(hourlyForecastStartIndex, hourlyForecastStartIndex + 24),
       borderColor: '#a855f7',
       backgroundColor: windGrad,
       borderWidth: 3,
@@ -1618,7 +1661,7 @@ function renderTodayChart(labels, hourly) {
     // خط هبات الرياح الخارق المتلألئ
     datasets.push({
       label: 'هبات الرياح (Wind Gusts)',
-      data: hourly.wind_gusts_10m.slice(0, 24),
+      data: hourly.wind_gusts_10m.slice(hourlyForecastStartIndex, hourlyForecastStartIndex + 24),
       borderColor: '#ef4444',
       borderDash: [5, 5],
       borderWidth: 2.5,
@@ -1743,20 +1786,46 @@ function renderDaysChart(labels, daily) {
 /* ========================================================
    باقي المكونات المساعدة
    ======================================================== */
+function getHourlyStartIndex(hourly) {
+  if (!hourly || !Array.isArray(hourly.time) || hourly.time.length === 0) return 0;
+  const currentTime = currentWeatherData && currentWeatherData.time ? String(currentWeatherData.time) : "";
+  const currentHourKey = currentTime ? currentTime.slice(0, 13) : "";
+  if (currentHourKey) {
+    const exactIndex = hourly.time.findIndex(t => String(t).slice(0, 13) === currentHourKey);
+    if (exactIndex !== -1) return exactIndex;
+    const nextIndex = hourly.time.findIndex(t => String(t).slice(0, 13) > currentHourKey);
+    if (nextIndex !== -1) return nextIndex;
+  }
+  const now = Date.now();
+  const fallbackIndex = hourly.time.findIndex(t => { const parsed = new Date(t).getTime(); return Number.isFinite(parsed) && parsed >= now; });
+  return fallbackIndex !== -1 ? fallbackIndex : 0;
+}
+
+function scrollToSection(sectionId) {
+  const target = document.getElementById(sectionId);
+  if (!target) return;
+  if (target.tagName === "DETAILS") target.open = true;
+  const topbar = document.querySelector(".topbar");
+  const alertBanner = document.getElementById("alertBanner");
+  const offset = (topbar ? topbar.offsetHeight : 0) + (alertBanner && getComputedStyle(alertBanner).display !== "none" ? alertBanner.offsetHeight : 0) + 18;
+  const y = target.getBoundingClientRect().top + window.pageYOffset - offset;
+  window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
+}
+
 function renderHourlyList(hourly) {
   const container = document.getElementById("hourlyList");
   container.innerHTML = "";
-
-  for (let i = 0; i < 24; i++) {
+  hourlyForecastStartIndex = getHourlyStartIndex(hourly);
+  const endIndex = Math.min(hourlyForecastStartIndex + 24, hourly.time.length);
+  for (let i = hourlyForecastStartIndex; i < endIndex; i++) {
     const time = new Date(hourly.time[i]);
-    const hourStr = time.getHours() + ':00';
+    const hourStr = time.toLocaleTimeString(currentLang === 'ar' ? 'ar-JO' : (currentLang === 'tr' ? 'tr-TR' : 'en-US'), { hour: '2-digit', minute: '2-digit' });
     const temp = Math.round(hourly.temperature_2m[i]);
     const code = hourly.weather_code[i];
     const isDay = hourly.is_day ? hourly.is_day[i] : 1;
     const info = getWeatherDescription(code, isDay);
-
     const div = document.createElement("div");
-    div.className = "hour" + (i === 0 ? " active" : "");
+    div.className = "hour" + (i === hourlyForecastStartIndex ? " active" : "");
     div.innerHTML = `
       <div>${hourStr}</div>
       <div class="ico"><div class="hour-ico-wrapper">${getSVGIcon(info.icon, isDay)}</div></div>
@@ -1770,7 +1839,6 @@ function renderHourlyList(hourly) {
     container.appendChild(div);
   }
 }
-
 function showHourlyDetail(index, hourly) {
   const box = document.getElementById("hourlyPopupBox");
   const time = new Date(hourly.time[index]).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
@@ -1849,7 +1917,8 @@ function renderSmartSummary(curr, daily) {
 
 function renderActivityIndex(curr, hourly) {
   const wind = curr.wind_speed_10m;
-  const pop = hourly.precipitation_probability ? hourly.precipitation_probability[0] : 0;
+  const currentHourIndex = getHourlyStartIndex(hourly);
+  const pop = hourly.precipitation_probability ? hourly.precipitation_probability[currentHourIndex] : 0;
   const temp = curr.temperature_2m;
 
   // الغسيل
