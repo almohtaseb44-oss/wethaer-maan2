@@ -389,16 +389,16 @@
     .share-btn-tg:hover { background: #0077b5; transform: translateY(-1px); }
     .share-preview-overlay { position: fixed; inset: 0; background: rgba(15,23,42,.72); z-index: 9999; display: none; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(5px); }
     .share-preview-overlay.show { display:flex; animation: fadeIn .2s ease; }
-    .share-preview-modal { width:min(96vw, 560px); max-height:92vh; overflow:auto; background:#fff; border-radius:24px; padding:18px; box-shadow:0 24px 70px rgba(0,0,0,.28); }
+    .share-preview-modal { width:min(96vw, 620px); max-height:94vh; overflow:auto; background:linear-gradient(145deg,#07131f,#0b1f2b); border:1px solid rgba(103,232,249,.18); border-radius:28px; padding:18px; box-shadow:0 30px 90px rgba(0,0,0,.55),0 0 60px rgba(8,145,178,.12); }
     .share-preview-head { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:12px; }
-    .share-preview-head h3 { margin:0; color:#0f172a; font-size:17px; }
-    .share-close { border:0; width:34px; height:34px; border-radius:50%; background:#f1f5f9; color:#334155; cursor:pointer; font-size:20px; }
-    #weatherShareCanvas { width:100%; height:auto; display:block; border-radius:18px; background:#e2e8f0; box-shadow:0 8px 24px rgba(15,23,42,.12); }
+    .share-preview-head h3 { margin:0; color:#e6faff; font-size:17px; }
+    .share-close { border:0; width:36px; height:36px; border-radius:12px; background:rgba(255,255,255,.08); color:#dffcff; cursor:pointer; font-size:20px; border:1px solid rgba(255,255,255,.08); }
+    #weatherShareCanvas { width:100%; height:auto; display:block; border-radius:20px; background:#02070c; box-shadow:0 18px 42px rgba(0,0,0,.42),0 0 0 1px rgba(103,232,249,.12); }
     .share-preview-actions { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px; }
     .share-action { border:0; padding:12px 14px; border-radius:13px; font-weight:800; cursor:pointer; color:#fff; }
     .share-action-wa { background:#25d366; } .share-action-tg { background:#0088cc; }
     .share-action-download { background:#334155; grid-column:1/-1; }
-    .share-preview-note { margin:10px 2px 0; color:#64748b; font-size:12px; line-height:1.6; text-align:center; }
+    .share-preview-note { margin:10px 2px 0; color:#8ba9b5; font-size:12px; line-height:1.6; text-align:center; }
 
     .hourly-wrapper {display: flex; flex-direction: column; gap: 15px; margin-top: 10px;}
     .hourly{display:flex;gap:12px;overflow:auto;padding-bottom:8px}
@@ -475,6 +475,54 @@
     .hour{scroll-snap-align:start}
     @media(max-width:900px){.share-menu-wrap{width:100%}.share-main-btn{width:100%;justify-content:center}.share-dropdown{position:relative;top:7px;inset-inline-end:auto;width:100%}}
 </style>
+
+<style>
+.current-details-accordion{
+  margin:16px 0 18px;
+  border:1px solid rgba(8,123,136,.18);
+  border-radius:18px;
+  background:linear-gradient(135deg,#ffffff 0%,#f6fcfc 100%);
+  box-shadow:0 8px 24px rgba(8,123,136,.08);
+  overflow:hidden;
+}
+.current-details-summary{
+  list-style:none;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  min-height:52px;
+  padding:0 18px;
+  color:#075e68;
+  font-weight:900;
+  font-size:14px;
+  user-select:none;
+  transition:background .2s ease,color .2s ease;
+}
+.current-details-summary::-webkit-details-marker{display:none}
+.current-details-summary:hover{background:rgba(8,123,136,.055)}
+.current-details-summary:focus-visible{outline:3px solid rgba(8,123,136,.22);outline-offset:-3px}
+.current-details-chevron{
+  width:30px;height:30px;border-radius:10px;
+  display:grid;place-items:center;
+  background:#e8f7f8;color:#087b88;
+  font-size:18px;font-weight:900;
+  transition:transform .25s ease,background .2s ease;
+}
+.current-details-accordion[open] .current-details-summary{
+  background:linear-gradient(135deg,#f2fbfb,#e8f7f8);
+  border-bottom:1px solid rgba(8,123,136,.12);
+}
+.current-details-accordion[open] .current-details-chevron{transform:rotate(180deg);background:#087b88;color:#fff}
+.current-details-content{padding:14px 14px 16px;animation:currentDetailsIn .22s ease}
+@keyframes currentDetailsIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:600px){
+ .current-details-summary{padding:0 14px;min-height:50px}
+ .current-details-content{padding:10px}
+}
+</style>
+
 </head>
 <body>
 
@@ -581,6 +629,12 @@
 
 
     <!-- 3. قسم التنبيهات العالمية المربوط من الأسفل للمنطقة الحالية -->
+    <details class="current-details-accordion" id="currentWeatherDetails">
+      <summary class="current-details-summary">
+        <span>التفاصيل</span>
+        <span class="current-details-chevron">⌄</span>
+      </summary>
+      <div class="current-details-content">
     <div id="alertsCenterContainer" class="alerts-integrated-container">
       <div class="alerts-section-title">
         <span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
@@ -643,57 +697,11 @@
         </div>
       </div>
     </div>
+
+      </div>
+    </details>
   </div>
 
-  <!-- قسم التوقعات الساعية -->
-  <section class="integrated-hourly-card" id="hourly">
-    <h2 data-i18n="hourly_title" style="margin: 0 0 16px; font-size: 20px; color: var(--ink);">🕐 توقعات الـ 24 ساعة القادمة من الساعة الحالية</h2>
-    
-    <!-- 1. شريط الساعات والشرح التفصيلي في الأعلى -->
-    <div class="hourly-wrapper">
-      <div class="hourly" id="hourlyList"></div>
-      <div class="hourly-popup-box" id="hourlyPopupBox" data-i18n="hourly_hint">
-        انقر على أي ساعة من الشريط أعلاه لعرض تقريرها وشرحها المفصل هنا.
-      </div>
-    </div>
-
-    <!-- 2. الرسم البياني التفاعلي أسفل شريط الساعات -->
-    <div class="chart-container-box">
-      <div class="chart-btn-group">
-        <button class="chart-tab-btn active" onclick="switchTodayChart('temp')" id="btnTodayTemp" data-i18n="chart_btn_temp">🌡️ درجة الحرارة</button>
-        <button class="chart-tab-btn" onclick="switchTodayChart('feels')" id="btnTodayFeels" data-i18n="chart_btn_feels">🤒 الحرارة المحسوسة</button>
-        <button class="chart-tab-btn" onclick="switchTodayChart('humidity')" id="btnTodayHumidity" data-i18n="chart_btn_humidity">💧 الرطوبة</button>
-        <button class="chart-tab-btn" onclick="switchTodayChart('pop')" id="btnTodayPop" data-i18n="chart_btn_pop">🌧️ المطر</button>
-        <button class="chart-tab-btn" onclick="switchTodayChart('wind')" id="btnTodayWind" data-i18n="chart_btn_wind">💨 الرياح + الهبات</button>
-      </div>
-      <div class="chart-canvas-wrapper">
-        <canvas id="todayChart"></canvas>
-      </div>
-    </div>
-  </section>
-
-  <!-- قسم الأيام القادمة -->
-  <section class="section" id="daysSection">
-    <h2 data-i18n="days_title">📅 توقعات الأيام القادمة (اسحب للاطلاع)</h2>
-    <div class="days-horizontal" id="daysListHz"></div>
-    
-    <div class="days-popup-box" id="daysPopupBox" data-i18n="days_hint">
-      اختر يوماً من الشريط أعلاه لعرض تقريره المفصل هنا.
-    </div>
-
-    <div class="chart-container-box" style="margin-top:15px;">
-      <div class="chart-btn-group">
-        <button class="chart-tab-btn active" onclick="switchDaysChart('temp')" id="btnDaysTemp" data-i18n="chart_btn_temp">🌡️ درجة الحرارة</button>
-        <button class="chart-tab-btn" onclick="switchDaysChart('pop')" id="btnDaysPop" data-i18n="chart_btn_pop">🌧️ المطر</button>
-        <button class="chart-tab-btn" onclick="switchDaysChart('wind')" id="btnDaysWind" data-i18n="chart_btn_wind">💨 الرياح والهبات</button>
-      </div>
-      <div class="chart-canvas-wrapper">
-        <canvas id="daysChart"></canvas>
-      </div>
-    </div>
-  </section>
-
-  <div class="accordion-wrapper">
     <details class="accordion-item" id="activities" open>
       <summary class="accordion-header" style="color: #166534;">
         <div class="accordion-title">
@@ -757,7 +765,7 @@
               <h3>🖼️ بطاقة الطقس الجاهزة للمشاركة</h3>
               <button class="share-close" onclick="closeWeatherShare()" aria-label="إغلاق">×</button>
             </div>
-            <canvas id="weatherShareCanvas" width="1200" height="1500"></canvas>
+            <canvas id="weatherShareCanvas" width="1200" height="1700"></canvas>
             <div class="share-preview-actions social-share-actions">
               <button class="share-action share-action-native" onclick="openNativeWeatherShare()">📤 مشاركة الصورة</button>
               <button class="share-action share-action-wa" onclick="shareGeneratedWeather('whatsapp')">💬 واتساب</button>
@@ -774,6 +782,56 @@
       </div>
     </details>
 
+
+  <!-- قسم التوقعات الساعية -->
+  <section class="integrated-hourly-card" id="hourly">
+    <h2 data-i18n="hourly_title" style="margin: 0 0 16px; font-size: 20px; color: var(--ink);">🕐 توقعات الـ 24 ساعة القادمة من الساعة الحالية</h2>
+    
+    <!-- 1. شريط الساعات والشرح التفصيلي في الأعلى -->
+    <div class="hourly-wrapper">
+      <div class="hourly" id="hourlyList"></div>
+      <div class="hourly-popup-box" id="hourlyPopupBox" data-i18n="hourly_hint">
+        انقر على أي ساعة من الشريط أعلاه لعرض تقريرها وشرحها المفصل هنا.
+      </div>
+    </div>
+
+    <!-- 2. الرسم البياني التفاعلي أسفل شريط الساعات -->
+    <div class="chart-container-box">
+      <div class="chart-btn-group">
+        <button class="chart-tab-btn active" onclick="switchTodayChart('temp')" id="btnTodayTemp" data-i18n="chart_btn_temp">🌡️ درجة الحرارة</button>
+        <button class="chart-tab-btn" onclick="switchTodayChart('feels')" id="btnTodayFeels" data-i18n="chart_btn_feels">🤒 الحرارة المحسوسة</button>
+        <button class="chart-tab-btn" onclick="switchTodayChart('humidity')" id="btnTodayHumidity" data-i18n="chart_btn_humidity">💧 الرطوبة</button>
+        <button class="chart-tab-btn" onclick="switchTodayChart('pop')" id="btnTodayPop" data-i18n="chart_btn_pop">🌧️ المطر</button>
+        <button class="chart-tab-btn" onclick="switchTodayChart('wind')" id="btnTodayWind" data-i18n="chart_btn_wind">💨 الرياح + الهبات</button>
+      </div>
+      <div class="chart-canvas-wrapper">
+        <canvas id="todayChart"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- قسم الأيام القادمة -->
+  <section class="section" id="daysSection">
+    <h2 data-i18n="days_title">📅 توقعات الأيام القادمة (اسحب للاطلاع)</h2>
+    <div class="days-horizontal" id="daysListHz"></div>
+    
+    <div class="days-popup-box" id="daysPopupBox" data-i18n="days_hint">
+      اختر يوماً من الشريط أعلاه لعرض تقريره المفصل هنا.
+    </div>
+
+    <div class="chart-container-box" style="margin-top:15px;">
+      <div class="chart-btn-group">
+        <button class="chart-tab-btn active" onclick="switchDaysChart('temp')" id="btnDaysTemp" data-i18n="chart_btn_temp">🌡️ درجة الحرارة</button>
+        <button class="chart-tab-btn" onclick="switchDaysChart('pop')" id="btnDaysPop" data-i18n="chart_btn_pop">🌧️ المطر</button>
+        <button class="chart-tab-btn" onclick="switchDaysChart('wind')" id="btnDaysWind" data-i18n="chart_btn_wind">💨 الرياح والهبات</button>
+      </div>
+      <div class="chart-canvas-wrapper">
+        <canvas id="daysChart"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <div class="accordion-wrapper">
     <details class="accordion-item" id="alarm">
       <summary class="accordion-header" style="color: #1e40af;">
         <div class="accordion-title">
@@ -968,11 +1026,12 @@ let todayChartInstance = null;
 let daysChartInstance = null;
 let activeTodayMetric = 'temp';
 let activeDaysMetric = 'temp';
+let activeLocationKey = 'maan';
+let activeLocationMeta = null;
 
 const locations = {
   maan: { name: { ar: "محافظة معان", en: "Ma'an Governorate", tr: "Maan İli" }, sub: { ar: "قصبة معان", en: "Ma'an Center", tr: "Maan Merkez" }, lat: 30.1949, lon: 35.7342 },
   ahu: { name: { ar: "جامعة الحسين بن طلال", en: "Al-Hussein Bin Talal University", tr: "Al-Hussein Bin Talal Univ." }, sub: { ar: "منطقة الجامعة", en: "University Campus", tr: "Kampüs Bölgesi" }, lat: 30.2223, lon: 35.7183 },
-  petra: { name: { ar: "البتراء / وادي موسى", en: "Petra / Wadi Musa", tr: "Petra / Wadi Musa" }, sub: { ar: "إقليم البتراء", en: "Petra Region", tr: "Petra Bölgesi" }, lat: 30.3286, lon: 35.4444 },
   aqaba: { name: { ar: "محافظة العقبة", en: "Aqaba Governorate", tr: "Akabe İli" }, sub: { ar: "ثغر الأردن الباسم", en: "Red Sea Coast", tr: "Kızıldeniz Sahili" }, lat: 29.5321, lon: 35.0063 },
   tafileh: { name: { ar: "محافظة الطفيلة", en: "Tafileh Governorate", tr: "Tafileh İli" }, sub: { ar: "إقليم الجنوب", en: "South Region", tr: "Güney Bölgesi" }, lat: 30.8375, lon: 35.6044 },
   karak: { name: { ar: "محافظة الكرك", en: "Karak Governorate", tr: "Kerak İli" }, sub: { ar: "قلعة الكرك", en: "Karak Castle", tr: "Kerak Kalesi" }, lat: 31.1853, lon: 35.7048 },
@@ -999,7 +1058,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupLanguageSwitcher();
   setupSearch();
   setupCustomSelect();
-  fetchWeatherData(locations.maan.lat, locations.maan.lon, locations.maan.name[currentLang], locations.maan.sub[currentLang]);
+  activeLocationKey = "maan"; activeLocationMeta = locations.maan; fetchWeatherData("maan");
 });
 
 function scrollToSection(id) {
@@ -1134,49 +1193,72 @@ function setupCustomSelect() {
 
 function selectShortcut(key) {
   activeShortcut = key;
+  activeLocationKey = key;
+  activeLocationMeta = locations[key];
   document.querySelectorAll(".location-btn").forEach(btn => btn.classList.remove("active"));
   const btn = document.querySelector(`.location-btn[data-location="${key}"]`);
   if (btn) btn.classList.add("active");
 
   const loc = locations[key];
-  fetchWeatherData(loc.lat, loc.lon, loc.name[currentLang], loc.sub[currentLang]);
+  fetchWeatherData(key);
 }
 
 function selectLocation(key) {
   activeShortcut = key;
+  activeLocationKey = key;
+  activeLocationMeta = locations[key];
+  activeLocationKey = key;
+  activeLocationMeta = locations[key];
   document.querySelectorAll(".location-btn").forEach(btn => btn.classList.remove("active"));
   
   document.getElementById("searchResults").classList.remove("show");
   document.getElementById("search").value = "";
 
   const loc = locations[key];
-  fetchWeatherData(loc.lat, loc.lon, loc.name[currentLang], loc.sub[currentLang]);
+  fetchWeatherData(key);
 }
 
-async function fetchWeatherData(lat, lon, placeName, placeSub) {
-  document.getElementById("updated").textContent = translations[currentLang].status_updating;
+async function fetchWeatherData(locationKey) {
+  const loc = locations[locationKey];
+  if (!loc) throw new Error("Unknown location: " + locationKey);
+  activeLocationKey = locationKey;
+  activeLocationMeta = loc;
+  const lat = Number(loc.lat), lon = Number(loc.lon);
+  const placeName = loc.name[currentLang], placeSub = loc.sub[currentLang];
+  const updatedEl = document.getElementById("updated");
+  if (updatedEl) updatedEl.textContent = translations[currentLang].status_updating;
   document.getElementById("placeName").textContent = placeName;
   document.getElementById("placeSub").textContent = placeSub;
 
-  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,rain,showers,snowfall,weather_code,surface_pressure,wind_speed_10m,wind_direction_10m,wind_gusts_10m&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation_probability,precipitation,rain,showers,snowfall,weather_code,surface_pressure,wind_speed_10m,wind_direction_10m,wind_gusts_10m,is_day&daily=weather_code,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,sunrise,sunset,precipitation_sum,rain_sum,showers_sum,snowfall_sum,precipitation_hours,precipitation_probability_max,wind_speed_10m_max,wind_gusts_10m_max,wind_direction_10m_dominant&timezone=auto`;
-
+  const base = `https://api.open-meteo.com/v1/forecast?latitude=${encodeURIComponent(lat)}&longitude=${encodeURIComponent(lon)}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,rain,showers,snowfall,weather_code,surface_pressure,wind_speed_10m,wind_direction_10m,wind_gusts_10m&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation_probability,precipitation,rain,showers,snowfall,weather_code,surface_pressure,wind_speed_10m,wind_direction_10m,wind_gusts_10m,is_day&daily=weather_code,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,sunrise,sunset,precipitation_sum,rain_sum,showers_sum,snowfall_sum,precipitation_hours,precipitation_probability_max,wind_speed_10m_max,wind_gusts_10m_max,wind_direction_10m_dominant&forecast_days=16&timezone=auto`;
+  const elevation = Number(loc.elevation);
+  const urls = Number.isFinite(elevation) ? [base + `&elevation=${encodeURIComponent(elevation)}`, base] : [base];
   try {
-    const res = await fetch(url);
-    const data = await res.json();
-    
+    let data = null, lastError = null;
+    for (const requestUrl of urls) {
+      try {
+        const res = await fetch(requestUrl, { cache: "no-store" });
+        if (!res.ok) throw new Error(`Open-Meteo HTTP ${res.status}`);
+        const json = await res.json();
+        if (!json.current || !json.hourly?.time?.length || !json.daily?.time?.length) throw new Error(json.reason || "Incomplete weather response");
+        data = json; break;
+      } catch (e) { lastError = e; }
+    }
+    if (!data) throw lastError || new Error("Unable to load weather data");
     currentWeatherData = data.current;
     currentHourlyData = data.hourly;
     currentDailyData = data.daily;
-
     updateUI(currentWeatherData, currentHourlyData, currentDailyData);
-    
     const now = new Date();
-    document.getElementById("updated").textContent = "مُحدث " + now.toLocaleTimeString(currentLang === 'ar' ? 'ar-JO' : 'en-US', {hour: '2-digit', minute:'2-digit'});
-    document.getElementById("lastUpdate").textContent = "آخر تحديث: " + now.toLocaleTimeString(currentLang === 'ar' ? 'ar-JO' : 'en-US', {hour: '2-digit', minute:'2-digit'});
-
+    const time = now.toLocaleTimeString(currentLang === 'ar' ? 'ar-JO' : 'en-US', {hour:'2-digit', minute:'2-digit'});
+    if (updatedEl) updatedEl.textContent = "مُحدث " + time;
+    const lastUpdate = document.getElementById("lastUpdate");
+    if (lastUpdate) lastUpdate.textContent = "آخر تحديث: " + time;
   } catch (err) {
-    console.error(err);
-    document.getElementById("updated").textContent = "خطأ في جلب البيانات";
+    console.error("Weather fetch failed:", err, locationKey);
+    if (updatedEl) updatedEl.textContent = "تعذر جلب بيانات الطقس";
+    const summary = document.getElementById("aiSummaryText");
+    if (summary) summary.textContent = "تعذر تحميل البيانات الجوية لهذه المنطقة. حاول تحديث الصفحة مرة أخرى.";
   }
 }
 
@@ -1820,19 +1902,37 @@ function calculateSmartAlarm() {
 function getWeatherShareSnapshot() {
   if (!currentWeatherData) return null;
   const el = id => document.getElementById(id);
-  const temp = Math.round(Number(currentWeatherData.temperature_2m ?? 0));
-  const feels = Math.round(Number(currentWeatherData.apparent_temperature ?? currentWeatherData.temperature_2m ?? 0));
-  const wind = Math.round(Number(currentWeatherData.wind_speed_10m ?? 0));
-  const gust = Math.round(Number(currentWeatherData.wind_gusts_10m ?? wind));
-  const humidity = Math.round(Number(currentWeatherData.relative_humidity_2m ?? 0));
-  const pop = Math.round(Number(currentWeatherData.precipitation_probability ?? 0));
+  const current = currentWeatherData || {};
+  const daily = currentDailyData || {};
+  const n = (v, fallback=0) => Number.isFinite(Number(v)) ? Number(v) : fallback;
+  const temp = Math.round(n(current.temperature_2m));
+  const feels = Math.round(n(current.apparent_temperature, temp));
+  const wind = Math.round(n(current.wind_speed_10m));
+  const gust = Math.round(n(current.wind_gusts_10m, wind));
+  const humidity = Math.round(n(current.relative_humidity_2m));
+  const pop = Math.round(n(daily.precipitation_probability_max?.[0], current.precipitation_probability ?? 0));
+  const pressure = Math.round(n(current.surface_pressure));
+  const precipitation = n(current.precipitation).toFixed(1);
+  const rain = n(daily.rain_sum?.[0]).toFixed(1);
+  const snow = n(daily.snowfall_sum?.[0]).toFixed(1);
+  const max = Math.round(n(daily.temperature_2m_max?.[0], temp));
+  const min = Math.round(n(daily.temperature_2m_min?.[0], temp));
+  const maxWind = Math.round(n(daily.wind_speed_10m_max?.[0], wind));
+  const maxGust = Math.round(n(daily.wind_gusts_10m_max?.[0], gust));
+  const sunrise = daily.sunrise?.[0] ? new Date(daily.sunrise[0]).toLocaleTimeString(currentLang === 'ar' ? 'ar-JO' : 'en-US',{hour:'2-digit',minute:'2-digit',hour12:true}) : '--';
+  const sunset = daily.sunset?.[0] ? new Date(daily.sunset[0]).toLocaleTimeString(currentLang === 'ar' ? 'ar-JO' : 'en-US',{hour:'2-digit',minute:'2-digit',hour12:true}) : '--';
+  const loc = activeLocationMeta || Object.values(locations).find(x => x.name?.[currentLang] === el('placeName')?.textContent?.trim());
   return {
     place: el('placeName')?.textContent?.trim() || 'المنطقة',
     sub: el('placeSub')?.textContent?.trim() || '',
-    temp, feels, wind, gust, humidity, pop,
+    temp, feels, wind, gust, humidity, pop, pressure, precipitation, rain, snow,
+    max, min, maxWind, maxGust, sunrise, sunset,
+    elevation: loc?.elevation || null,
+    lat: loc?.lat, lon: loc?.lon,
     cond: el('condition')?.textContent?.trim() || 'حالة جوية مستقرة',
     windDir: el('windDir')?.textContent?.trim() || '',
-    date: new Intl.DateTimeFormat('ar-JO', { weekday:'long', year:'numeric', month:'long', day:'numeric' }).format(new Date())
+    date: new Intl.DateTimeFormat(currentLang === 'ar' ? 'ar-JO' : 'en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' }).format(new Date()),
+    updatedAt: new Intl.DateTimeFormat(currentLang === 'ar' ? 'ar-JO' : 'en-US', { hour:'2-digit', minute:'2-digit', hour12:true }).format(new Date())
   };
 }
 
@@ -1843,6 +1943,21 @@ function roundRect(ctx, x, y, w, h, r) {
   ctx.arcTo(x,y+h,x,y,rr); ctx.arcTo(x,y,x+w,y,rr); ctx.closePath();
 }
 
+function shareText(ctx, text, x, y, maxWidth, lineHeight, maxLines=3) {
+  const words = String(text || '').split(/\s+/);
+  let line='', lines=[];
+  for (const word of words) {
+    const test = line ? line+' '+word : word;
+    if (ctx.measureText(test).width > maxWidth && line) {
+      lines.push(line); line=word;
+      if (lines.length === maxLines) break;
+    } else line=test;
+  }
+  if (lines.length < maxLines && line) lines.push(line);
+  lines.forEach((ln,i)=>ctx.fillText(ln,x,y+i*lineHeight));
+  return lines.length;
+}
+
 function drawWeatherShareCard() {
   const d = getWeatherShareSnapshot();
   const canvas = document.getElementById('weatherShareCanvas');
@@ -1850,53 +1965,145 @@ function drawWeatherShareCard() {
   const ctx = canvas.getContext('2d');
   const W = canvas.width, H = canvas.height;
   ctx.clearRect(0,0,W,H);
+  ctx.direction='rtl';
 
+  // Premium social-share card: clean hierarchy, strong contrast, readable on mobile.
   const bg = ctx.createLinearGradient(0,0,W,H);
-  bg.addColorStop(0,'#082f49'); bg.addColorStop(.48,'#0f766e'); bg.addColorStop(1,'#164e63');
-  ctx.fillStyle = bg; ctx.fillRect(0,0,W,H);
+  bg.addColorStop(0,'#06131d');
+  bg.addColorStop(.48,'#0a2430');
+  bg.addColorStop(1,'#050b12');
+  ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
 
-  // atmospheric circles
-  ctx.globalAlpha=.12; ctx.fillStyle='#fff';
-  [[100,120,170],[1080,180,230],[1020,1120,300],[170,1270,220]].forEach(([x,y,r])=>{ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();});
+  const glow1 = ctx.createRadialGradient(980,190,20,980,190,600);
+  glow1.addColorStop(0,'rgba(45,212,191,.22)');
+  glow1.addColorStop(1,'rgba(45,212,191,0)');
+  ctx.fillStyle=glow1; ctx.fillRect(0,0,W,H);
+  const glow2 = ctx.createRadialGradient(160,1320,20,160,1320,430);
+  glow2.addColorStop(0,'rgba(56,189,248,.10)');
+  glow2.addColorStop(1,'rgba(56,189,248,0)');
+  ctx.fillStyle=glow2; ctx.fillRect(0,0,W,H);
+
+  // Subtle grid for depth.
+  ctx.globalAlpha=.045; ctx.strokeStyle='#dffcff'; ctx.lineWidth=1;
+  for(let x=0;x<W;x+=80){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+  for(let y=0;y<H;y+=80){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
   ctx.globalAlpha=1;
 
-  ctx.fillStyle='#fff'; ctx.textAlign='right'; ctx.direction='rtl';
-  ctx.font='800 54px Arial'; ctx.fillText('🌤️ حالة الطقس الآن', W-80, 100);
-  ctx.font='600 30px Arial'; ctx.fillStyle='rgba(255,255,255,.82)'; ctx.fillText(d.date, W-80, 150);
+  // Top brand strip.
+  roundRect(ctx,58,48,W-116,72,22);
+  ctx.fillStyle='rgba(255,255,255,.045)'; ctx.fill();
+  ctx.strokeStyle='rgba(103,232,249,.13)'; ctx.lineWidth=1.5; ctx.stroke();
+  ctx.textAlign='right';
+  ctx.fillStyle='#5eead4'; ctx.font='900 24px Arial';
+  ctx.fillText('MAAN WEATHER',W-86,79);
+  ctx.fillStyle='rgba(226,252,255,.62)'; ctx.font='700 17px Arial';
+  ctx.fillText('LIVE WEATHER',W-86,103);
+  ctx.textAlign='left'; ctx.fillStyle='#ffffff'; ctx.font='800 18px Arial';
+  ctx.fillText('طقس مباشر',86,92);
 
-  roundRect(ctx,70,205,W-140,650,34); ctx.fillStyle='rgba(255,255,255,.13)'; ctx.fill();
-  ctx.fillStyle='#fff'; ctx.font='900 54px Arial'; ctx.fillText(d.place, W-110, 285);
-  ctx.font='600 28px Arial'; ctx.fillStyle='rgba(255,255,255,.78)'; ctx.fillText(d.sub, W-110, 330);
-  ctx.textAlign='left'; ctx.font='900 150px Arial'; ctx.fillStyle='#fff'; ctx.fillText(`${d.temp}°`,110,510);
-  ctx.textAlign='right'; ctx.font='800 38px Arial'; ctx.fillText(d.cond, W-110, 465);
-  ctx.font='600 28px Arial'; ctx.fillStyle='rgba(255,255,255,.78)'; ctx.fillText(`المحسوسة ${d.feels}°م`, W-110, 515);
+  // Main heading.
+  ctx.textAlign='right'; ctx.fillStyle='#ffffff'; ctx.font='900 52px Arial';
+  ctx.fillText('حالة الطقس الآن',W-72,182);
+  ctx.fillStyle='rgba(226,252,255,.66)'; ctx.font='600 23px Arial';
+  ctx.fillText(d.date,W-72,220);
 
+  // Updated badge.
+  roundRect(ctx,72,255,395,58,18);
+  ctx.fillStyle='rgba(16,185,129,.14)'; ctx.fill();
+  ctx.strokeStyle='rgba(52,211,153,.38)'; ctx.lineWidth=2; ctx.stroke();
+  ctx.textAlign='center'; ctx.font='900 20px Arial'; ctx.fillStyle='#86efac';
+  ctx.fillText(`✓ مُحدث • ${d.updatedAt}`,270,292);
+
+  // Hero weather card.
+  roundRect(ctx,58,345,W-116,360,32);
+  const hero=ctx.createLinearGradient(58,345,W-58,705);
+  hero.addColorStop(0,'rgba(14,116,144,.42)');
+  hero.addColorStop(1,'rgba(15,23,42,.90)');
+  ctx.fillStyle=hero; ctx.fill();
+  ctx.strokeStyle='rgba(103,232,249,.20)'; ctx.lineWidth=2; ctx.stroke();
+
+  ctx.textAlign='right'; ctx.fillStyle='#fff'; ctx.font='900 48px Arial';
+  ctx.fillText(d.place,W-94,415);
+  ctx.fillStyle='rgba(226,252,255,.66)'; ctx.font='600 24px Arial';
+  ctx.fillText(d.sub,W-94,455);
+
+  ctx.textAlign='left'; ctx.fillStyle='#fff'; ctx.font='900 142px Arial';
+  ctx.fillText(`${d.temp}°`,88,615);
+  ctx.textAlign='right'; ctx.font='800 34px Arial'; ctx.fillStyle='#e6fbff';
+  ctx.fillText(d.cond,W-94,530);
+  ctx.font='600 24px Arial'; ctx.fillStyle='rgba(226,252,255,.72)';
+  ctx.fillText(`المحسوسة ${d.feels}°م  •  ${d.windDir}`,W-94,574);
+
+  const severe = d.gust >= 55 || d.wind >= 45 || d.pop >= 75;
+  roundRect(ctx,88,635,410,50,16);
+  ctx.fillStyle=severe?'rgba(239,68,68,.20)':'rgba(16,185,129,.16)'; ctx.fill();
+  ctx.strokeStyle=severe?'rgba(248,113,113,.48)':'rgba(52,211,153,.32)'; ctx.stroke();
+  ctx.textAlign='center'; ctx.font='900 19px Arial'; ctx.fillStyle=severe?'#fca5a5':'#86efac';
+  ctx.fillText(severe?'⚠ ظروف جوية تستدعي الانتباه':'✓ الحالة الجوية مستقرة حالياً',293,667);
+
+  // Metrics section.
+  ctx.textAlign='right'; ctx.fillStyle='#e6fbff'; ctx.font='900 30px Arial';
+  ctx.fillText('أهم التفاصيل',W-72,770);
   const metrics=[
-    ['💨','الرياح',`${d.wind} كم/س`],['🌬️','هبات الرياح',`${d.gust} كم/س`],
-    ['💧','الرطوبة',`${d.humidity}%`],['🌧️','فرصة المطر',`${d.pop}%`]
+    ['الرياح',`${d.wind} كم/س`,'الهبات',`${d.gust} كم/س`],
+    ['الرطوبة',`${d.humidity}%`,'الضغط',`${d.pressure} hPa`],
+    ['احتمال الهطول',`${d.pop}%`,'الهطول الآن',`${d.precipitation} مم`],
+    ['ثلوج اليوم',`${d.snow} سم`,'مطر اليوم',`${d.rain} مم`]
   ];
   metrics.forEach((m,i)=>{
-    const x=110+(i%2)*500, y=600+Math.floor(i/2)*120;
-    roundRect(ctx,x,y,430,88,20); ctx.fillStyle='rgba(255,255,255,.12)'; ctx.fill();
-    ctx.textAlign='right'; ctx.font='700 25px Arial'; ctx.fillStyle='rgba(255,255,255,.78)'; ctx.fillText(`${m[0]} ${m[1]}`,x+395,y+36);
-    ctx.font='900 30px Arial'; ctx.fillStyle='#fff'; ctx.fillText(m[2],x+395,y+70);
+    const col=i%2, row=Math.floor(i/2), x=72+col*540, y=805+row*125;
+    roundRect(ctx,x,y,500,100,20);
+    ctx.fillStyle='rgba(255,255,255,.055)'; ctx.fill();
+    ctx.strokeStyle='rgba(103,232,249,.11)'; ctx.stroke();
+    ctx.textAlign='right'; ctx.font='800 20px Arial'; ctx.fillStyle='#9cc9d2';
+    ctx.fillText(m[0],x+465,y+35);
+    ctx.font='900 27px Arial'; ctx.fillStyle='#fff';
+    ctx.fillText(m[1],x+465,y+72);
+    ctx.font='700 17px Arial'; ctx.fillStyle='rgba(226,252,255,.55)';
+    ctx.fillText(`${m[2]}: ${m[3]}`,x+465,y+91);
   });
 
-  roundRect(ctx,70,900,W-140,270,30); ctx.fillStyle='rgba(255,255,255,.12)'; ctx.fill();
-  ctx.textAlign='right'; ctx.fillStyle='#fff'; ctx.font='900 32px Arial'; ctx.fillText('🚗 التنقل والطريق الصحراوي',W-110,955);
-  const commute = document.getElementById('commuteBadge')?.textContent?.trim() || 'حالة الطريق غير متوفرة';
-  const commuteDesc = document.getElementById('commuteDesc')?.textContent?.trim() || '';
-  ctx.font='800 30px Arial'; ctx.fillStyle='#d1fae5'; ctx.fillText(commute,W-110,1015);
-  ctx.font='600 24px Arial'; ctx.fillStyle='rgba(255,255,255,.82)';
-  const words=commuteDesc.split(/\s+/); let line='', yy=1065;
-  words.forEach(word=>{ const test=line?line+' '+word:word; if(ctx.measureText(test).width>930){ctx.fillText(line,W-110,yy);yy+=38;line=word;}else line=test; });
-  if(line) ctx.fillText(line,W-110,yy);
+  // Today summary.
+  roundRect(ctx,58,1090,W-116,330,28);
+  ctx.fillStyle='rgba(2,6,23,.70)'; ctx.fill();
+  ctx.strokeStyle='rgba(103,232,249,.15)'; ctx.stroke();
+  ctx.textAlign='right'; ctx.fillStyle='#f8fafc'; ctx.font='900 30px Arial';
+  ctx.fillText('ملخص اليوم',W-86,1145);
+  const info=[
+    ['العظمى / الصغرى',`${d.max}° / ${d.min}°م`],
+    ['أقصى رياح',`${d.maxWind} كم/س`],
+    ['أقصى هبات',`${d.maxGust} كم/س`],
+    ['الشروق / الغروب',`${d.sunrise}  •  ${d.sunset}`]
+  ];
+  if(d.lat!=null && d.lon!=null) info.push(['الإحداثيات',`${d.lat.toFixed(4)}, ${d.lon.toFixed(4)}`]);
+  info.forEach((m,i)=>{
+    const x=92+(i%2)*520, y=1195+Math.floor(i/2)*82;
+    ctx.fillStyle='rgba(255,255,255,.045)'; roundRect(ctx,x,y,480,62,14); ctx.fill();
+    ctx.textAlign='right'; ctx.font='700 17px Arial'; ctx.fillStyle='#8fb9c3'; ctx.fillText(m[0],x+455,y+25);
+    ctx.font='900 21px Arial'; ctx.fillStyle='#fff'; ctx.fillText(m[1],x+455,y+50);
+  });
 
-  ctx.textAlign='center'; ctx.fillStyle='rgba(255,255,255,.82)'; ctx.font='800 24px Arial';
-  ctx.fillText('طقس معان • تحديث مباشر',W/2,H-125);
-  ctx.font='700 21px Arial'; ctx.fillStyle='rgba(255,255,255,.72)';
-  ctx.fillText('تم التطوير بواسطة أحمد المحتسب',W/2,H-85);
-  ctx.font='600 20px Arial'; ctx.fillText(window.location.origin + window.location.pathname,W/2,H-48);
+  // Travel status.
+  roundRect(ctx,58,1450,W-116,105,24);
+  ctx.fillStyle='rgba(15,118,110,.13)'; ctx.fill();
+  ctx.strokeStyle='rgba(45,212,191,.18)'; ctx.stroke();
+  ctx.textAlign='right'; ctx.fillStyle='#99f6e4'; ctx.font='900 22px Arial';
+  ctx.fillText('التنقل',W-86,1487);
+  const commute = document.getElementById('commuteBadge')?.textContent?.trim() || 'حسب حالة الطقس الحالية';
+  ctx.font='800 20px Arial'; ctx.fillStyle='#d1fae5'; ctx.fillText(commute,W-86,1525);
+
+  // Professional footer + developer credit.
+  ctx.textAlign='center'; ctx.fillStyle='rgba(226,252,255,.58)'; ctx.font='700 17px Arial';
+  ctx.fillText('بيانات حية • Open-Meteo • تم التحديث حسب وقت إنشاء البطاقة',W/2,1600);
+
+  roundRect(ctx,245,1620,W-490,58,18);
+  ctx.fillStyle='rgba(94,234,212,.10)'; ctx.fill();
+  ctx.strokeStyle='rgba(94,234,212,.30)'; ctx.lineWidth=1.5; ctx.stroke();
+  ctx.fillStyle='#99f6e4'; ctx.font='900 20px Arial';
+  ctx.fillText('تم التطوير بواسطة أحمد المحتسب',W/2,1657);
+
+  ctx.fillStyle='rgba(226,252,255,.34)'; ctx.font='600 14px Arial';
+  ctx.fillText(window.location.origin + window.location.pathname,W/2,1702);
   return true;
 }
 
@@ -1964,13 +2171,45 @@ async function copyWeatherLink(){
   try{await navigator.clipboard.writeText(url); alert('تم نسخ رابط الموقع بنجاح');}catch(e){prompt('انسخ الرابط:',url);}
 }
 
-function downloadWeatherCard() {
-  const canvas=document.getElementById('weatherShareCanvas');
+function downloadWeatherCard(){
+  const canvas = document.getElementById('weatherShareCanvas');
   if(!canvas) return;
-  const a=document.createElement('a');
-  a.href=canvas.toDataURL('image/png',0.95);
-  a.download='weather-status.png';
-  a.click();
+
+  try { drawWeatherShareCard(); } catch(e) {}
+
+  canvas.toBlob(function(blob){
+    if(!blob){
+      alert('تعذر تجهيز صورة الطقس للتحميل.');
+      return;
+    }
+
+    const d = (typeof getWeatherShareSnapshot === 'function')
+      ? getWeatherShareSnapshot()
+      : null;
+
+    const safeName = String((d && d.place) || 'weather')
+      .replace(/[\\/:*?"<>|]+/g, '-')
+      .trim()
+      .replace(/\s+/g, '-');
+
+    const now = new Date();
+    const stamp =
+      now.getFullYear() +
+      String(now.getMonth()+1).padStart(2,'0') +
+      String(now.getDate()).padStart(2,'0') + '-' +
+      String(now.getHours()).padStart(2,'0') +
+      String(now.getMinutes()).padStart(2,'0');
+
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${safeName || 'weather'}-${stamp}.png`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    setTimeout(() => URL.revokeObjectURL(url), 1500);
+  }, 'image/png', 1);
 }
 
 function closeWeatherShare() {
