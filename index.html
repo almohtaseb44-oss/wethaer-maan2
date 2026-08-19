@@ -765,7 +765,7 @@
               <h3>🖼️ بطاقة الطقس الجاهزة للمشاركة</h3>
               <button class="share-close" onclick="closeWeatherShare()" aria-label="إغلاق">×</button>
             </div>
-            <canvas id="weatherShareCanvas" width="1200" height="1700"></canvas>
+            <canvas id="weatherShareCanvas" width="1200" height="1960"></canvas>
             <div class="share-preview-actions social-share-actions">
               <button class="share-action share-action-native" onclick="openNativeWeatherShare()">📤 مشاركة الصورة</button>
               <button class="share-action share-action-wa" onclick="shareGeneratedWeather('whatsapp')">💬 واتساب</button>
@@ -1360,7 +1360,7 @@ function getWeatherIconSVG(code, isDay = 1, customStroke = null) {
   return `<svg class="weather-icon-svg weather-animated" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">${content}</svg>`;
 }
 
-function getWmoDescription(code, lang = 'ar') {
+function getWmoDescription(code, lang = 'ar', isDay = null) {
   const map = {
     0: { ar: "صافٍ مشمس", en: "Clear Sky", tr: "Açık" },
     1: { ar: "غائم جزئياً", en: "Mainly Clear", tr: "Az Bulutlu" },
@@ -1382,7 +1382,17 @@ function getWmoDescription(code, lang = 'ar') {
     82: { ar: "زخات مطرية عاصفة", en: "Violent Rain Showers", tr: "Şiddetli Sağanak" },
     95: { ar: "عواصف رعدية", en: "Thunderstorm", tr: "Gökgürültülü Fırtına" }
   };
-  return map[code] ? map[code][lang] || map[code]['ar'] : (lang === 'ar' ? "طقس متقلب" : "Variable Weather");
+
+  const base = map[code] ? (map[code][lang] || map[code]['ar']) : (lang === 'ar' ? "طقس متقلب" : "Variable Weather");
+
+  // لا نعرض "مشمس" أثناء الليل: نعتمد is_day القادم مباشرة من Open-Meteo.
+  if (isDay === 0) {
+    if (code === 0) return lang === 'ar' ? "صافي ليلاً" : (lang === 'tr' ? "Açık Gece" : "Clear Night");
+    if (code === 1) return lang === 'ar' ? "صافي غالباً ليلاً" : (lang === 'tr' ? "Çoğunlukla Açık Gece" : "Mostly Clear Night");
+    if (code === 2) return lang === 'ar' ? "غائم جزئياً ليلاً" : (lang === 'tr' ? "Parçalı Bulutlu Gece" : "Partly Cloudy Night");
+  }
+
+  return base;
 }
 
 function updateUI(current, hourly, daily) {
@@ -1398,7 +1408,7 @@ function updateUI(current, hourly, daily) {
   document.getElementById("pressure").textContent = Math.round(current.surface_pressure) + " hPa";
   document.getElementById("precipPop").textContent = (daily.precipitation_probability_max ? daily.precipitation_probability_max[0] : 0) + "%";
 
-  const condText = getWmoDescription(current.weather_code, currentLang);
+  const condText = getWmoDescription(current.weather_code, currentLang, current.is_day);
   document.getElementById("condition").textContent = condText;
   document.getElementById("sceneBadge").textContent = condText;
 
@@ -1690,7 +1700,7 @@ function showHourlyDetail(idx) {
   const feels = Math.round(currentHourlyData.apparent_temperature[idx]);
   const wind = Math.round(currentHourlyData.wind_speed_10m[idx]);
   const pop = currentHourlyData.precipitation_probability ? currentHourlyData.precipitation_probability[idx] : 0;
-  const condText = getWmoDescription(currentHourlyData.weather_code[idx], currentLang);
+  const condText = getWmoDescription(currentHourlyData.weather_code[idx], currentLang, currentHourlyData.is_day ? currentHourlyData.is_day[idx] : null);
 
   const box = document.getElementById("hourlyPopupBox");
   box.innerHTML = `<strong> الساعة ${timeStr}:</strong> الحالة الجوية المتوقعة <b>${condText}</b>. درجة الحرارة <b>${temp}°م</b> (المحسوسة <b>${feels}°م</b>)، سرعة الرياح <b>${wind} كم/س</b>، وفرصة الهطول الماطر <b>${pop}%</b>.`;
@@ -1922,12 +1932,17 @@ function getWeatherShareSnapshot() {
   const maxGust = Math.round(n(daily.wind_gusts_10m_max?.[0], gust));
   const sunrise = daily.sunrise?.[0] ? new Date(daily.sunrise[0]).toLocaleTimeString(currentLang === 'ar' ? 'ar-JO' : 'en-US',{hour:'2-digit',minute:'2-digit',hour12:true}) : '--';
   const sunset = daily.sunset?.[0] ? new Date(daily.sunset[0]).toLocaleTimeString(currentLang === 'ar' ? 'ar-JO' : 'en-US',{hour:'2-digit',minute:'2-digit',hour12:true}) : '--';
+  const isDay = Number(current.is_day) === 1;
+  const dayLabel = isDay
+    ? (currentLang === 'ar' ? 'نهاراً' : (currentLang === 'tr' ? 'Gündüz' : 'Day'))
+    : (currentLang === 'ar' ? 'ليلاً' : (currentLang === 'tr' ? 'Gece' : 'Night'));
   const loc = activeLocationMeta || Object.values(locations).find(x => x.name?.[currentLang] === el('placeName')?.textContent?.trim());
   return {
     place: el('placeName')?.textContent?.trim() || 'المنطقة',
     sub: el('placeSub')?.textContent?.trim() || '',
     temp, feels, wind, gust, humidity, pop, pressure, precipitation, rain, snow,
     max, min, maxWind, maxGust, sunrise, sunset,
+    isDay, dayLabel,
     elevation: loc?.elevation || null,
     lat: loc?.lat, lon: loc?.lon,
     cond: el('condition')?.textContent?.trim() || 'حالة جوية مستقرة',
@@ -1963,28 +1978,35 @@ function drawWeatherShareCard() {
   const d = getWeatherShareSnapshot();
   const canvas = document.getElementById('weatherShareCanvas');
   if (!d || !canvas) return false;
+
+  // ارتفاع أكبر لإضافة الرسم البياني بشكل واضح داخل الصورة.
+  canvas.width = 1200;
+  canvas.height = 1960;
+
   const ctx = canvas.getContext('2d');
   const W = canvas.width, H = canvas.height;
   ctx.clearRect(0,0,W,H);
   ctx.direction='rtl';
 
-  // Premium social-share card: clean hierarchy, strong contrast, readable on mobile.
+  const night = !d.isDay;
+
+  // Premium social-share card.
   const bg = ctx.createLinearGradient(0,0,W,H);
-  bg.addColorStop(0,'#06131d');
-  bg.addColorStop(.48,'#0a2430');
-  bg.addColorStop(1,'#050b12');
+  bg.addColorStop(0, night ? '#050816' : '#06131d');
+  bg.addColorStop(.48, night ? '#11152d' : '#0a2430');
+  bg.addColorStop(1, '#050b12');
   ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
 
   const glow1 = ctx.createRadialGradient(980,190,20,980,190,600);
-  glow1.addColorStop(0,'rgba(45,212,191,.22)');
-  glow1.addColorStop(1,'rgba(45,212,191,0)');
+  glow1.addColorStop(0, night ? 'rgba(99,102,241,.22)' : 'rgba(45,212,191,.22)');
+  glow1.addColorStop(1, 'rgba(45,212,191,0)');
   ctx.fillStyle=glow1; ctx.fillRect(0,0,W,H);
-  const glow2 = ctx.createRadialGradient(160,1320,20,160,1320,430);
+
+  const glow2 = ctx.createRadialGradient(160,1510,20,160,1510,430);
   glow2.addColorStop(0,'rgba(56,189,248,.10)');
   glow2.addColorStop(1,'rgba(56,189,248,0)');
   ctx.fillStyle=glow2; ctx.fillRect(0,0,W,H);
 
-  // Subtle grid for depth.
   ctx.globalAlpha=.045; ctx.strokeStyle='#dffcff'; ctx.lineWidth=1;
   for(let x=0;x<W;x+=80){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
   for(let y=0;y<H;y+=80){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
@@ -2002,24 +2024,22 @@ function drawWeatherShareCard() {
   ctx.textAlign='left'; ctx.fillStyle='#ffffff'; ctx.font='800 18px Arial';
   ctx.fillText('طقس مباشر',86,92);
 
-  // Main heading.
   ctx.textAlign='right'; ctx.fillStyle='#ffffff'; ctx.font='900 52px Arial';
   ctx.fillText('حالة الطقس الآن',W-72,182);
   ctx.fillStyle='rgba(226,252,255,.66)'; ctx.font='600 23px Arial';
   ctx.fillText(d.date,W-72,220);
 
-  // Updated badge.
   roundRect(ctx,72,255,395,58,18);
-  ctx.fillStyle='rgba(16,185,129,.14)'; ctx.fill();
-  ctx.strokeStyle='rgba(52,211,153,.38)'; ctx.lineWidth=2; ctx.stroke();
-  ctx.textAlign='center'; ctx.font='900 20px Arial'; ctx.fillStyle='#86efac';
-  ctx.fillText(`✓ مُحدث • ${d.updatedAt}`,270,292);
+  ctx.fillStyle=night?'rgba(99,102,241,.18)':'rgba(16,185,129,.14)'; ctx.fill();
+  ctx.strokeStyle=night?'rgba(129,140,248,.48)':'rgba(52,211,153,.38)'; ctx.lineWidth=2; ctx.stroke();
+  ctx.textAlign='center'; ctx.font='900 20px Arial'; ctx.fillStyle=night?'#c7d2fe':'#86efac';
+  ctx.fillText(`${night ? '🌙' : '☀️'} ${d.dayLabel} • مُحدث ${d.updatedAt}`,270,292);
 
   // Hero weather card.
   roundRect(ctx,58,345,W-116,360,32);
   const hero=ctx.createLinearGradient(58,345,W-58,705);
-  hero.addColorStop(0,'rgba(14,116,144,.42)');
-  hero.addColorStop(1,'rgba(15,23,42,.90)');
+  hero.addColorStop(0, night ? 'rgba(49,46,129,.48)' : 'rgba(14,116,144,.42)');
+  hero.addColorStop(1, 'rgba(15,23,42,.90)');
   ctx.fillStyle=hero; ctx.fill();
   ctx.strokeStyle='rgba(103,232,249,.20)'; ctx.lineWidth=2; ctx.stroke();
 
@@ -2064,47 +2084,127 @@ function drawWeatherShareCard() {
     ctx.fillText(`${m[2]}: ${m[3]}`,x+465,y+91);
   });
 
-  // Today summary.
-  roundRect(ctx,58,1090,W-116,330,28);
+  // ===== الرسم البياني: درجة الحرارة للساعات القادمة =====
+  const hourly = currentHourlyData || {};
+  const times = Array.isArray(hourly.time) ? hourly.time : [];
+  const temps = Array.isArray(hourly.temperature_2m) ? hourly.temperature_2m : [];
+  const dayFlags = Array.isArray(hourly.is_day) ? hourly.is_day : [];
+  const nowMs = Date.now();
+  let startIdx = times.findIndex(t => new Date(t).getTime() >= nowMs - 30*60*1000);
+  if (startIdx < 0) startIdx = 0;
+
+  const count = Math.min(12, Math.max(0, times.length - startIdx));
+  const chartX=58, chartY=1345, chartW=W-116, chartH=340;
+  roundRect(ctx,chartX,chartY,chartW,chartH,28);
+  ctx.fillStyle='rgba(2,6,23,.76)'; ctx.fill();
+  ctx.strokeStyle='rgba(103,232,249,.15)'; ctx.lineWidth=1.5; ctx.stroke();
+
+  ctx.textAlign='right'; ctx.fillStyle='#f8fafc'; ctx.font='900 28px Arial';
+  ctx.fillText('الرسم البياني • الحرارة خلال الساعات القادمة',W-86,1390);
+  ctx.textAlign='left'; ctx.fillStyle='rgba(226,252,255,.58)'; ctx.font='700 16px Arial';
+  ctx.fillText('🌙 ليل  •  ☀️ نهار',86,1390);
+
+  if(count > 0){
+    const px=105, py=1435, pw=W-210, ph=190;
+    const values = temps.slice(startIdx,startIdx+count).map(v=>Number(v));
+    const valid = values.filter(Number.isFinite);
+    const minT = Math.floor((Math.min(...valid)-2));
+    const maxT = Math.ceil((Math.max(...valid)+2));
+    const range = Math.max(4,maxT-minT);
+
+    // Day/night bands.
+    for(let i=0;i<count;i++){
+      const x=px + (count===1 ? pw/2 : (i/(count-1))*pw);
+      const nextX = (i===count-1) ? x : px + ((i+1)/(count-1))*pw;
+      const isDay = dayFlags[startIdx+i] !== 0;
+      ctx.fillStyle = isDay ? 'rgba(56,189,248,.045)' : 'rgba(99,102,241,.12)';
+      ctx.fillRect(i===0 ? px : x, py, Math.max(1,nextX-x), ph);
+    }
+
+    // Grid + labels.
+    ctx.textAlign='right'; ctx.font='600 15px Arial'; ctx.fillStyle='rgba(226,252,255,.42)';
+    for(let g=0;g<=3;g++){
+      const gy=py+(g/3)*ph;
+      const val=Math.round(maxT-(g/3)*range);
+      ctx.strokeStyle='rgba(255,255,255,.09)'; ctx.lineWidth=1;
+      ctx.beginPath(); ctx.moveTo(px,gy); ctx.lineTo(px+pw,gy); ctx.stroke();
+      ctx.fillText(`${val}°`,px-12,gy+5);
+    }
+
+    // Line + gradient fill.
+    const points=[];
+    for(let i=0;i<count;i++){
+      const value=Number(values[i]);
+      const x=count===1 ? px+pw/2 : px+(i/(count-1))*pw;
+      const y=py+ph-((value-minT)/range)*ph;
+      points.push({x,y,value});
+    }
+
+    const area=ctx.createLinearGradient(0,py,0,py+ph);
+    area.addColorStop(0,'rgba(45,212,191,.28)');
+    area.addColorStop(1,'rgba(45,212,191,.015)');
+    ctx.beginPath();
+    points.forEach((p,i)=> i ? ctx.lineTo(p.x,p.y) : ctx.moveTo(p.x,p.y));
+    ctx.lineTo(points[points.length-1].x,py+ph);
+    ctx.lineTo(points[0].x,py+ph);
+    ctx.closePath();
+    ctx.fillStyle=area; ctx.fill();
+
+    ctx.beginPath();
+    points.forEach((p,i)=> i ? ctx.lineTo(p.x,p.y) : ctx.moveTo(p.x,p.y));
+    ctx.strokeStyle='#5eead4'; ctx.lineWidth=5; ctx.lineJoin='round'; ctx.lineCap='round'; ctx.stroke();
+
+    points.forEach((p,i)=>{
+      const isDay = dayFlags[startIdx+i] !== 0;
+      ctx.beginPath(); ctx.arc(p.x,p.y,8,0,Math.PI*2);
+      ctx.fillStyle=isDay?'#67e8f9':'#a5b4fc'; ctx.fill();
+      ctx.strokeStyle='#07131d'; ctx.lineWidth=3; ctx.stroke();
+
+      const dt=new Date(times[startIdx+i]);
+      const timeLabel=dt.toLocaleTimeString(currentLang==='ar'?'ar-JO':'en-US',{hour:'2-digit',minute:'2-digit',hour12:true});
+      ctx.textAlign='center'; ctx.font='700 15px Arial';
+      ctx.fillStyle='rgba(226,252,255,.72)';
+      ctx.fillText(timeLabel,p.x,py+ph+28);
+
+      ctx.font='900 17px Arial'; ctx.fillStyle='#fff';
+      ctx.fillText(`${Math.round(p.value)}°`,p.x,p.y-15);
+      ctx.font='600 14px Arial'; ctx.fillStyle=isDay?'#67e8f9':'#a5b4fc';
+      ctx.fillText(isDay?'☀':'🌙',p.x,p.y+23);
+    });
+  } else {
+    ctx.textAlign='center'; ctx.fillStyle='rgba(226,252,255,.65)'; ctx.font='700 19px Arial';
+    ctx.fillText('لا تتوفر بيانات ساعية كافية للرسم البياني حالياً',W/2,1560);
+  }
+
+  // Today summary moved below the chart.
+  roundRect(ctx,58,1710,W-116,150,28);
   ctx.fillStyle='rgba(2,6,23,.70)'; ctx.fill();
   ctx.strokeStyle='rgba(103,232,249,.15)'; ctx.stroke();
-  ctx.textAlign='right'; ctx.fillStyle='#f8fafc'; ctx.font='900 30px Arial';
-  ctx.fillText('ملخص اليوم',W-86,1145);
+  ctx.textAlign='right'; ctx.fillStyle='#f8fafc'; ctx.font='900 27px Arial';
+  ctx.fillText('ملخص اليوم',W-86,1750);
+
   const info=[
     ['العظمى / الصغرى',`${d.max}° / ${d.min}°م`],
     ['أقصى رياح',`${d.maxWind} كم/س`],
     ['أقصى هبات',`${d.maxGust} كم/س`],
     ['الشروق / الغروب',`${d.sunrise}  •  ${d.sunset}`]
   ];
-  if(d.lat!=null && d.lon!=null) info.push(['الإحداثيات',`${d.lat.toFixed(4)}, ${d.lon.toFixed(4)}`]);
   info.forEach((m,i)=>{
-    const x=92+(i%2)*520, y=1195+Math.floor(i/2)*82;
-    ctx.fillStyle='rgba(255,255,255,.045)'; roundRect(ctx,x,y,480,62,14); ctx.fill();
-    ctx.textAlign='right'; ctx.font='700 17px Arial'; ctx.fillStyle='#8fb9c3'; ctx.fillText(m[0],x+455,y+25);
-    ctx.font='900 21px Arial'; ctx.fillStyle='#fff'; ctx.fillText(m[1],x+455,y+50);
+    const x=92+(i%2)*520, y=1770+Math.floor(i/2)*55;
+    ctx.fillStyle='rgba(255,255,255,.045)'; roundRect(ctx,x,y,480,45,12); ctx.fill();
+    ctx.textAlign='right'; ctx.font='700 15px Arial'; ctx.fillStyle='#8fb9c3'; ctx.fillText(m[0],x+455,y+20);
+    ctx.font='900 18px Arial'; ctx.fillStyle='#fff'; ctx.fillText(m[1],x+455,y+39);
   });
 
-  // Travel status.
-  roundRect(ctx,58,1450,W-116,105,24);
-  ctx.fillStyle='rgba(15,118,110,.13)'; ctx.fill();
-  ctx.strokeStyle='rgba(45,212,191,.18)'; ctx.stroke();
-  ctx.textAlign='right'; ctx.fillStyle='#99f6e4'; ctx.font='900 22px Arial';
-  ctx.fillText('التنقل',W-86,1487);
-  const commute = document.getElementById('commuteBadge')?.textContent?.trim() || 'حسب حالة الطقس الحالية';
-  ctx.font='800 20px Arial'; ctx.fillStyle='#d1fae5'; ctx.fillText(commute,W-86,1525);
+  ctx.textAlign='center'; ctx.fillStyle='rgba(226,252,255,.58)'; ctx.font='700 16px Arial';
+  ctx.fillText('بيانات حية • Open-Meteo • تم التحديث حسب وقت إنشاء البطاقة',W/2,1900);
 
-  // Professional footer + developer credit.
-  ctx.textAlign='center'; ctx.fillStyle='rgba(226,252,255,.58)'; ctx.font='700 17px Arial';
-  ctx.fillText('بيانات حية • Open-Meteo • تم التحديث حسب وقت إنشاء البطاقة',W/2,1600);
-
-  roundRect(ctx,245,1620,W-490,58,18);
+  roundRect(ctx,245,1910,W-490,42,14);
   ctx.fillStyle='rgba(94,234,212,.10)'; ctx.fill();
   ctx.strokeStyle='rgba(94,234,212,.30)'; ctx.lineWidth=1.5; ctx.stroke();
-  ctx.fillStyle='#99f6e4'; ctx.font='900 20px Arial';
-  ctx.fillText('تم التطوير بواسطة أحمد المحتسب',W/2,1657);
+  ctx.fillStyle='#99f6e4'; ctx.font='900 17px Arial';
+  ctx.fillText('تم التطوير بواسطة أحمد المحتسب',W/2,1937);
 
-  ctx.fillStyle='rgba(226,252,255,.34)'; ctx.font='600 14px Arial';
-  ctx.fillText(window.location.origin + window.location.pathname,W/2,1702);
   return true;
 }
 
