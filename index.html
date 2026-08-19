@@ -269,7 +269,37 @@
     .section{background:#fff;border:1px solid #edf4f5;border-radius:var(--radius);box-shadow:var(--shadow);margin-top:20px;padding:24px}
     .section h2{margin:0 0 18px;font-size:20px;color:var(--ink)}
     
-    .current-insights-grid {
+    
+    .short-term-change-card{
+      grid-column:1 / -1;
+      background:linear-gradient(145deg,#f8fdff 0%,#eefbfc 100%);
+      border:1px solid rgba(8,123,136,.18);
+      border-radius:20px;
+      padding:20px 22px;
+      box-shadow:0 8px 24px rgba(13,91,105,.06);
+      position:relative;
+      overflow:hidden;
+    }
+    .short-term-change-card::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 10% 0%,rgba(22,184,194,.10),transparent 32%),radial-gradient(circle at 90% 100%,rgba(56,189,248,.08),transparent 34%);pointer-events:none;}
+    .short-term-change-head{position:relative;z-index:1;display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:12px}
+    .short-term-change-title{margin:0;color:#075e68;font-size:17px;font-weight:900;display:flex;align-items:center;gap:9px}
+    .short-term-change-sub{margin:5px 0 0;color:#557481;font-size:12.5px;font-weight:600;line-height:1.6}
+    .change-status-pill{padding:7px 12px;border-radius:999px;font-size:12px;font-weight:900;white-space:nowrap;border:1px solid transparent}
+    .change-status-pill.stable{background:#ecfdf5;color:#047857;border-color:#a7f3d0}
+    .change-status-pill.watch{background:#fffbeb;color:#b45309;border-color:#fde68a}
+    .change-status-pill.alert{background:#fef2f2;color:#b91c1c;border-color:#fecaca}
+    .short-term-change-grid{position:relative;z-index:1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .change-item{background:#fff;border:1px solid rgba(8,123,136,.12);border-radius:15px;padding:13px 14px;min-height:102px;box-shadow:0 4px 12px rgba(13,91,105,.035)}
+    .change-item.minor{border-color:rgba(245,158,11,.18);background:linear-gradient(145deg,#fffdf7,#fff)}
+    .change-item.important{border-color:rgba(239,68,68,.20);background:linear-gradient(145deg,#fff8f8,#fff)}
+    .change-item-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:5px}
+    .change-item-title{font-size:13px;font-weight:900;color:#234c5e}
+    .change-item-time{font-size:11px;color:#6c8190;font-weight:800}
+    .change-item-body{font-size:12.5px;line-height:1.65;color:#405b67;font-weight:600;margin:0}
+    .change-item-value{display:inline-block;margin-top:7px;padding:4px 8px;border-radius:9px;background:#f0fdfd;border:1px solid rgba(22,184,194,.14);color:#075e68;font-size:11.5px;font-weight:900}
+    .short-term-change-footer{position:relative;z-index:1;margin-top:11px;padding:10px 12px;border-radius:12px;background:rgba(8,123,136,.05);border:1px solid rgba(8,123,136,.10);color:#315765;font-size:12px;font-weight:700;line-height:1.65}
+    @media(max-width:768px){.short-term-change-grid{grid-template-columns:1fr}.short-term-change-card{padding:16px}}
+.current-insights-grid {
       display:grid;
       grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);
       gap:16px;
@@ -298,6 +328,15 @@
     }
     .weather-explanation-box h3 { color: var(--teal-dark); font-size: 17px; margin: 0 0 6px; display: flex; align-items: center; gap: 8px; }
     .weather-explanation-content { font-size: 15px; line-height: 1.6; color: #234c5e; font-weight: 600; margin: 0; }
+    .daily-weather-bulletin{display:flex;flex-direction:column;gap:12px}
+    .bulletin-lead{background:linear-gradient(135deg,#f4feff,#eefafa);border:1px solid rgba(22,184,194,.18);border-radius:16px;padding:14px 16px;color:#17475a;font-size:14px;line-height:1.85;font-weight:700}
+    .bulletin-lead strong{color:#087b88}
+    .bulletin-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+    .bulletin-item{background:#fff;border:1px solid #e2eef0;border-radius:14px;padding:11px 12px;box-shadow:0 4px 12px rgba(13,91,105,.035)}
+    .bulletin-label{display:block;color:#6a818d;font-size:11.5px;font-weight:800;margin-bottom:4px}
+    .bulletin-value{display:block;color:#12344a;font-size:14px;font-weight:900}
+    .bulletin-note{background:#f8fbfc;border:1px dashed #cfe3e7;border-radius:14px;padding:11px 13px;font-size:12.5px;color:#486572;line-height:1.75;font-weight:700}
+    @media(max-width:600px){.bulletin-grid{grid-template-columns:1fr 1fr}.bulletin-lead{font-size:13.5px}}
 
     .summary-advice {
       margin-top:12px;
@@ -312,7 +351,10 @@
     }
     .commute-metrics { grid-template-columns:repeat(3,minmax(0,1fr)); }
     .current-insights-grid .weather-explanation-box,
+    .current-insights-grid .short-term-change-card,
     .current-insights-grid .commute-card {
+      width:100%;
+      box-sizing:border-box;
       transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
     }
     .current-insights-grid .weather-explanation-box:hover,
@@ -373,6 +415,13 @@
     .status-moderate { background: #fef3c7; color: #92400e; }
     .status-bad { background: #fee2e2; color: #991b1b; }
     .activity-desc { font-size: 13px; color: #374151; margin: 0; line-height: 1.5; font-weight: 600; }
+    .activity-detail { margin-top: 3px; padding: 10px 11px; border-radius: 12px; background: #f8fafc; border: 1px solid #e5e7eb; }
+    .activity-score-row { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:7px; font-size:11px; color:#64748b; font-weight:800; }
+    .activity-score { font-size:15px; color:#14532d; }
+    .activity-meter { height:6px; background:#e5e7eb; border-radius:99px; overflow:hidden; margin-bottom:8px; }
+    .activity-meter-fill { height:100%; width:0%; border-radius:99px; background:#22c55e; transition:width .35s ease; }
+    .activity-reason { margin:0; font-size:11.5px; line-height:1.65; color:#475569; font-weight:600; }
+    .activity-reason b { color:#334155; }
 
     .commute-card { margin-top: 0; background: linear-gradient(145deg,#fffaf5 0%,#fff8f0 100%); border: 1px solid #fed7aa; border-radius: 18px; padding: 20px; box-shadow: 0 4px 14px rgba(234,88,12,0.06); }
     .commute-header { display: flex; justify-content: space-between; align-items: center; gap:12px; margin-bottom: 12px; }
@@ -648,7 +697,7 @@
     <div class="current-insights-grid">
       <div class="weather-explanation-box">
         <h3 data-i18n="summary_title">🌤️ ملخص حالة الطقس والتنقل</h3>
-        <p class="weather-explanation-content" id="aiText" data-i18n="summary_loading">جاري تحميل ملخص الطقس البسيط...</p>
+        <div class="weather-explanation-content daily-weather-bulletin" id="aiText" data-i18n="summary_loading">جاري تحميل النشرة الجوية اليومية...</div>
 
         <div class="summary-advice" id="summaryAdvice">جارٍ تحليل ظروف التنقل...</div>
       </div>
@@ -670,6 +719,18 @@
           </div>
           <p id="commuteDesc" class="commute-desc">الحالة الجوية سالكة ومناسبة جداً للسفر والتنقل بين المحافظات عبر الحافلات والسيارات الخاصة.</p>
         </div>
+      <div class="short-term-change-card" id="shortTermChangeCard">
+        <div class="short-term-change-head">
+          <div>
+            <h3 class="short-term-change-title">🔎 هل سيتغير الطقس خلال الساعات القادمة؟</h3>
+            <p class="short-term-change-sub">مراقبة دقيقة للساعات القليلة القادمة، مع رصد التغيرات في الحرارة والرياح والهبات والهطول والحالة الجوية، وعدم اعتبار التذبذبات الصغيرة تنبيهًا خطيرًا.</p>
+          </div>
+          <span id="shortTermChangeStatus" class="change-status-pill stable">جاري التحليل...</span>
+        </div>
+        <div id="shortTermChangeGrid" class="short-term-change-grid"></div>
+        <div id="shortTermChangeFooter" class="short-term-change-footer">سيظهر هنا ملخص التغير المتوقع وأفضل تفسير عملي له.</div>
+      </div>
+
 
     </div>
     <div class="mini-outfit-container">
@@ -718,21 +779,25 @@
             <div class="activity-header"><span data-i18n="act_laundry">نشر الغسيل</span><span class="activity-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg></span></div>
             <div id="actLaundryBadge" class="activity-status-badge status-good">ممتاز</div>
             <p id="actLaundryDesc" class="activity-desc">جاري التقييم...</p>
+            <div id="actLaundryDetail" class="activity-detail"></div>
           </div>
           <div class="activity-card">
             <div class="activity-header"><span data-i18n="act_sport">الرياضة الخارجية</span><span class="activity-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="4" r="2"/><path d="M7 21l3-4 2 2v4"/><path d="M12 13l-2-2-4 3"/><path d="M18 10l-4-2-3 3 2 4"/></svg></span></div>
             <div id="actSportBadge" class="activity-status-badge status-good">مناسب</div>
             <p id="actSportDesc" class="activity-desc">جاري التقييم...</p>
+            <div id="actSportDetail" class="activity-detail"></div>
           </div>
           <div class="activity-card">
             <div class="activity-header"><span data-i18n="act_car">غسيل السيارة</span><span class="activity-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg></span></div>
             <div id="actCarBadge" class="activity-status-badge status-good">موصى به</div>
             <p id="actCarDesc" class="activity-desc">جاري التقييم...</p>
+            <div id="actCarDetail" class="activity-detail"></div>
           </div>
           <div class="activity-card">
             <div class="activity-header"><span data-i18n="act_park">الجلوس بالحديقة</span><span class="activity-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22v-9"/><path d="M12 13a7 7 0 0 0 7-7c0-2-1-3-3-3-2 0-3 1-4 3-1-2-2-3-4-3-2 0-3 1-3 3a7 7 0 0 0 7 7z"/></svg></span></div>
             <div id="actParkBadge" class="activity-status-badge status-good">رائع</div>
             <p id="actParkDesc" class="activity-desc">جاري التقييم...</p>
+            <div id="actParkDetail" class="activity-detail"></div>
           </div>
         </div>
 
@@ -941,7 +1006,7 @@ const translations = {
     status_select: "اختر منطقة لعرض حالة الطقس", status_updating: "جاري التحديث...",
     loading_weather: "جارٍ تحميل الطقس...",
     metric_feels: "درجة الحرارة المحسوسة", metric_humidity: "الرطوبة", metric_wind: "سرعة الرياح", metric_wind_dir: "اتجاه الرياح", metric_pressure: "الضغط الجوي", metric_precip: "احتمالية الهطول (اليوم)",
-    summary_title: "🌤️ ملخص حالة الطقس والتنقل", summary_loading: "جاري تحميل ملخص الطقس البسيط...",
+    summary_title: "🌤️ ملخص حالة الطقس والتنقل", short_change_title: "🔎 هل سيتغير الطقس خلال الساعات القادمة؟", short_change_sub: "مراقبة دقيقة للتغيرات القصيرة المدى في الحرارة والرياح والهطول والحالة الجوية.", short_change_loading: "جاري تحليل الساعات القادمة...", summary_loading: "جاري تحميل النشرة الجوية اليومية...",
     hourly_title: "🕐 توقعات الـ 24 ساعة القادمة من الساعة الحالية", hourly_hint: "انقر على أي ساعة من الشريط أعلاه لعرض تقريرها وشرحها المفصل هنا.",
     days_title: "📅 توقعات الأيام القادمة (اسحب للاطلاع)", days_hint: "اختر يوماً من الشريط أعلاه لعرض تقريره المفصل هنا.",
     outfit_title: "توصية الملبس وتناسق الألوان الميداني",
@@ -969,7 +1034,7 @@ const translations = {
     status_select: "Select a location to view weather", status_updating: "Updating...",
     loading_weather: "Loading weather...",
     metric_feels: "Feels Like", metric_humidity: "Humidity", metric_wind: "Wind Speed", metric_wind_dir: "Wind Direction", metric_pressure: "Pressure", metric_precip: "Precip Probability (Today)",
-    summary_title: "🌤️ Weather & Commute Summary", summary_loading: "Loading simple weather summary...",
+    summary_title: "🌤️ Weather & Commute Summary", short_change_title: "🔎 Will the weather change in the next few hours?", short_change_sub: "Close monitoring of short-term changes in temperature, wind, precipitation, and conditions.", short_change_loading: "Analyzing the next few hours...", summary_loading: "Loading simple weather summary...",
     hourly_title: "🕐 Next 24 Hours Forecast", hourly_hint: "Click any hour from above to view detailed breakdown here.",
     days_title: "📅 Upcoming Days Forecast", days_hint: "Select a day from above to view detailed report here.",
     outfit_title: "Outfit & Color Guide",
@@ -997,7 +1062,7 @@ const translations = {
     status_select: "Görüntülemek için bir konum seçin", status_updating: "Güncelleniyor...",
     loading_weather: "Yükleniyor...",
     metric_feels: "Hissedilen", metric_humidity: "Nem", metric_wind: "Rüzgar Hızı", metric_wind_dir: "Rüzgar Yönü", metric_pressure: "Basınç", metric_precip: "Yağış İhtimali (Bugün)",
-    summary_title: "🌤️ Hava Durumu & Ulaşım Özeti", summary_loading: "Özet yükleniyor...",
+    summary_title: "🌤️ Hava Durumu & Ulaşım Özeti", short_change_title: "🔎 Önümüzdeki saatlerde hava değişecek mi?", short_change_sub: "Sıcaklık, rüzgar, yağış ve hava koşullarındaki kısa vadeli değişimleri izler.", short_change_loading: "Önümüzdeki saatler analiz ediliyor...", summary_loading: "Özet yükleniyor...",
     hourly_title: "🕐 Önümüzdeki 24 Saatlik Tahmin", hourly_hint: "Detaylar için yukarıdan bir saat seçin.",
     days_title: "📅 Gelecek Günler Tahmini", days_hint: "Detaylar için yukarıdan bir gün seçin.",
     outfit_title: "Kıyafet ve Renk Rehberi",
@@ -1340,10 +1405,16 @@ function getWeatherIconSVG(code, isDay = 1, customStroke = null) {
 
   let content = "";
   if (code === 0) {
+    // WMO 0 = سماء صافية تماماً
     content = isDay ? sun : moon;
-  } else if (code === 1 || code === 2) {
+  } else if (code === 1) {
+    // WMO 1 = صافي غالباً، وليس غائماً جزئياً
+    content = isDay ? sun : moon;
+  } else if (code === 2) {
+    // WMO 2 = غائم جزئياً فعلياً
     content = isDay ? sunBehindCloud : moonBehindCloud;
   } else if (code === 3) {
+    // WMO 3 = غائم كلياً
     content = cloud;
   } else if (code === 45 || code === 48) {
     content = fogLines;
@@ -1354,7 +1425,8 @@ function getWeatherIconSVG(code, isDay = 1, customStroke = null) {
   } else if ([95, 96, 99].includes(code)) {
     content = cloud + lightning;
   } else {
-    content = isDay ? sunBehindCloud : moonBehindCloud;
+    // لا نستخدم أيقونة غائم جزئياً كحالة افتراضية حتى لا نضلل الزائر.
+    content = isDay ? sun : moon;
   }
 
   return `<svg class="weather-icon-svg weather-animated" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">${content}</svg>`;
@@ -1362,10 +1434,10 @@ function getWeatherIconSVG(code, isDay = 1, customStroke = null) {
 
 function getWmoDescription(code, lang = 'ar', isDay = null) {
   const map = {
-    0: { ar: "صافٍ مشمس", en: "Clear Sky", tr: "Açık" },
-    1: { ar: "غائم جزئياً", en: "Mainly Clear", tr: "Az Bulutlu" },
-    2: { ar: "غائم غائم جزئياً", en: "Partly Cloudy", tr: "Parçalı Bulutlu" },
-    3: { ar: "غائم غائم كلياً", en: "Overcast", tr: "Çok Bulutlu" },
+    0: { ar: "سماء صافية", en: "Clear Sky", tr: "Açık" },
+    1: { ar: "صافي غالباً", en: "Mainly Clear", tr: "Çoğunlukla Açık" },
+    2: { ar: "غائم جزئياً", en: "Partly Cloudy", tr: "Parçalı Bulutlu" },
+    3: { ar: "غائم كلياً", en: "Overcast", tr: "Çok Bulutlu" },
     45: { ar: "ضباب خفيف", en: "Foggy", tr: "Sisli" },
     48: { ar: "ضباب يتساقط منه رذاذ", en: "Depositing Rime Fog", tr: "Yoğun Sis" },
     51: { ar: "رذاذ خفيف", en: "Light Drizzle", tr: "Hafif Çiseleme" },
@@ -1439,46 +1511,72 @@ function updateUI(current, hourly, daily) {
   
   updateTodayChart();
   updateDaysChart();
+  updateShortTermChangeMonitor(current, hourly);
   
-  // ملخص الذكاء المبسط
+  // نشرة جوية يومية مفصلة
   const gust = current.wind_gusts_10m ?? current.wind_speed_10m;
   const popToday = daily.precipitation_probability_max ? daily.precipitation_probability_max[0] : 0;
+  const tempNow = Math.round(current.temperature_2m);
+  const feelsNow = Math.round(current.apparent_temperature);
+  const todayMax = daily.temperature_2m_max?.[0] != null ? Math.round(daily.temperature_2m_max[0]) : tempNow;
+  const todayMin = daily.temperature_2m_min?.[0] != null ? Math.round(daily.temperature_2m_min[0]) : tempNow;
+  const todayFeelsMax = daily.apparent_temperature_max?.[0] != null ? Math.round(daily.apparent_temperature_max[0]) : todayMax;
+  const todayFeelsMin = daily.apparent_temperature_min?.[0] != null ? Math.round(daily.apparent_temperature_min[0]) : todayMin;
+  const humidityNow = Math.round(current.relative_humidity_2m);
+  const pressureNow = Math.round(current.surface_pressure);
+  const precipitationNow = Number(current.precipitation || 0).toFixed(1);
+  const rainToday = Number(daily.rain_sum?.[0] || 0).toFixed(1);
+  const snowToday = Number(daily.snowfall_sum?.[0] || 0).toFixed(1);
+  const maxWindToday = daily.wind_speed_10m_max?.[0] != null ? Math.round(daily.wind_speed_10m_max[0]) : Math.round(current.wind_speed_10m);
+  const maxGustToday = daily.wind_gusts_10m_max?.[0] != null ? Math.round(daily.wind_gusts_10m_max[0]) : Math.round(gust);
+  const placeName = document.getElementById("placeName")?.textContent || "المنطقة";
+  const todayCondition = getWmoDescription(daily.weather_code?.[0] ?? current.weather_code, currentLang, 1);
 
-  let aiSummary = `الأجواء حالياً ${condText}، والطقس في ${document.getElementById("placeName").textContent} يبدو `;
-  if (current.temperature_2m >= 30) {
-    aiSummary += "دافئاً إلى حار، لذلك يُفضّل اختيار ملابس خفيفة وتجنب التعرض الطويل للشمس، خصوصاً في ساعات الذروة. ";
-  } else if (current.temperature_2m >= 20) {
-    aiSummary += "معتدلاً ومريحاً بشكل عام، مع أجواء مناسبة لمعظم النشاطات اليومية. ";
-  } else if (current.temperature_2m >= 12) {
-    aiSummary += "لطيفاً يميل إلى البرودة، ويُنصح بطبقة خفيفة عند الخروج لفترات طويلة. ";
-  } else {
-    aiSummary += "بارداً، ومن الأفضل ارتداء ملابس دافئة عند الخروج. ";
-  }
+  let thermalText = "";
+  if (todayMax >= 38) thermalText = "النهار شديد الحرارة، وتزداد وطأة الأجواء خلال ساعات الذروة؛ يُفضّل تقليل التعرض المباشر للشمس وتأجيل المجهود الخارجي الطويل.";
+  else if (todayMax >= 32) thermalText = "النهار حار، وتصبح الأجواء أكثر إجهاداً في منتصف النهار؛ يُستحسن اختيار ملابس خفيفة وشرب الماء بانتظام.";
+  else if (todayMax >= 24) thermalText = "الحرارة نهاراً معتدلة إلى دافئة، وتبقى مناسبة لمعظم الأعمال الخارجية مع مراعاة وقت التعرض للشمس.";
+  else if (todayMax >= 16) thermalText = "الأجواء نهاراً لطيفة إلى معتدلة، مع ميل للبرودة صباحاً ومساءً؛ طبقة خفيفة قد تكون مناسبة عند الخروج لفترات طويلة.";
+  else thermalText = "الأجواء باردة نسبياً خلال اليوم، ويُنصح بملابس دافئة وخصوصاً في ساعات الصباح والمساء.";
 
-  if (gust > 40) {
-    aiSummary += "الرياح نشطة جداً والهبات قوية، لذلك يُنصح بالحذر أثناء القيادة وعلى الطرق المفتوحة، مع احتمال إثارة الغبار. ";
-  } else if (gust > 30) {
-    aiSummary += "الرياح نشطة نسبياً والهبات قد تكون ملحوظة، لذلك يفضّل الانتباه أثناء التنقل، خاصة على الطرق الصحراوية والمكشوفة. ";
-  } else if (current.wind_speed_10m > 20) {
-    aiSummary += "هناك نشاط ملحوظ في حركة الرياح، لكنه لا يبدو عائقاً كبيراً للتنقل في الظروف الحالية. ";
-  } else {
-    aiSummary += "الرياح هادئة إلى خفيفة، ولا توجد مؤشرات على تأثير كبير لها على التنقل حالياً. ";
-  }
+  let windText = "";
+  if (maxGustToday >= 55 || current.wind_speed_10m >= 45) windText = "الرياح نشطة جداً، وقد تؤثر في القيادة على الطرق المفتوحة والمكشوفة، مع احتمال إثارة الغبار وانخفاض مستوى الراحة خارج المركبة.";
+  else if (maxGustToday >= 40 || current.wind_speed_10m >= 30) windText = "الرياح نشطة إلى قوية أحياناً، لذلك يُنصح بالانتباه عند القيادة، خصوصاً على الطرق الصحراوية والمقاطع المكشوفة.";
+  else if (current.wind_speed_10m >= 20) windText = "الرياح ملحوظة، لكنها لا تبدو عائقاً رئيسياً في الظروف الحالية، مع بقاء الانتباه مطلوباً على الطرق المفتوحة.";
+  else windText = "الرياح خفيفة إلى معتدلة، ولا تظهر مؤشرات على تأثير كبير لها في التنقل أو الأنشطة الخارجية.";
 
-  if (popToday > 60) {
-    aiSummary += "كما أن فرص الهطول مرتفعة اليوم، لذا من الأفضل أخذ احتمال المطر بالحسبان عند التخطيط للخروج.";
-  } else if (popToday > 30) {
-    aiSummary += "وتوجد فرصة لهطول متفرقة، لذلك يُفضّل متابعة تغير الحالة الجوية قبل التنقل.";
-  } else {
-    aiSummary += "ولا توجد حالياً مؤشرات قوية على هطول مؤثر خلال اليوم.";
-  }
+  let rainText = "";
+  if (popToday >= 70) rainText = "فرصة الهطول مرتفعة اليوم، لذلك يُفضّل أخذ احتمال المطر بالحسبان عند ترتيب الرحلات والأنشطة الخارجية.";
+  else if (popToday >= 40) rainText = "هناك فرصة ملحوظة للهطول، وقد تظهر زخات متفرقة؛ من الأفضل متابعة التوقعات الساعية قبل الخروج.";
+  else if (popToday >= 15) rainText = "فرصة الهطول محدودة إلى متوسطة، ولا توجد مؤشرات حالياً على أمطار واسعة الانتشار.";
+  else rainText = "فرصة الهطول منخفضة جداً، ولا توجد مؤشرات قوية على مطر مؤثر خلال اليوم.";
 
-  document.getElementById("aiText").textContent = aiSummary;
+  const travelText = (maxGustToday >= 55 || current.wind_speed_10m >= 45)
+    ? "للتنقل: يُنصح بالقيادة بحذر إضافي، خصوصاً على الطريق الصحراوي، مع الانتباه للرياح الجانبية واحتمال الغبار."
+    : (maxGustToday >= 40 || current.wind_speed_10m >= 30)
+      ? "للتنقل: الطريق مناسب إجمالاً، لكن الرياح والهبات قد تكون ملحوظة على المقاطع المفتوحة؛ خفّف السرعة عند الحاجة."
+      : (popToday >= 50)
+        ? "للتنقل: الظروف مقبولة عموماً، لكن يُفضّل مراقبة تغيرات الهطول قبل الرحلات الطويلة."
+        : "للتنقل: لا تظهر حالياً مؤشرات جوية قوية تعيق الحركة، مع استمرار متابعة أي تغير مفاجئ في الرياح أو الهطول.";
 
-  let advice = "ظروف التنقل تبدو مستقرة بشكل عام، مع الاستمرار في متابعة تغيرات الرياح والطقس.";
-  if (gust > 40) advice = "⚠️ يُنصح بالحذر أثناء التنقل بسبب قوة الهبات واحتمال الغبار على الطرق المكشوفة.";
-  else if (gust > 30) advice = "تنبيه للتنقل: الرياح والهبات نشطة نسبياً، خصوصاً على الطرق المفتوحة.";
-  else if (popToday > 50) advice = "🌧️ يُفضّل الانتباه لاحتمال الهطول عند التخطيط للتنقل.";
+  const morningEvening = (todayMin <= 12)
+    ? "توقّع أجواء أبرد في الصباح والمساء مقارنة بمنتصف النهار."
+    : (todayMin <= 18)
+      ? "الصباح والمساء ألطف وأبرد من ساعات النهار، خصوصاً في الأماكن المفتوحة."
+      : "الفارق الحراري بين ساعات اليوم أقل حدة، مع أجواء أكثر استقراراً خلال الفترة المسائية.";
+
+  const bulletinHtml = `
+    <div class="bulletin-lead">
+      <strong>النشرة الجوية اليومية في ${placeName}:</strong>
+      الأجواء الحالية <strong>${condText}</strong>، والحالة العامة لليوم تميل إلى ${todayCondition}، مع تغيرات متوقعة بين فترات النهار والمساء.
+      ${thermalText} ${morningEvening}
+    </div>
+    <div class="bulletin-note"><strong>تفسير الحالة:</strong> ${windText} ${rainText} ${travelText}</div>
+  `;
+
+  document.getElementById("aiText").innerHTML = bulletinHtml;
+
+  let advice = travelText;
   document.getElementById("summaryAdvice").textContent = advice;
 
   const commuteGust = document.getElementById("commuteGust");
@@ -1563,53 +1661,108 @@ function updateMeteoAlerts(current, daily) {
 }
 
 function evaluateActivities(current, hourly) {
-  const temp = current.temperature_2m;
-  const wind = current.wind_speed_10m;
-  const pop = hourly.precipitation_probability ? hourly.precipitation_probability[0] : 0;
+  // تقييم تفصيلي يعتمد على بيانات الطقس الحية: الحرارة، الحرارة المحسوسة، الرطوبة، الرياح، الهبات، واحتمال الهطول.
+  const temp = Number(current.temperature_2m ?? 0);
+  const feels = Number(current.apparent_temperature ?? temp);
+  const humidity = Number(current.relative_humidity_2m ?? 50);
+  const wind = Number(current.wind_speed_10m ?? 0);
+  const gust = Number(current.wind_gusts_10m ?? wind);
+  const pop = Number(hourly?.precipitation_probability?.[0] ?? 0);
+  const rain = Number(current.precipitation ?? 0);
 
-  // نشر الغسيل
-  const lBadge = document.getElementById("actLaundryBadge");
-  const lDesc = document.getElementById("actLaundryDesc");
-  if (pop < 20 && wind < 30 && temp > 12) {
-    lBadge.className = "activity-status-badge status-good"; lBadge.textContent = "ممتاز";
-    lDesc.textContent = "أجواء جافة ومناسبة لتجفيف الملابس بسرعة.";
-  } else {
-    lBadge.className = "activity-status-badge status-bad"; lBadge.textContent = "غير موصى به";
-    lDesc.textContent = "احتمال أمطار أو غبار قد يؤثر على الملابس.";
-  }
+  const setActivity = (badgeId, descId, detailId, score, label, state, desc, reasons) => {
+    const badge = document.getElementById(badgeId);
+    const descEl = document.getElementById(descId);
+    const detail = document.getElementById(detailId);
+    if (!badge || !descEl || !detail) return;
+    badge.className = `activity-status-badge ${state}`;
+    badge.textContent = label;
+    descEl.textContent = desc;
+    const safeScore = Math.max(0, Math.min(100, Math.round(score)));
+    detail.innerHTML = `
+      <div class="activity-score-row"><span>درجة الملاءمة</span><span class="activity-score">${safeScore}%</span></div>
+      <div class="activity-meter"><div class="activity-meter-fill" style="width:${safeScore}%"></div></div>
+      <p class="activity-reason">${reasons.map(r => `<span>• ${r}</span>`).join('<br>')}</p>`;
+  };
 
-  // الرياضة
-  const sBadge = document.getElementById("actSportBadge");
-  const sDesc = document.getElementById("actSportDesc");
-  if (temp >= 10 && temp <= 28 && wind < 25) {
-    sBadge.className = "activity-status-badge status-good"; sBadge.textContent = "مناسب جداً";
-    sDesc.textContent = "حرارة ومعطيات جوية مثالية للمشي أو الجري الخارجية.";
-  } else {
-    sBadge.className = "activity-status-badge status-moderate"; sBadge.textContent = "مقبول بحذر";
-    sDesc.textContent = "توخَّ الحذر بسبب برودة/حرارة الجو أو حركة الرياح.";
-  }
+  const tier = score => score >= 85 ? ['ممتاز', 'status-good'] : score >= 65 ? ['مناسب', 'status-good'] : score >= 45 ? ['مقبول بحذر', 'status-moderate'] : ['غير موصى به', 'status-bad'];
 
-  // غسيل السيارة
-  const cBadge = document.getElementById("actCarBadge");
-  const cDesc = document.getElementById("actCarDesc");
-  if (pop < 15 && wind < 25) {
-    cBadge.className = "activity-status-badge status-good"; cBadge.textContent = "موصى به";
-    cDesc.textContent = "الفرصة ممتازة للحفاظ على نظافة السيارة.";
-  } else {
-    cBadge.className = "activity-status-badge status-bad"; cBadge.textContent = "تأجيل أفضل";
-    cDesc.textContent = "احتمال أمطار أو غبار قد يوسخ السيارة.";
-  }
+  // 1) نشر الغسيل: الرطوبة والهطول أهم عاملين، ثم الحرارة والرياح.
+  let laundry = 100;
+  laundry -= Math.min(pop * 1.35, 70);
+  laundry -= Math.max(0, humidity - 55) * 0.55;
+  laundry -= Math.max(0, wind - 28) * 0.7;
+  if (temp < 12) laundry -= (12 - temp) * 2.5;
+  if (rain > 0.1) laundry -= 20;
+  if (temp >= 18 && temp <= 30 && humidity <= 60 && wind >= 8 && wind <= 25 && pop < 15) laundry += 6;
+  laundry = Math.max(0, Math.min(100, laundry));
+  const [lb, ls] = tier(laundry);
+  const lReasons = [
+    `<b>الهطول:</b> ${Math.round(pop)}% احتمال خلال الساعة الحالية`,
+    `<b>الرطوبة:</b> ${Math.round(humidity)}% — ${humidity <= 60 ? 'مناسبة نسبيًا للتجفيف' : 'مرتفعة وقد تبطئ التجفيف'}`,
+    `<b>الرياح:</b> ${Math.round(wind)} كم/س — ${wind >= 8 && wind <= 28 ? 'تساعد على التهوية' : wind > 28 ? 'قوية وقد تحرك الملابس/تنشر الغبار' : 'خفيفة وقد تبطئ التجفيف'}`,
+    `<b>القرار:</b> ${pop >= 50 ? 'الأفضل تأجيل النشر' : humidity > 75 ? 'التجفيف قد يكون بطيئًا' : 'الظروف مناسبة نسبيًا'}`
+  ];
+  setActivity('actLaundryBadge','actLaundryDesc','actLaundryDetail',laundry,lb,ls,
+    laundry >= 85 ? 'وقت ممتاز للنشر والتجفيف الخارجي.' : laundry >= 65 ? 'يمكن النشر، لكن سرعة التجفيف تعتمد على الرطوبة والرياح.' : 'الأفضل الانتظار لتقليل احتمال البلل أو بطء التجفيف.', lReasons);
 
-  // الجلوس بالحديقة
-  const pBadge = document.getElementById("actParkBadge");
-  const pDesc = document.getElementById("actParkDesc");
-  if (temp >= 15 && temp <= 29 && wind < 20 && pop < 20) {
-    pBadge.className = "activity-status-badge status-good"; pBadge.textContent = "رائع جداً";
-    pDesc.textContent = "أجواء دافئة ولطيفة للجلسات الخارجية.";
-  } else {
-    pBadge.className = "activity-status-badge status-moderate"; pBadge.textContent = "متوسط";
-    pDesc.textContent = "ارتدِ ملابس مناسبة لحماية نفسك من الرياح أو البرودة.";
-  }
+  // 2) الرياضة: نطاق حراري مريح + تقليل تأثير الرياح والهطول. لا ندّعي تقييم UV لأنه غير مستخدم هنا.
+  let sport = 100;
+  if (temp < 10) sport -= (10 - temp) * 4;
+  else if (temp < 16) sport -= (16 - temp) * 2;
+  else if (temp > 24) sport -= (temp - 24) * 3;
+  if (temp > 32) sport -= (temp - 32) * 5;
+  sport -= Math.max(0, wind - 18) * 1.5;
+  sport -= Math.max(0, gust - 30) * 0.8;
+  sport -= Math.max(0, pop - 15) * 0.9;
+  if (rain > 0.1) sport -= 20;
+  sport = Math.max(0, Math.min(100, sport));
+  const [sb, ss] = tier(sport);
+  const sReasons = [
+    `<b>الحرارة:</b> ${Math.round(temp)}°م (محسوسة ${Math.round(feels)}°م) — ${temp >= 16 && temp <= 28 ? 'ضمن نطاق جيد للنشاط الخفيف/المتوسط' : temp < 16 ? 'باردة نسبيًا وتحتاج إحماء وملابس مناسبة' : 'مرتفعة وتزيد إجهاد النشاط'}`,
+    `<b>الرياح:</b> ${Math.round(wind)} كم/س، الهبات ${Math.round(gust)} كم/س`,
+    `<b>الهطول:</b> ${Math.round(pop)}% — ${pop < 20 ? 'تأثير محدود حاليًا' : 'قد يعيق النشاط الخارجي'}`,
+    `<b>النصيحة:</b> ${sport >= 85 ? 'مناسب للمشي أو الجري المعتدل' : sport >= 65 ? 'خفف شدة التمرين وراقب تغير الجو' : 'يفضل نشاط داخلي أو تأجيل التمرين الخارجي'}`
+  ];
+  setActivity('actSportBadge','actSportDesc','actSportDetail',sport,sb,ss,
+    sport >= 85 ? 'الظروف الحالية مناسبة جدًا للنشاط الخارجي المعتدل.' : sport >= 65 ? 'يمكن ممارسة الرياضة مع تعديل الشدة وفق الظروف.' : 'الظروف الحالية ليست مثالية للرياضة الخارجية.', sReasons);
+
+  // 3) غسيل السيارة: الهطول بعد الغسيل هو العامل الأهم، ثم الرياح التي قد تحمل الأتربة.
+  let car = 100;
+  car -= Math.min(pop * 2.0, 80);
+  car -= Math.max(0, wind - 18) * 1.4;
+  car -= Math.max(0, gust - 32) * 0.7;
+  if (rain > 0.05) car -= 25;
+  if (temp > 35) car -= 10;
+  car = Math.max(0, Math.min(100, car));
+  const [cb, cs] = tier(car);
+  const cReasons = [
+    `<b>الأمطار:</b> ${Math.round(pop)}% احتمال — ${pop < 15 ? 'مخاطرة منخفضة بعد الغسيل' : 'قد تعيد الاتساخ بعد الغسيل'}`,
+    `<b>الرياح:</b> ${Math.round(wind)} كم/س، الهبات ${Math.round(gust)} كم/س — ${wind < 20 ? 'مناسبة' : 'قد تحمل الغبار والأتربة'}`,
+    `<b>الهطول الحالي:</b> ${rain.toFixed(1)} مم`,
+    `<b>القرار:</b> ${car >= 85 ? 'وقت جيد للغسيل' : car >= 65 ? 'ممكن، لكن راقب تغيرات المطر والرياح' : 'الأفضل تأجيل الغسيل'}`
+  ];
+  setActivity('actCarBadge','actCarDesc','actCarDetail',car,cb,cs,
+    car >= 85 ? 'فرصة جيدة لغسيل السيارة مع احتمال منخفض لإفساد النتيجة.' : car >= 65 ? 'يمكن الغسيل لكن توجد عوامل قد تقلل فائدته.' : 'تأجيل الغسيل أفضل لتجنب المطر أو الأتربة بعده.', cReasons);
+
+  // 4) الجلوس في الحديقة: راحة حرارية + رياح + هطول.
+  let park = 100;
+  if (temp < 15) park -= (15 - temp) * 3.5;
+  if (temp > 30) park -= (temp - 30) * 3.5;
+  park -= Math.max(0, wind - 15) * 2.0;
+  park -= Math.max(0, gust - 28) * 0.8;
+  park -= Math.max(0, pop - 15) * 1.2;
+  if (rain > 0.05) park -= 25;
+  park = Math.max(0, Math.min(100, park));
+  const [pb, ps] = tier(park);
+  const pReasons = [
+    `<b>الحرارة:</b> ${Math.round(temp)}°م (محسوسة ${Math.round(feels)}°م) — ${temp >= 17 && temp <= 29 ? 'مريحة غالبًا للجلوس الخارجي' : temp < 17 ? 'قد تشعر بالبرودة' : 'قد يكون الجو حارًا'}`,
+    `<b>الرياح:</b> ${Math.round(wind)} كم/س، الهبات ${Math.round(gust)} كم/س`,
+    `<b>الهطول:</b> ${Math.round(pop)}% — ${pop < 20 ? 'احتمال منخفض' : 'احتمال مرتفع نسبيًا'}`,
+    `<b>النصيحة:</b> ${park >= 85 ? 'مناسب لجلسة مريحة في الخارج' : park >= 65 ? 'جلسة قصيرة مع تجهيز مناسب أفضل' : 'يفضل مكان مغلق أو تأجيل الجلسة'}`
+  ];
+  setActivity('actParkBadge','actParkDesc','actParkDetail',park,pb,ps,
+    park >= 85 ? 'أجواء ممتازة لجلسة خارجية مريحة.' : park >= 65 ? 'الجلوس ممكن لكن الراحة قد تتأثر بأحد العوامل الجوية.' : 'الظروف الحالية غير مريحة نسبيًا للجلوس في الخارج.', pReasons);
 
   // حالة الطريق الصحراوي
   const commBadge = document.getElementById("commuteBadge");
@@ -1633,6 +1786,132 @@ function evaluateActivities(current, hourly) {
     commVis.textContent = "ممتازة (بدون ضباب/غبار)";
     commWind.textContent = `رياح ${Math.round(wind)} كم/س | هبات ${Math.round(currentGust)} كم/س`;
     commDesc.textContent = "الحالة الجوية مستقرة ومناسبة للتنقل، مع استمرار المتابعة لأي تغيرات في الرياح أو الهطول.";
+  }
+}
+
+
+function formatForecastHour(iso){
+  try{
+    return new Date(iso).toLocaleTimeString(currentLang==='ar'?'ar-JO':currentLang==='tr'?'tr-TR':'en-US',{hour:'2-digit',minute:'2-digit',hour12:true});
+  }catch(e){ return ''; }
+}
+
+function updateShortTermChangeMonitor(current, hourly){
+  const grid=document.getElementById('shortTermChangeGrid');
+  const status=document.getElementById('shortTermChangeStatus');
+  const footer=document.getElementById('shortTermChangeFooter');
+  if(!grid || !status || !footer || !current || !hourly?.time?.length) return;
+
+  const now=Date.now();
+  let start=hourly.time.findIndex(t=>new Date(t).getTime()>=now-30*60*1000);
+  if(start<0) start=0;
+  const end=Math.min(start+6,hourly.time.length); // نافذة قريبة: حتى 6 ساعات
+  const idxs=[];
+  for(let i=start;i<end;i++) idxs.push(i);
+  if(idxs.length<2) return;
+
+  const num=(arr,i,fb=null)=>Number.isFinite(Number(arr?.[i]))?Number(arr[i]):fb;
+  const cur={
+    temp:Number(current.temperature_2m),
+    feels:Number(current.apparent_temperature),
+    wind:Number(current.wind_speed_10m),
+    gust:Number(current.wind_gusts_10m ?? current.wind_speed_10m),
+    pop:0,
+    humidity:Number(current.relative_humidity_2m),
+    pressure:Number(current.surface_pressure),
+    precip:Number(current.precipitation||0),
+    rain:Number(current.rain||0),
+    showers:Number(current.showers||0),
+    snow:Number(current.snowfall||0),
+    code:Number(current.weather_code),
+    isDay:Number(current.is_day)
+  };
+
+  const rows=idxs.map(i=>({
+    i,time:hourly.time[i],
+    temp:num(hourly.temperature_2m,i,cur.temp), feels:num(hourly.apparent_temperature,i,cur.feels),
+    humidity:num(hourly.relative_humidity_2m,i,cur.humidity), pressure:num(hourly.surface_pressure,i,cur.pressure),
+    wind:num(hourly.wind_speed_10m,i,cur.wind), gust:num(hourly.wind_gusts_10m,i,cur.gust),
+    pop:num(hourly.precipitation_probability,i,0), precip:num(hourly.precipitation,i,0),
+    rain:num(hourly.rain,i,0), showers:num(hourly.showers,i,0), snow:num(hourly.snowfall,i,0),
+    code:num(hourly.weather_code,i,cur.code), isDay:num(hourly.is_day,i,cur.isDay)
+  }));
+
+  const future=rows.slice(1);
+  const maxAbs=(key)=>future.reduce((m,r)=>Math.max(m,Math.abs(r[key]-cur[key])),0);
+  const maxVal=(key)=>future.reduce((m,r)=>r[key]>m[key]?r:m,future[0]);
+  const minVal=(key)=>future.reduce((m,r)=>r[key]<m[key]?r:m,future[0]);
+  const firstMeaningful=(predicate)=>future.find(predicate);
+  const tempDelta=maxAbs('temp'), feelsDelta=maxAbs('feels'), humidityDelta=maxAbs('humidity'), pressureDelta=maxAbs('pressure'), windDelta=maxAbs('wind'), gustDelta=maxAbs('gust'), popMax=future.reduce((m,r)=>Math.max(m,r.pop),cur.pop);
+  const peakWind=maxVal('wind'), peakGust=maxVal('gust');
+  const maxTemp=maxVal('temp'), minTemp=minVal('temp');
+  const currentPop=cur.pop;
+
+  const items=[];
+  // Temperature: report even small but consistent movement; don't call a 0.5°C wobble an alert.
+  if(tempDelta>=1.0){
+    const target=(maxTemp.temp-cur.temp)>=0?maxTemp:minTemp;
+    const dir=target.temp>=cur.temp?'ارتفاع':'انخفاض';
+    items.push({cls:Math.abs(target.temp-cur.temp)>=2?'important':'minor',icon:'🌡️',title:'الحرارة',time:formatForecastHour(target.time),body:`يُتوقع ${dir} تدريجي في الحرارة مقارنة بالوقت الحالي. ${target.temp>=cur.temp?'قد تصبح الأجواء أدفأ قليلًا مع مرور الساعات.':'قد تصبح الأجواء ألطف/أبرد تدريجيًا.'}`,value:`الفرق التقريبي ${target.temp>=cur.temp?'+':''}${Math.round((target.temp-cur.temp)*10)/10}°م`});
+  } else {
+    items.push({cls:'',icon:'🌡️',title:'الحرارة',time:'خلال الساعات القريبة',body:'لا يظهر تغير حراري واضح وذي معنى في الساعات القليلة القادمة؛ التذبذب المتوقع محدود.',value:'تغير طفيف'});
+  }
+
+  // Wind: very important for user's use case. Detect ramp-up from calm, direction excluded.
+  const windIncrease=peakWind.wind-cur.wind, gustIncrease=peakGust.gust-cur.gust;
+  const windOnset=firstMeaningful(r=>r.wind>=Math.max(15,cur.wind+5) || r.gust>=Math.max(20,cur.gust+8));
+  if(windIncrease>=5 || gustIncrease>=8 || (cur.wind<10 && peakWind.wind>=15)){
+    const startWind=windOnset || peakWind;
+    items.push({cls:(windIncrease>=10||gustIncrease>=15)?'important':'minor',icon:'💨',title:'نشاط الرياح',time:formatForecastHour(startWind.time),body:`الرياح تبدو أهدأ الآن، لكن يُتوقع ازدياد نشاطها لاحقًا. ${windIncrease>=10?'الزيادة ملحوظة وقد تصبح مؤثرة في الأماكن المفتوحة.':'الزيادة محدودة لكنها تستحق الملاحظة.'}`,value:`الرياح قد تصل إلى نحو ${Math.round(peakWind.wind)} كم/س، والهبات ${Math.round(peakGust.gust)} كم/س`});
+  } else {
+    items.push({cls:'',icon:'💨',title:'الرياح',time:'خلال الساعات القريبة',body:'لا توجد إشارة واضحة إلى تصاعد مؤثر في سرعة الرياح أو الهبات خلال النافذة القريبة.',value:`حالياً نحو ${Math.round(cur.wind)} كم/س`});
+  }
+
+  // Precipitation: detect onset by probability, then actual precipitation variables.
+  const rainOnset=firstMeaningful(r=>r.pop>=30 || r.precip>0 || r.rain>0 || r.showers>0 || r.snow>0);
+  if(rainOnset || popMax>=30){
+    const increase=Math.max(0,popMax-currentPop);
+    items.push({cls:(popMax>=60||rainOnset?.precip>0||rainOnset?.rain>0||rainOnset?.showers>0||rainOnset?.snow>0)?'important':'minor',icon:'🌧️',title:'الهطول',time:formatForecastHour((rainOnset||peakWind).time),body:`توجد إشارة ${increase>20?'متزايدة ':''}لاحتمال هطول خلال الساعات القادمة، لذلك من الأفضل مراقبة الساعات التالية قبل الأنشطة الخارجية.`,value:`أعلى احتمال متوقع ضمن النافذة: ${Math.round(popMax)}%`});
+  } else {
+    items.push({cls:'',icon:'🌧️',title:'الهطول',time:'خلال الساعات القريبة',body:'لا تظهر إشارة موثوقة لهطول مؤثر خلال الساعات القريبة؛ لا يوجد سبب حالي لتغيير الخطط بسبب المطر.',value:`احتمال منخفض`});
+  }
+
+  // Humidity / pressure: show small but persistent changes as a low-priority note.
+  if(humidityDelta>=5 || pressureDelta>=2){
+    const hTarget=maxVal('humidity');
+    const pTarget=maxVal('pressure');
+    const hChange=Math.abs(hTarget.humidity-cur.humidity)>=5 ? `الرطوبة قد تتغير بنحو ${Math.round(hTarget.humidity-cur.humidity)} نقطة مئوية` : 'تغير محدود في الرطوبة';
+    const pChange=Math.abs(pTarget.pressure-cur.pressure)>=2 ? `والضغط قد يتحرك بنحو ${Math.round(pTarget.pressure-cur.pressure)} hPa` : 'الضغط يتغير بشكل محدود';
+    items.push({cls:'minor',icon:'💧',title:'الرطوبة والضغط',time:formatForecastHour(hTarget.time),body:`${hChange} خلال الساعات القادمة، و${pChange}. هذه تغيرات دقيقة للمراقبة وليست إنذارًا بحد ذاتها.`,value:`حالياً رطوبة ${Math.round(cur.humidity)}% • ضغط ${Math.round(cur.pressure)} hPa`});
+  }
+
+  // Weather-code transition: only show when the actual WMO category changes to a meaningfully different state.
+  const codeChange=firstMeaningful(r=>r.code!==cur.code);
+  if(codeChange){
+    const before=getWmoDescription(cur.code,currentLang,cur.isDay);
+    const after=getWmoDescription(codeChange.code,currentLang,codeChange.isDay);
+    const significant=(codeChange.code===0||codeChange.code===1||codeChange.code===2||codeChange.code===3||[45,48,51,53,55,61,63,65,71,73,75,80,81,82,95,96,99].includes(codeChange.code));
+    if(significant && before!==after){
+      items.push({cls:([61,63,65,80,81,82,95,96,99,71,73,75].includes(codeChange.code))?'important':'minor',icon:'☁️',title:'الحالة الجوية',time:formatForecastHour(codeChange.time),body:`توجد إشارة إلى انتقال الحالة من «${before}» إلى «${after}». هذا يعني أن شكل الطقس قد يتغير حتى لو بقيت الحرارة متقاربة.`,value:`تغير متوقع قرب ${formatForecastHour(codeChange.time)}`});
+    }
+  }
+
+  const important=items.some(x=>x.cls==='important');
+  const minor=items.some(x=>x.cls==='minor');
+  status.className='change-status-pill '+(important?'alert':minor?'watch':'stable');
+  status.textContent=important?'⚠️ تغيّر محتمل يستحق المتابعة':minor?'🟡 توجد تغيرات طفيفة يمكن ملاحظتها':'🟢 لا يوجد تغير مؤثر قريباً';
+  grid.innerHTML=items.slice(0,4).map(x=>`<div class="change-item ${x.cls}"><div class="change-item-head"><span class="change-item-title">${x.icon} ${x.title}</span><span class="change-item-time">${x.time}</span></div><p class="change-item-body">${x.body}</p><span class="change-item-value">${x.value}</span></div>`).join('');
+
+  if(important){
+    const msgs=[];
+    if(windIncrease>=5 || gustIncrease>=8) msgs.push('الرياح هي أبرز عنصر يستحق المتابعة خلال الساعات القادمة.');
+    if(popMax>=30) msgs.push('يوجد احتمال هطول يحتاج إلى مراقبة قبل الأنشطة الخارجية.');
+    if(tempDelta>=2) msgs.push('كما توجد حركة حرارية ملحوظة نسبيًا.');
+    footer.textContent='النصيحة: '+msgs.join(' ')+ ' هذه قراءة قصيرة المدى من التوقعات الساعية، وليست ضمانًا لحدوث التغير.';
+  }else if(minor){
+    footer.textContent='ملاحظة: توجد تغيرات صغيرة أو تدريجية في بعض العناصر، لكنها لا تبدو كافية وحدها لتغيير خططك حالياً. تابع الشريط الساعي عند اقتراب وقت الخروج.';
+  }else{
+    footer.textContent='الخلاصة: التوقعات القريبة مستقرة نسبيًا، ولا يظهر تغير واضح يستدعي تعديل الخطط في الساعات القليلة القادمة.';
   }
 }
 
@@ -1981,7 +2260,7 @@ function drawWeatherShareCard() {
 
   // ارتفاع أكبر لإضافة الرسم البياني بشكل واضح داخل الصورة.
   canvas.width = 1200;
-  canvas.height = 1960;
+  canvas.height = 1700;
 
   const ctx = canvas.getContext('2d');
   const W = canvas.width, H = canvas.height;
@@ -2002,7 +2281,7 @@ function drawWeatherShareCard() {
   glow1.addColorStop(1, 'rgba(45,212,191,0)');
   ctx.fillStyle=glow1; ctx.fillRect(0,0,W,H);
 
-  const glow2 = ctx.createRadialGradient(160,1510,20,160,1510,430);
+  const glow2 = ctx.createRadialGradient(160,1280,20,160,1280,430);
   glow2.addColorStop(0,'rgba(56,189,248,.10)');
   glow2.addColorStop(1,'rgba(56,189,248,0)');
   ctx.fillStyle=glow2; ctx.fillRect(0,0,W,H);
@@ -2094,18 +2373,18 @@ function drawWeatherShareCard() {
   if (startIdx < 0) startIdx = 0;
 
   const count = Math.min(12, Math.max(0, times.length - startIdx));
-  const chartX=58, chartY=1345, chartW=W-116, chartH=340;
+  const chartX=58, chartY=1080, chartW=W-116, chartH=330;
   roundRect(ctx,chartX,chartY,chartW,chartH,28);
   ctx.fillStyle='rgba(2,6,23,.76)'; ctx.fill();
   ctx.strokeStyle='rgba(103,232,249,.15)'; ctx.lineWidth=1.5; ctx.stroke();
 
   ctx.textAlign='right'; ctx.fillStyle='#f8fafc'; ctx.font='900 28px Arial';
-  ctx.fillText('الرسم البياني • الحرارة خلال الساعات القادمة',W-86,1390);
+  ctx.fillText('الرسم البياني • الحرارة خلال الساعات القادمة',W-86,1125);
   ctx.textAlign='left'; ctx.fillStyle='rgba(226,252,255,.58)'; ctx.font='700 16px Arial';
-  ctx.fillText('🌙 ليل  •  ☀️ نهار',86,1390);
+  ctx.fillText('🌙 ليل  •  ☀️ نهار',86,1125);
 
   if(count > 0){
-    const px=105, py=1435, pw=W-210, ph=190;
+    const px=105, py=1170, pw=W-210, ph=170;
     const values = temps.slice(startIdx,startIdx+count).map(v=>Number(v));
     const valid = values.filter(Number.isFinite);
     const minT = Math.floor((Math.min(...valid)-2));
@@ -2173,15 +2452,15 @@ function drawWeatherShareCard() {
     });
   } else {
     ctx.textAlign='center'; ctx.fillStyle='rgba(226,252,255,.65)'; ctx.font='700 19px Arial';
-    ctx.fillText('لا تتوفر بيانات ساعية كافية للرسم البياني حالياً',W/2,1560);
+    ctx.fillText('لا تتوفر بيانات ساعية كافية للرسم البياني حالياً',W/2,1245);
   }
 
   // Today summary moved below the chart.
-  roundRect(ctx,58,1710,W-116,150,28);
+  roundRect(ctx,58,1435,W-116,125,28);
   ctx.fillStyle='rgba(2,6,23,.70)'; ctx.fill();
   ctx.strokeStyle='rgba(103,232,249,.15)'; ctx.stroke();
   ctx.textAlign='right'; ctx.fillStyle='#f8fafc'; ctx.font='900 27px Arial';
-  ctx.fillText('ملخص اليوم',W-86,1750);
+  ctx.fillText('ملخص اليوم',W-86,1472);
 
   const info=[
     ['العظمى / الصغرى',`${d.max}° / ${d.min}°م`],
@@ -2190,20 +2469,20 @@ function drawWeatherShareCard() {
     ['الشروق / الغروب',`${d.sunrise}  •  ${d.sunset}`]
   ];
   info.forEach((m,i)=>{
-    const x=92+(i%2)*520, y=1770+Math.floor(i/2)*55;
-    ctx.fillStyle='rgba(255,255,255,.045)'; roundRect(ctx,x,y,480,45,12); ctx.fill();
-    ctx.textAlign='right'; ctx.font='700 15px Arial'; ctx.fillStyle='#8fb9c3'; ctx.fillText(m[0],x+455,y+20);
-    ctx.font='900 18px Arial'; ctx.fillStyle='#fff'; ctx.fillText(m[1],x+455,y+39);
+    const x=92+(i%2)*520, y=1490+Math.floor(i/2)*48;
+    ctx.fillStyle='rgba(255,255,255,.045)'; roundRect(ctx,x,y,480,40,12); ctx.fill();
+    ctx.textAlign='right'; ctx.font='700 15px Arial'; ctx.fillStyle='#8fb9c3'; ctx.fillText(m[0],x+455,y+18);
+    ctx.font='900 18px Arial'; ctx.fillStyle='#fff'; ctx.fillText(m[1],x+455,y+35);
   });
 
   ctx.textAlign='center'; ctx.fillStyle='rgba(226,252,255,.58)'; ctx.font='700 16px Arial';
-  ctx.fillText('بيانات حية • Open-Meteo • تم التحديث حسب وقت إنشاء البطاقة',W/2,1900);
+  ctx.fillText('بيانات حية • Open-Meteo • تم التحديث حسب وقت إنشاء البطاقة',W/2,1615);
 
-  roundRect(ctx,245,1910,W-490,42,14);
+  roundRect(ctx,245,1628,W-490,42,14);
   ctx.fillStyle='rgba(94,234,212,.10)'; ctx.fill();
   ctx.strokeStyle='rgba(94,234,212,.30)'; ctx.lineWidth=1.5; ctx.stroke();
   ctx.fillStyle='#99f6e4'; ctx.font='900 17px Arial';
-  ctx.fillText('تم التطوير بواسطة أحمد المحتسب',W/2,1937);
+  ctx.fillText('تم التطوير بواسطة أحمد المحتسب',W/2,1655);
 
   return true;
 }
