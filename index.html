@@ -265,6 +265,24 @@
     .chart-tab-btn:hover { background: rgba(255,255,255,0.1); color: #fff; border-color: rgba(56, 189, 248, 0.4); }
     .chart-tab-btn.active { background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%); color: #0f172a; font-weight: 900; border-color: transparent; box-shadow: 0 4px 22px rgba(0, 242, 254, 0.4); transform: translateY(-2px); }
     .chart-canvas-wrapper { position: relative; width: 100%; height: 280px; z-index: 2; }
+    /* رسم الأيام القادمة: مساحة أفقية كافية لكل يوم لمنع تداخل أسماء الأيام والتواريخ */
+    #daysSection .chart-canvas-wrapper {
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 4px 2px 12px;
+      margin-bottom: 4px;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    #daysSection .chart-canvas-wrapper::-webkit-scrollbar {
+      height: 8px;
+      margin-top: 8px;
+    }
+    #daysSection #daysChart {
+      display: block;
+      height: 280px !important;
+      max-width: none !important;
+    }
 
     .section{background:#fff;border:1px solid #edf4f5;border-radius:var(--radius);box-shadow:var(--shadow);margin-top:20px;padding:24px}
     .section h2{margin:0 0 18px;font-size:20px;color:var(--ink)}
@@ -1118,6 +1136,7 @@ const locations = {
   quweira: { name: { ar: "القويرة", en: "Al Quweira", tr: "Al Quweira" }, sub: { ar: "محافظة العقبة", en: "Aqaba Governorate", tr: "Akabe İli" }, lat: 29.800451, lon: 35.311604 },
   disah: { name: { ar: "الديسة", en: "Ad Disah", tr: "Ad Disah" }, sub: { ar: "محافظة العقبة", en: "Aqaba Governorate", tr: "Akabe İli" }, lat: 29.65351, lon: 35.51434 },
   mushayrifah: { name: { ar: "المشيرفة", en: "Al Mushayrifah", tr: "Al Mushayrifah" }, sub: { ar: "عمّان • الأردن", en: "Amman • Jordan", tr: "Amman • Ürdün" }, lat: 31.894018, lon: 36.011524, elevation: 930 },
+  bariloche: { name: { ar: "باريلوش", en: "San Carlos de Bariloche", tr: "San Carlos de Bariloche" }, sub: { ar: "ريو نيغرو • الأرجنتين", en: "Río Negro • Argentina", tr: "Río Negro • Arjantin" }, lat: -41.1335, lon: -71.3101, elevation: 839 },
 };
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -2110,31 +2129,130 @@ function switchTodayChart(metric) {
 
 function updateDaysChart() {
   if (!currentDailyData) return;
+
   const canvas = document.getElementById('daysChart');
+  const wrapper = canvas.closest('.chart-canvas-wrapper');
   const ctx = canvas.getContext('2d');
-  const labels = currentDailyData.time.map(d => new Date(d).toLocaleDateString(currentLang === 'ar' ? 'ar-JO' : 'en-US', { weekday: 'short', day: 'numeric', month: 'short' }));
+
+  // كل يوم يأخذ مساحة مستقلة؛ هذا يمنع تراكب اسم اليوم مع التاريخ.
+  const labels = currentDailyData.time.map(d => {
+    const dateObj = new Date(d);
+    const weekday = dateObj.toLocaleDateString(
+      currentLang === 'ar' ? 'ar-JO' : 'en-US',
+      { weekday: 'short' }
+    );
+    const date = dateObj.toLocaleDateString(
+      currentLang === 'ar' ? 'ar-JO' : 'en-US',
+      { day: 'numeric', month: 'short' }
+    );
+    return [weekday, date];
+  });
+
+  // 16 يوماً × 82px تقريباً، مع حد أدنى مريح للشاشات الكبيرة والصغيرة.
+  const chartWidth = Math.max(
+    wrapper.clientWidth - 4,
+    labels.length * 82
+  );
+  canvas.width = chartWidth;
+  canvas.height = 280;
+  canvas.style.width = chartWidth + 'px';
+  canvas.style.height = '280px';
+
   let labelText = '', color = '#38bdf8', datasets = [];
 
   if (activeDaysMetric === 'temp') {
-    labelText = 'الحرارة العظمى (°م)'; color = '#f43f5e';
-    datasets = [{ label: labelText, data: currentDailyData.temperature_2m_max, backgroundColor: color + 'bb', borderColor: color, borderWidth: 1.5, borderRadius: 8, borderSkipped: false }];
+    labelText = 'الحرارة العظمى (°م)';
+    color = '#f43f5e';
+    datasets = [{
+      label: labelText,
+      data: currentDailyData.temperature_2m_max,
+      backgroundColor: color + 'bb',
+      borderColor: color,
+      borderWidth: 1.5,
+      borderRadius: 8,
+      borderSkipped: false,
+      barPercentage: 0.68,
+      categoryPercentage: 0.82
+    }];
   } else if (activeDaysMetric === 'pop') {
-    labelText = 'أعلى احتمال أمطار (%)'; color = '#38bdf8';
-    datasets = [{ label: labelText, data: currentDailyData.precipitation_probability_max || [], backgroundColor: color + 'bb', borderColor: color, borderWidth: 1.5, borderRadius: 8, borderSkipped: false }];
+    labelText = 'أعلى احتمال أمطار (%)';
+    color = '#38bdf8';
+    datasets = [{
+      label: labelText,
+      data: currentDailyData.precipitation_probability_max || [],
+      backgroundColor: color + 'bb',
+      borderColor: color,
+      borderWidth: 1.5,
+      borderRadius: 8,
+      borderSkipped: false,
+      barPercentage: 0.68,
+      categoryPercentage: 0.82
+    }];
   } else if (activeDaysMetric === 'wind') {
     datasets = [
-      { label: 'أعلى سرعة رياح (كم/س)', data: currentDailyData.wind_speed_10m_max || [], backgroundColor: 'rgba(251,191,36,.72)', borderColor: '#fbbf24', borderWidth: 1.5, borderRadius: 8, borderSkipped: false },
-      { label: 'أعلى هبات الرياح (كم/س)', data: currentDailyData.wind_gusts_10m_max || currentDailyData.wind_speed_10m_max || [], backgroundColor: 'rgba(251,113,133,.55)', borderColor: '#fb7185', borderWidth: 1.5, borderRadius: 8, borderSkipped: false }
+      {
+        label: 'أعلى سرعة رياح (كم/س)',
+        data: currentDailyData.wind_speed_10m_max || [],
+        backgroundColor: 'rgba(251,191,36,.72)',
+        borderColor: '#fbbf24',
+        borderWidth: 1.5,
+        borderRadius: 8,
+        borderSkipped: false,
+        barPercentage: 0.42,
+        categoryPercentage: 0.82
+      },
+      {
+        label: 'أعلى هبات الرياح (كم/س)',
+        data: currentDailyData.wind_gusts_10m_max || currentDailyData.wind_speed_10m_max || [],
+        backgroundColor: 'rgba(251,113,133,.55)',
+        borderColor: '#fb7185',
+        borderWidth: 1.5,
+        borderRadius: 8,
+        borderSkipped: false,
+        barPercentage: 0.42,
+        categoryPercentage: 0.82
+      }
     ];
   }
 
   if (daysChartInstance) daysChartInstance.destroy();
-  const options = getChartInteractionOptions();
-  options.scales.x.ticks.autoSkip = false;
-  options.scales.y.title = { display: true, text: activeDaysMetric === 'pop' ? 'النسبة المئوية' : 'كم/س أو °م', color: '#94a3b8', font: { family: 'Tahoma', weight: 'bold' } };
 
-  daysChartInstance = new Chart(ctx, { type: 'bar', data: { labels, datasets }, options });
+  const options = getChartInteractionOptions();
+  options.responsive = false;
+  options.maintainAspectRatio = false;
+
+  options.plugins.legend.labels = {
+    ...options.plugins.legend.labels,
+    padding: 16,
+    font: { family: 'Tahoma', size: 11, weight: '700' }
+  };
+
+  options.scales.x.ticks = {
+    color: '#cbd5e1',
+    autoSkip: false,
+    maxRotation: 0,
+    minRotation: 0,
+    padding: 8,
+    font: { family: 'Tahoma', size: 10, weight: '800' }
+  };
+  options.scales.x.grid = { color: 'rgba(255,255,255,0.035)' };
+  options.scales.y.title = {
+    display: true,
+    text: activeDaysMetric === 'pop' ? 'النسبة المئوية' : 'كم/س أو °م',
+    color: '#94a3b8',
+    font: { family: 'Tahoma', weight: 'bold' }
+  };
+
+  daysChartInstance = new Chart(ctx, {
+    type: 'bar',
+    data: { labels, datasets },
+    options
+  });
 }
+
+window.addEventListener('resize', () => {
+  if (currentDailyData) updateDaysChart();
+});
 
 function switchDaysChart(metric) {
   activeDaysMetric = metric;
