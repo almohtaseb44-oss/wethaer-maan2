@@ -1030,6 +1030,108 @@
   overflow: visible !important;
 }
 </style>
+
+<style id="mobile-alert-chart-fix">
+/* ===== Mobile-first alert chart fix ===== */
+@media (max-width:700px){
+  #alertTimelineSection.alert-timeline-card{
+    margin-top:14px !important;
+    padding:16px 10px 14px !important;
+    border-radius:18px !important;
+    overflow:hidden !important;
+  }
+  #alertTimelineSection .alert-timeline-head{
+    margin:0 4px 6px !important;
+  }
+  #alertTimelineSection .alert-timeline-head h3{
+    font-size:17px !important;
+    line-height:1.35 !important;
+  }
+  #alertTimelineSection .alert-reference-icon{
+    width:36px !important;
+    height:36px !important;
+    font-size:19px !important;
+  }
+  #alertTimelineSection .alert-chart-wrap,
+  #alertTimelineSection .alert-reference-chart-wrap{
+    width:100% !important;
+    height:245px !important;
+    min-height:245px !important;
+    margin-top:8px !important;
+    padding:8px 4px 6px !important;
+    border:0 !important;
+    border-radius:14px !important;
+    background:#fff !important;
+    box-shadow:none !important;
+    overflow:hidden !important;
+    touch-action:pan-y !important;
+  }
+  #alertTimelineSection .alert-chart-wrap canvas,
+  #alertTimelineSection .alert-reference-chart-wrap canvas{
+    width:100% !important;
+    height:100% !important;
+    min-height:0 !important;
+    display:block !important;
+  }
+  #alertTimelineSection .alert-mini-legend,
+  #alertTimelineSection .alert-reference-legend{
+    display:grid !important;
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:7px !important;
+    margin-top:8px !important;
+  }
+  #alertTimelineSection .alert-mini-item{
+    min-height:42px !important;
+    padding:7px 8px !important;
+    gap:6px !important;
+    border-radius:11px !important;
+    box-shadow:none !important;
+    justify-content:flex-start !important;
+  }
+  #alertTimelineSection .alert-mini-item b{
+    font-size:10.5px !important;
+    line-height:1.25 !important;
+  }
+  #alertTimelineSection .alert-mini-item small{
+    display:none !important;
+  }
+  #alertTimelineSection .alert-line-dot{
+    width:20px !important;
+    height:3px !important;
+    flex:0 0 20px !important;
+  }
+  #alertTimelineSection .alert-reference-note{
+    margin-top:9px !important;
+    padding:9px 10px !important;
+    gap:7px !important;
+    border-radius:11px !important;
+    font-size:10.5px !important;
+    line-height:1.55 !important;
+  }
+  #alertTimelineSection .alert-reference-note-icon{
+    width:25px !important;
+    height:25px !important;
+    font-size:14px !important;
+    flex:0 0 25px !important;
+  }
+  #alertTimelineSection .alert-point-popover{
+    min-width:160px !important;
+    max-width:min(220px,72vw) !important;
+    padding:9px 10px !important;
+    border-radius:11px !important;
+    transform:translate(-50%,-108%) !important;
+  }
+  #alertTimelineSection .alert-point-popover-title{font-size:11.5px !important}
+  #alertTimelineSection .alert-point-popover-text{font-size:10.5px !important;line-height:1.5 !important}
+}
+@media (max-width:390px){
+  #alertTimelineSection.alert-timeline-card{padding-inline:8px !important}
+  #alertTimelineSection .alert-chart-wrap,
+  #alertTimelineSection .alert-reference-chart-wrap{height:225px !important;min-height:225px !important}
+  #alertTimelineSection .alert-mini-item{padding:6px !important}
+  #alertTimelineSection .alert-mini-item b{font-size:9.8px !important}
+}
+</style>
 </head>
 <body>
   <!-- Google Tag Manager (noscript) -->
@@ -1170,7 +1272,13 @@
     <section class="alert-timeline-card alert-reference-card" id="alertTimelineSection">
       <div class="alert-timeline-head alert-reference-head">
         <div class="alert-reference-title-wrap">
-          <h3><span class="alert-reference-icon">🔔</span> مؤشر التنبيه الجوي</h3>
+          <h3><span class="alert-reference-icon" aria-hidden="true">
+<svg viewBox="0 0 24 24" width="24" height="24" fill="none">
+  <path d="M12 3.5a5 5 0 0 0-5 5v2.2c0 1.55-.48 3.06-1.38 4.32L4.5 16.6h15l-1.12-1.58A7.45 7.45 0 0 1 17 10.7V8.5a5 5 0 0 0-5-5Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M9.7 19a2.55 2.55 0 0 0 4.6 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M12 2v1.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+</svg>
+</span> مؤشر التنبيه الجوي</h3>
         </div>
       </div>
       <div class="alert-chart-wrap alert-reference-chart-wrap">
@@ -1507,6 +1615,7 @@ const locations = {
   husayniyah: { name: { ar: "الحسينية", en: "Al Husayniyah", tr: "Al Husayniyah" }, sub: { ar: "محافظة معان", en: "Ma'an Governorate", tr: "Ma'an İli" }, lat: 30.59508, lon: 35.79544 },
   jafr: { name: { ar: "الجفر", en: "Al Jafr", tr: "Al Jafr" }, sub: { ar: "محافظة معان", en: "Ma'an Governorate", tr: "Ma'an İli" }, lat: 30.31333, lon: 36.32806 },
   busaira: { name: { ar: "بصيرا", en: "Busaira", tr: "Busaira" }, sub: { ar: "محافظة الطفيلة", en: "Tafilah Governorate", tr: "Tafilah İli" }, lat: 30.73846, lon: 35.60639 },
+  basra: { name: { ar: "البصرة", en: "Basra", tr: "Basra" }, sub: { ar: "محافظة البصرة • العراق", en: "Basra Governorate • Iraq", tr: "Basra Vilayeti • Irak" }, lat: 30.5085, lon: 47.7804 },
   qadisiyah: { name: { ar: "القادسية", en: "Al Qadisiyah", tr: "Al Qadisiyah" }, sub: { ar: "محافظة الطفيلة", en: "Tafilah Governorate", tr: "Tafilah İli" }, lat: 30.65391, lon: 35.63541 },
   dana: { name: { ar: "ضانا", en: "Dana", tr: "Dana" }, sub: { ar: "محمية ضانا", en: "Dana Reserve", tr: "Dana Koruma Alanı" }, lat: 30.67472, lon: 35.61028 },
   mutah: { name: { ar: "مؤتة", en: "Mu'tah", tr: "Mu'tah" }, sub: { ar: "محافظة الكرك", en: "Karak Governorate", tr: "Kerak İli" }, lat: 31.0925, lon: 35.69444 },
@@ -2349,7 +2458,12 @@ function renderHourly(hourly) {
         <div style="font-size:11px;color:var(--muted);margin-top:4px;">🌧️ ${pop}%</div>
       </div>`;
   }).join('');
-  requestAnimationFrame(() => { if (container.firstElementChild) container.firstElementChild.scrollIntoView({inline:'start',block:'nearest'}); });
+  requestAnimationFrame(() => {
+    if (container) {
+      container.scrollLeft = 0;
+      container.scrollTop = 0;
+    }
+  });
 }
 
 function toggleShareMenu(event){
@@ -2484,52 +2598,49 @@ function getAlertTimelineLevel(row){
   const wind=Number(row.wind||0), gust=Number(row.gust||wind), pop=Number(row.pop||0);
   const rain=Number(row.rain||0), showers=Number(row.showers||0), snow=Number(row.snow||0);
   const temp=Number(row.temp||0), feels=Number(row.feels||temp), vis=Number(row.visibility||100000);
-  const uv=Number(row.uv||0), cloud=Number(row.cloud||0), humidity=Number(row.humidity||0);
-  const code=Number(row.code||0);
-
-  // تصنيف مبني على مجموعة المؤثرات الجوية الفعلية المتاحة من Open-Meteo.
-  // نأخذ أخطر مؤثر في الساعة، مع إعطاء العواصف والهطول الغزير والرؤية المنخفضة أولوية.
+  const uv=Number(row.uv||0), code=Number(row.code||0);
+  const precip=Math.max(rain,showers);
   let level=0;
 
-  // عواصف رعدية / برد / أمطار تجمدية: مؤثرات عالية الأولوية.
-  if ([95,96,99].includes(code)) level=Math.max(level,3);
-  if ([66,67].includes(code)) level=Math.max(level,2);
-  if ([77,85,86].includes(code)) level=Math.max(level,2);
+  // عواصف: الأحمر للحالات الأشد (برد/عاصفة قوية)، والعاصفة الرعدية العادية برتقالي.
+  if ([96,99].includes(code)) level=Math.max(level,3);
+  else if (code===95) level=Math.max(level,2);
 
-  // رياح وهبات.
-  if (gust>=65 || wind>=50) level=Math.max(level,3);
-  else if (gust>=55 || wind>=45) level=Math.max(level,2);
+  // مطر متجمد / ثلوج قوية.
+  if ([66,67].includes(code)) level=Math.max(level,2);
+  if ([75,86].includes(code) || snow>=5) level=Math.max(level,2);
+  else if ([71,73,77,85].includes(code) || snow>0) level=Math.max(level,1);
+  if (snow>=10) level=Math.max(level,3);
+
+  // رياح وهبات: الأحمر يحتاج سرعة قوية بوضوح.
+  if (gust>=75 || wind>=60) level=Math.max(level,3);
+  else if (gust>=55 || wind>=40) level=Math.max(level,2);
   else if (gust>=40 || wind>=30) level=Math.max(level,1);
 
-  // هطول متوقع خلال الساعة.
-  const precip=Math.max(rain,showers);
-  if (precip>=10 || pop>=90) level=Math.max(level,3);
-  else if (precip>=6 || pop>=75) level=Math.max(level,2);
-  else if (precip>=2 || pop>=45) level=Math.max(level,1);
+  // الهطول: الاحتمال وحده لا يصنع إنذاراً برتقالياً/أحمر.
+  // نستخدم كمية الهطول المتوقعة لتحديد الشدة.
+  if (precip>=15) level=Math.max(level,3);
+  else if (precip>=7) level=Math.max(level,2);
+  else if (precip>=2) level=Math.max(level,1);
+  else if (pop>=70) level=Math.max(level,1);
 
-  // الثلوج: الشدة تعتمد على الكمية المتوقعة والرمز الجوي.
-  if (snow>=8) level=Math.max(level,3);
-  else if (snow>=3 || [73,75,85,86].includes(code)) level=Math.max(level,2);
-  else if (snow>0 || [71,77].includes(code)) level=Math.max(level,1);
+  // رؤية منخفضة فعلياً.
+  if (vis>0 && vis<300) level=Math.max(level,3);
+  else if (vis>0 && vis<1000) level=Math.max(level,2);
+  else if (vis>0 && vis<4000) level=Math.max(level,1);
 
-  // ضعف الرؤية: نرفع المستوى فقط عندما تكون الرؤية منخفضة فعلياً.
-  if (vis>0 && vis<500) level=Math.max(level,3);
-  else if (vis>0 && vis<1500) level=Math.max(level,2);
-  else if (vis>0 && vis<5000) level=Math.max(level,1);
+  // حرارة/برودة شديدة.
+  if (feels>=47 || temp>=47 || feels<=-20 || temp<=-20) level=Math.max(level,3);
+  else if (feels>=41 || temp>=41 || feels<=-10 || temp<=-10) level=Math.max(level,2);
+  else if (feels>=36 || temp>=36 || feels<=0 || temp<=0) level=Math.max(level,1);
 
-  // حرارة/برودة شديدة، باستخدام الحرارة المحسوسة أيضاً.
-  if (feels>=45 || temp>=45) level=Math.max(level,3);
-  else if (feels>=40 || temp>=40 || feels<=-15 || temp<=-15) level=Math.max(level,2);
-  else if (feels>=35 || temp>=35 || feels<=0 || temp<=0) level=Math.max(level,1);
+  // UV وحده لا يرفع الحالة فوق الأصفر.
+  if (uv>=8) level=Math.max(level,1);
 
-  // UV مرتفع جداً؛ لا نرفعه وحده للأحمر لأنه مؤشر تعرض شمسي وليس ظاهرة خطرة بحد ذاته.
-  if (uv>=11) level=Math.max(level,2);
-  else if (uv>=8) level=Math.max(level,1);
-
-  // ضباب/ضباب كثيف عندما تدعم الرؤية والرموز ذلك.
+  // الضباب يحتاج دعماً من الرؤية الفعلية.
   if ([45,48].includes(code)) {
     if (vis>0 && vis<1000) level=Math.max(level,2);
-    else level=Math.max(level,1);
+    else if (vis>0 && vis<4000) level=Math.max(level,1);
   }
 
   return Math.min(3,level);
@@ -2551,22 +2662,40 @@ function getAlertTimelineReason(row, level){
   const snow=Number(row.snow||0), temp=Number(row.temp||0), feels=Number(row.feels||temp);
   const vis=Number(row.visibility||100000), uv=Number(row.uv||0), code=Number(row.code||0);
 
-  if ([95,96,99].includes(code)) reasons.push('عواصف رعدية محتملة');
-  else if ([66,67].includes(code)) reasons.push('مطر متجمد محتمل');
-  else if ([71,73,75,77,85,86].includes(code)) reasons.push('ثلوج/حالة ثلجية');
-  else if ([45,48].includes(code)) reasons.push('ضباب أو ضباب متجمد');
+  if ([96,99].includes(code)) reasons.push('عاصفة رعدية قوية / احتمال برد');
+  else if (code===95) reasons.push('عاصفة رعدية');
+  else if ([66,67].includes(code)) reasons.push('مطر متجمد');
+  else if ([71,73,75,77,85,86].includes(code)) reasons.push('حالة ثلجية');
+  else if ([45,48].includes(code) && vis<4000) reasons.push('ضباب مع انخفاض في مدى الرؤية');
 
-  if (wind>=30) reasons.push(`رياح ${Math.round(wind)} كم/س`);
-  if (gust>=40) reasons.push(`هبات ${Math.round(gust)} كم/س`);
-  if (pop>=30) reasons.push(`احتمال هطول ${Math.round(pop)}%`);
-  if (rain>=0.5) reasons.push(`هطول متوقع ${rain.toFixed(1)} مم/ساعة`);
-  if (snow>0) reasons.push(`ثلوج ${snow.toFixed(1)} مم/ساعة`);
-  if (vis>0 && vis<5000) reasons.push(`رؤية نحو ${Math.round(vis/100)*100} م`);
-  if (feels>=35 || temp>=35) reasons.push(`حرارة ${Math.round(temp)}°م / محسوسة ${Math.round(feels)}°م`);
-  if (feels<=0 || temp<=0) reasons.push(`برودة ${Math.round(temp)}°م / محسوسة ${Math.round(feels)}°م`);
-  if (uv>=8) reasons.push(`مؤشر UV ${Math.round(uv)}`);
+  if (gust>=75 || wind>=60) reasons.push(`رياح شديدة جداً: ${Math.round(wind)} كم/س، هبات ${Math.round(gust)} كم/س`);
+  else if (gust>=55 || wind>=40) reasons.push(`رياح قوية: ${Math.round(wind)} كم/س، هبات ${Math.round(gust)} كم/س`);
+  else if (gust>=40 || wind>=30) reasons.push(`رياح ملحوظة: ${Math.round(wind)} كم/س، هبات ${Math.round(gust)} كم/س`);
 
-  if (!reasons.length) reasons.push('لا توجد مؤشرات جوية مؤثرة خلال هذه الساعة');
+  if (rain>=15) reasons.push(`هطول شديد: ${rain.toFixed(1)} مم/ساعة`);
+  else if (rain>=7) reasons.push(`هطول قوي: ${rain.toFixed(1)} مم/ساعة`);
+  else if (rain>=2) reasons.push(`هطول متوسط: ${rain.toFixed(1)} مم/ساعة`);
+  else if (pop>=70) reasons.push(`احتمال هطول مرتفع: ${Math.round(pop)}%`);
+
+  if (snow>=10) reasons.push(`ثلوج شديدة: ${snow.toFixed(1)} مم/ساعة`);
+  else if (snow>=5) reasons.push(`ثلوج قوية: ${snow.toFixed(1)} مم/ساعة`);
+  else if (snow>0) reasons.push(`ثلوج متوقعة: ${snow.toFixed(1)} مم/ساعة`);
+
+  if (vis>0 && vis<300) reasons.push(`رؤية شديدة الانخفاض: نحو ${Math.round(vis)} م`);
+  else if (vis>0 && vis<1000) reasons.push(`رؤية منخفضة جداً: نحو ${Math.round(vis)} م`);
+  else if (vis>0 && vis<4000) reasons.push(`رؤية منخفضة: نحو ${Math.round(vis)} م`);
+
+  if (feels>=47 || temp>=47) reasons.push(`حرارة شديدة جداً: ${Math.round(temp)}°م، محسوسة ${Math.round(feels)}°م`);
+  else if (feels>=41 || temp>=41) reasons.push(`حرارة شديدة: ${Math.round(temp)}°م، محسوسة ${Math.round(feels)}°م`);
+  else if (feels>=36 || temp>=36) reasons.push(`حرارة مرتفعة: ${Math.round(temp)}°م، محسوسة ${Math.round(feels)}°م`);
+
+  if (feels<=-20 || temp<=-20) reasons.push(`برودة شديدة جداً: ${Math.round(temp)}°م، محسوسة ${Math.round(feels)}°م`);
+  else if (feels<=-10 || temp<=-10) reasons.push(`برودة شديدة: ${Math.round(temp)}°م، محسوسة ${Math.round(feels)}°م`);
+  else if (feels<=0 || temp<=0) reasons.push(`برودة قوية: ${Math.round(temp)}°م، محسوسة ${Math.round(feels)}°م`);
+
+  if (uv>=8) reasons.push(`مؤشر UV مرتفع: ${Math.round(uv)}`);
+
+  if (!reasons.length) reasons.push('لا توجد مؤثرات قوية؛ المستوى منخفض ومستقر');
   return reasons.join(' • ');
 }
 
@@ -2627,15 +2756,18 @@ function updateAlertTimelineChart(){
       ctx.save();
       ctx.textAlign='right';
       ctx.textBaseline='middle';
-      ctx.font='700 12px Tahoma, Arial, sans-serif';
+      const isMobile=window.innerWidth<=700;
+      ctx.font=`700 ${isMobile?9:10}px Tahoma, Arial, sans-serif`;
       labels.forEach((label,i)=>{
         const y=scales.y.getPixelForValue(i);
         ctx.beginPath();
         ctx.fillStyle=dots[i];
-        ctx.arc(chartArea.left-28,y,6,0,Math.PI*2);
+        ctx.arc(chartArea.left-(isMobile?9:24),y,isMobile?3.5:5,0,Math.PI*2);
         ctx.fill();
-        ctx.fillStyle='#17384c';
-        ctx.fillText(label,chartArea.left-42,y);
+        if(!isMobile){
+          ctx.fillStyle='#17384c';
+          ctx.fillText(label,chartArea.left-36,y);
+        }
       });
       ctx.restore();
     }
@@ -2661,19 +2793,19 @@ function updateAlertTimelineChart(){
         label:'مستوى التنبيه',
         data:levels,
         borderColor:colors.red,
-        borderWidth:4,
-        tension:.52,
+        borderWidth:2.5,
+        tension:.38,
         cubicInterpolationMode:'monotone',
         fill:false,
-        pointRadius:8,
-        pointHoverRadius:10,
-        pointHitRadius:28,
+        pointRadius:2.5,
+        pointHoverRadius:6,
+        pointHitRadius:14,
         pointBackgroundColor:levels.map(colorForLevel),
         pointBorderColor:'#fff',
-        pointBorderWidth:4,
+        pointBorderWidth:2,
         segment:{
           borderColor:seg=>colorForLevel(levels[seg.p0DataIndex]),
-          borderWidth:4
+          borderWidth:2.5
         }
       }]
     },
@@ -2681,11 +2813,12 @@ function updateAlertTimelineChart(){
       responsive:true,
       maintainAspectRatio:false,
       animation:{duration:650,easing:'easeOutCubic'},
-      interaction:{mode:'nearest',intersect:true},
-      layout:{padding:{top:12,right:22,bottom:4,left:58}},
+      interaction:{mode:'nearest',intersect:false},
+      layout:{padding: window.innerWidth<=700 ? {top:10,right:8,bottom:6,left:18} : {top:14,right:22,bottom:6,left:58}},
       plugins:{
         legend:{display:false},
         tooltip:{
+          enabled: window.innerWidth > 700,
           rtl:currentLang==='ar',
           displayColors:false,
           backgroundColor:'rgba(8,15,30,.96)',
@@ -2704,11 +2837,18 @@ function updateAlertTimelineChart(){
       scales:{
         x:{
           offset:true,
-          ticks:{color:'#24485b',font:{family:'Tahoma',size:12,weight:'800'},padding:10,maxRotation:0,minRotation:0},
+          ticks:{
+            color:'#24485b',
+            font:{family:'Tahoma',size:window.innerWidth<=700?10:12,weight:'800'},
+            padding:window.innerWidth<=700?6:10,
+            maxRotation:0,minRotation:0,
+            autoSkip:true,
+            maxTicksLimit:window.innerWidth<=700?4:8
+          },
           grid:{color:'rgba(99,115,125,.12)',borderDash:[3,5],drawBorder:false,drawTicks:false}
         },
         y:{
-          min:0,max:3,
+          min:-0.12,max:3.12,
           ticks:{
             stepSize:1,
             color:'transparent',
@@ -2723,7 +2863,7 @@ function updateAlertTimelineChart(){
         if(!elements.length){if(pop)pop.hidden=true;return;}
         const i=elements[0].index,row=rows[i],level=levels[i],meta=getAlertTimelineMeta(level);
         if(pop){
-          pop.innerHTML=`<div class="alert-point-popover-title" style="color:${colorForLevel(level)}">${meta.name} — ${labels[i]}</div><div class="alert-point-popover-text"><b>سبب اللون:</b> ${getAlertTimelineReason(row,level)}.</div>`;
+          pop.innerHTML=`<div class="alert-point-popover-title" style="color:${colorForLevel(level)}">${meta.name} — ${labels[i]}</div><div class="alert-point-popover-text"><b>لماذا هذا اللون؟</b><br>${getAlertTimelineReason(row,level)}</div>`;
           pop.hidden=false;
           const pos=window.alertTimelineChartInstance.getDatasetMeta(0).data[i];
           if(pos){pop.style.left=pos.x+'px';pop.style.top=pos.y+'px';}
@@ -3476,8 +3616,325 @@ function closeWeatherShare() {
 })();
 </script>
 
-</body>
 
+
+<style>
+/* ===== Final responsive review ===== */
+
+/* General safety */
+html, body { max-width:100%; overflow-x:hidden; }
+img, svg, canvas { max-width:100%; }
+.content, .section, .integrated-current-wrapper, .alert-timeline-card,
+.chart-container-box, .chart-canvas-wrapper, .weather-summary-compact {
+  min-width:0;
+}
+
+/* Laptop / desktop */
+@media (min-width: 1024px){
+  .content{padding-inline:20px}
+  #alertTimelineSection .alert-chart-wrap{max-width:100%}
+}
+
+/* Tablet */
+@media (min-width:701px) and (max-width:1023px){
+  .content{padding-inline:16px}
+  .weather-card{grid-template-columns:1fr 1fr}
+  .weather-card .details{grid-column:1 / -1}
+  .current-insights-grid{grid-template-columns:1fr}
+  .commute-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}
+  #alertTimelineSection .alert-reference-legend{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+}
+
+/* Phones */
+@media (max-width:700px){
+  body{font-size:14px}
+  .topbar{
+    height:auto !important;
+    min-height:64px;
+    padding:10px 12px !important;
+    gap:10px !important;
+    flex-wrap:wrap;
+  }
+  .brand{font-size:18px !important}
+  .brand-icon{width:40px !important;height:40px !important}
+  .nav{
+    width:100%;
+    gap:10px !important;
+    overflow-x:auto;
+    padding-bottom:2px;
+    scrollbar-width:none;
+  }
+  .nav::-webkit-scrollbar{display:none}
+  .nav a{
+    flex:0 0 auto;
+    font-size:12px !important;
+  }
+  .nav a.active{padding-bottom:8px !important}
+
+  .hero{padding:30px 12px 24px !important}
+  .hero h1{font-size:clamp(28px,9vw,40px) !important}
+  .hero p{font-size:14px !important;line-height:1.7}
+  .search-wrapper{margin-bottom:16px !important}
+  .search input{height:52px !important;font-size:14px !important}
+
+  .locations{
+    grid-template-columns:1fr !important;
+    max-width:100% !important;
+    gap:10px !important;
+  }
+  .location-btn{
+    min-height:74px !important;
+    padding:12px 14px !important;
+  }
+
+  .content{
+    width:100% !important;
+    padding:0 10px !important;
+    margin-bottom:32px !important;
+  }
+  .section{
+    padding:16px 12px !important;
+    border-radius:18px !important;
+  }
+
+  .weather-card{
+    grid-template-columns:1fr !important;
+  }
+  .weather-scene{
+    min-height:230px !important;
+    border-inline-end:0 !important;
+    border-bottom:1px solid rgba(22,184,194,.15);
+  }
+  .main-temp{
+    padding:22px 14px !important;
+    border-inline-end:0 !important;
+    border-bottom:1px solid rgba(22,184,194,.15);
+  }
+  .details{padding:18px 14px !important}
+  .temp{font-size:64px !important}
+  .place{font-size:21px !important}
+
+  .mini-outfit-container,
+  .alerts-integrated-container{
+    padding:16px 12px !important;
+  }
+  .mini-outfit-grid{grid-template-columns:1fr !important}
+  .current-insights-grid{
+    grid-template-columns:1fr !important;
+    padding:14px 12px 16px !important;
+  }
+  .short-term-change-grid{grid-template-columns:1fr !important}
+  .commute-metrics{grid-template-columns:1fr 1fr !important}
+
+  .weather-summary-compact{
+    padding:12px !important;
+    gap:10px !important;
+  }
+  .weather-summary-main{
+    width:100% !important;
+    gap:10px !important;
+  }
+  .weather-summary-title{
+    flex:0 0 auto !important;
+    font-size:12px !important;
+    padding-inline-end:10px !important;
+  }
+  .weather-summary-text{
+    font-size:12px !important;
+    line-height:1.65 !important;
+  }
+
+  .chart-container-box{padding:14px 10px !important}
+  .chart-btn-group{
+    gap:7px !important;
+    margin-bottom:12px !important;
+  }
+  .chart-tab-btn{
+    min-width:0 !important;
+    flex:1 1 calc(50% - 7px) !important;
+    padding:9px 8px !important;
+    font-size:11px !important;
+  }
+
+  #alertTimelineSection{
+    padding:16px 10px 14px !important;
+    overflow:visible !important;
+  }
+  #alertTimelineSection .alert-reference-head h3{
+    font-size:17px !important;
+  }
+  #alertTimelineSection .alert-reference-icon{
+    width:36px !important;
+    height:36px !important;
+    font-size:20px !important;
+  }
+  #alertTimelineSection .alert-chart-wrap{
+    width:100% !important;
+    height:320px !important;
+    min-height:320px !important;
+    padding:16px 10px 14px !important;
+    margin-top:12px !important;
+  }
+  #alertTimelineSection .alert-reference-legend{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:8px !important;
+    margin-top:10px !important;
+  }
+  #alertTimelineSection .alert-mini-item{
+    width:auto !important;
+    min-width:0 !important;
+    padding:8px !important;
+    gap:7px !important;
+    justify-content:flex-start !important;
+  }
+  #alertTimelineSection .alert-mini-item b{
+    font-size:10px !important;
+    line-height:1.3;
+  }
+  #alertTimelineSection .alert-mini-item small{
+    font-size:8.8px !important;
+    line-height:1.35 !important;
+  }
+  #alertTimelineSection .alert-reference-note{
+    margin-top:10px !important;
+    padding:10px !important;
+    font-size:10.5px !important;
+    line-height:1.55 !important;
+  }
+
+  .accordion-header{
+    padding:14px !important;
+    font-size:15px !important;
+  }
+  .accordion-content{padding:0 12px 14px !important}
+  .alarm-grid{grid-template-columns:1fr !important}
+  .activities-grid{grid-template-columns:1fr !important}
+  .campus-share-box{padding:12px !important}
+  .share-btn-group{width:100%;flex-wrap:wrap}
+  .share-btn{flex:1 1 140px;justify-content:center}
+}
+
+/* Small phones */
+@media (max-width:430px){
+  .content{padding-inline:8px !important}
+  .section{padding:14px 10px !important}
+  .commute-metrics{grid-template-columns:1fr !important}
+  .bulletin-grid{grid-template-columns:1fr !important}
+  .temp{font-size:58px !important}
+
+  #alertTimelineSection .alert-chart-wrap{
+    height:300px !important;
+    min-height:300px !important;
+  }
+  #alertTimelineSection .alert-reference-legend{
+    grid-template-columns:1fr 1fr !important;
+  }
+  #alertTimelineSection .alert-mini-item{
+    min-height:50px !important;
+  }
+}
+
+/* Very small phones */
+@media (max-width:360px){
+  .hero h1{font-size:27px !important}
+  .weather-summary-compact{
+    flex-direction:column !important;
+    align-items:stretch !important;
+  }
+  .weather-summary-main{
+    align-items:flex-start !important;
+  }
+  .current-share-row{
+    width:100% !important;
+  }
+
+  #alertTimelineSection .alert-chart-wrap{
+    height:285px !important;
+    min-height:285px !important;
+    padding-inline:6px !important;
+  }
+  #alertTimelineSection .alert-reference-legend{
+    grid-template-columns:1fr !important;
+  }
+  #alertTimelineSection .alert-mini-item small{
+    display:block !important;
+  }
+}
+</style>
+
+<style>
+/* ===== Alert point click details ===== */
+#alertTimelineSection .alert-point-popover-text b{
+  display:inline-block;
+  margin-bottom:4px;
+  color:#ffffff;
+}
+#alertTimelineSection .alert-point-popover-text{
+  line-height:1.7 !important;
+}
+</style>
+
+<style>
+/* ===== Alert legend: restore small colored line indicators ===== */
+#alertTimelineSection .alert-reference-legend .alert-mini-item{
+  background:#fff !important;
+  border-color:#e3ecef !important;
+  box-shadow:0 4px 12px rgba(15,71,84,.04) !important;
+}
+#alertTimelineSection .alert-line-dot{
+  width:28px !important;
+  height:4px !important;
+  border-radius:99px !important;
+  display:inline-block !important;
+  flex:0 0 28px !important;
+  box-shadow:none !important;
+}
+#alertTimelineSection .alert-line-dot.green{background:#22b455 !important}
+#alertTimelineSection .alert-line-dot.yellow{background:#f5c52d !important}
+#alertTimelineSection .alert-line-dot.orange{background:#f57c17 !important}
+#alertTimelineSection .alert-line-dot.red{background:#e5252a !important}
+
+@media(max-width:700px){
+  #alertTimelineSection .alert-line-dot{
+    width:24px !important;
+    height:3px !important;
+    flex-basis:24px !important;
+  }
+}
+</style>
+
+
+
+<style>
+/* ===== Mobile alert point: one clean explanation only ===== */
+@media(max-width:700px){
+  #alertTimelineSection .alert-point-popover{
+    position:absolute !important;
+    left:50% !important;
+    top:auto !important;
+    bottom:10px !important;
+    transform:translateX(-50%) !important;
+    width:calc(100% - 24px) !important;
+    min-width:0 !important;
+    max-width:360px !important;
+    padding:10px 12px !important;
+    border-radius:12px !important;
+    box-shadow:0 10px 28px rgba(15,23,42,.22) !important;
+    pointer-events:none !important;
+  }
+  #alertTimelineSection .alert-point-popover::after{display:none !important}
+  #alertTimelineSection .alert-point-popover-title{
+    font-size:12px !important;
+    margin-bottom:4px !important;
+  }
+  #alertTimelineSection .alert-point-popover-text{
+    font-size:10.5px !important;
+    line-height:1.55 !important;
+  }
+}
+</style>
 <style>
 /* ===== Alert chart reference design ===== */
 .alert-reference-card{
@@ -3521,7 +3978,7 @@ function closeWeatherShare() {
   .alert-reference-note-icon{width:29px;height:29px;font-size:17px}
 }
 </style>
-</html>
+
 <style>
 /* ملخص جوي مختصر */
 .weather-explanation-box{padding:16px 18px!important}
@@ -3535,6 +3992,7 @@ function closeWeatherShare() {
 .bulletin-note,.summary-advice{font-size:11.5px!important;padding:8px 10px!important}
 </style>
 
+<style>
 /* ===== Final premium alert chart: frameless + elegant line ===== */
 .alert-timeline-card{
   border:0 !important;
@@ -3570,6 +4028,7 @@ function closeWeatherShare() {
 /* أنحف بصرياً لكن أكثر بروزاً */
 .alert-timeline-card + *{}
 
+</style>
 <style>
 /* ===== Current-day activity + premium weather summary/share ===== */
 .weather-summary-compact{
@@ -3596,10 +4055,148 @@ function closeWeatherShare() {
 }
 .current-share-btn:hover{box-shadow:0 9px 22px rgba(8,123,136,.15)!important;transform:translateY(-1px)}
 #activityDaysPicker{display:none!important}
-@media(max-width:700px){
-  .weather-summary-compact{align-items:stretch !important; flex-direction:column !important; gap:10px !important;}
-  .weather-summary-main{align-items:flex-start !important;}
-  .current-share-row{justify-content:flex-start !important;}
+@media(max-width:900px){
+  .weather-summary-compact{
+    display:grid !important;
+    grid-template-columns:minmax(0,1fr) auto !important;
+    align-items:center !important;
+    gap:12px !important;
+    padding:13px 14px !important;
+  }
+  .weather-summary-main{
+    min-width:0 !important;
+    display:grid !important;
+    grid-template-columns:auto minmax(0,1fr) !important;
+    align-items:center !important;
+    gap:12px !important;
+  }
+  .weather-summary-title{
+    padding-inline-end:12px !important;
+    margin:0 !important;
+    white-space:nowrap !important;
+  }
+  .weather-summary-text{
+    min-width:0 !important;
+    margin:0 !important;
+  }
+  .current-share-row{
+    margin:0 !important;
+    justify-content:flex-end !important;
+    align-items:center !important;
+  }
   .current-share-menu,.current-share-btn{width:auto !important;}
 }
+
+@media(max-width:600px){
+  .weather-summary-compact{
+    grid-template-columns:1fr auto !important;
+    gap:10px !important;
+    padding:12px !important;
+  }
+  .weather-summary-main{
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:flex-start !important;
+    gap:6px !important;
+  }
+  .weather-summary-title{
+    padding:0 !important;
+    border:0 !important;
+    font-size:13px !important;
+    line-height:1.3 !important;
+  }
+  .weather-summary-text{
+    font-size:12.5px !important;
+    line-height:1.65 !important;
+  }
+  .current-share-row{
+    align-self:start !important;
+  }
+  .current-share-btn{
+    min-height:36px !important;
+    padding:7px 10px !important;
+    font-size:12px !important;
+  }
+}
+
+@media(max-width:390px){
+  .weather-summary-compact{
+    grid-template-columns:1fr !important;
+  }
+  .current-share-row{
+    justify-content:flex-start !important;
+  }
+}
+
+/* ===== Alert chart balanced sizing ===== */
+.alert-chart-wrap{
+  box-sizing:border-box !important;
+  padding-top:24px !important;
+  padding-bottom:22px !important;
+}
+@media(max-width:700px){
+  .alert-chart-wrap{
+    height:330px !important;
+    min-height:330px !important;
+    padding:18px 12px 16px !important;
+  }
+}
 </style>
+
+
+
+<style>
+/* ===== Alert heading icon — clean site-matching style ===== */
+#alertTimelineSection .alert-reference-icon{
+  width:42px !important;
+  height:42px !important;
+  border-radius:12px !important;
+  background:linear-gradient(145deg,#eefafa,#e4f4f5) !important;
+  color:#087b88 !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  flex:0 0 42px !important;
+  transform:none !important;
+  font-size:0 !important;
+  border:1px solid rgba(8,123,136,.12) !important;
+  box-shadow:0 4px 12px rgba(8,123,136,.07) !important;
+}
+#alertTimelineSection .alert-reference-icon svg{
+  width:22px !important;
+  height:22px !important;
+  display:block !important;
+}
+@media(max-width:700px){
+  #alertTimelineSection .alert-reference-icon{
+    width:36px !important;
+    height:36px !important;
+    flex-basis:36px !important;
+    border-radius:10px !important;
+  }
+  #alertTimelineSection .alert-reference-icon svg{
+    width:19px !important;
+    height:19px !important;
+  }
+}
+</style>
+
+<script>
+/* افتح الموقع دائماً من أعلى الصفحة عند الزيارة الأولى */
+(function(){
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+
+  function openAtTop(){
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  }
+
+  window.addEventListener('pageshow', openAtTop);
+  window.addEventListener('load', () => {
+    openAtTop();
+    setTimeout(openAtTop, 80);
+    setTimeout(openAtTop, 300);
+  });
+})();
+</script>
+</body>
+</html>
