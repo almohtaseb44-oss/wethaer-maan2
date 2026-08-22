@@ -375,10 +375,11 @@
     .alert-dot.orange{background:#f97316;color:#f97316}
     .alert-dot.red{background:#ef4444;color:#ef4444}
     .alert-chart-wrap{height:280px;margin-top:14px;position:relative;background:#ffffff;border:1px solid #dbe7ec;border-radius:18px;padding:10px;box-shadow:inset 0 0 18px rgba(13,91,105,.035),0 10px 24px rgba(13,91,105,.08);overflow:visible}
-    .alert-point-popover{position:absolute;z-index:8;min-width:220px;max-width:310px;padding:12px 14px;border-radius:14px;background:rgba(8,15,30,.97);border:1px solid rgba(255,255,255,.22);box-shadow:0 16px 38px rgba(0,0,0,.38),0 0 22px rgba(255,255,255,.08);color:#fff;direction:rtl;pointer-events:none;transform:translate(-50%,-112%);backdrop-filter:blur(10px)}
+    .alert-point-popover{position:absolute!important;z-index:20;min-width:220px;max-width:310px;padding:12px 14px;border-radius:14px;background:rgba(8,15,30,.97);border:1px solid rgba(255,255,255,.22);box-shadow:0 16px 38px rgba(0,0,0,.38),0 0 22px rgba(255,255,255,.08);color:#fff;direction:rtl;pointer-events:none;transform:translate(-50%,calc(-100% - 14px))!important;backdrop-filter:blur(10px);margin:0!important}
     .alert-point-popover::after{content:"";position:absolute;left:50%;bottom:-7px;width:12px;height:12px;background:rgba(8,15,30,.97);border-right:1px solid rgba(255,255,255,.22);border-bottom:1px solid rgba(255,255,255,.22);transform:translateX(-50%) rotate(45deg)}
     .alert-point-popover-title{font-size:13px;font-weight:900;margin-bottom:5px}.alert-point-popover-text{font-size:11.5px;line-height:1.65;color:#d7e2ee;font-weight:600}
     .alert-detail-box{
+      display:none!important;
       min-height:70px;
       margin-top:10px;
       padding:12px 15px;
@@ -405,6 +406,66 @@
     .chart-tab-btn:hover { background: rgba(255,255,255,0.1); color: #fff; border-color: rgba(56, 189, 248, 0.4); }
     .chart-tab-btn.active { background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%); color: #0f172a; font-weight: 900; border-color: transparent; box-shadow: 0 4px 22px rgba(0, 242, 254, 0.4); transform: translateY(-2px); }
     .chart-canvas-wrapper { position: relative; width: 100%; height: 280px; z-index: 2; }
+
+    /* توحيد تصميم رسم الـ24 ساعة مع مؤشر التنبيه الجوي */
+    #hourly .chart-container-box{
+      min-height:0;
+      margin-top:18px;
+      padding:22px;
+      overflow:hidden;
+      border:1px solid #d9e9ee;
+      border-radius:24px;
+      background:linear-gradient(145deg,#ffffff 0%,#fbfeff 55%,#f1f9fb 100%);
+      box-shadow:0 18px 42px rgba(8,64,78,.10),inset 0 1px 0 rgba(255,255,255,.9);
+    }
+    #hourly .chart-container-box::before{
+      inset:0;
+      width:auto;
+      height:auto;
+      background:radial-gradient(circle at 10% 15%,rgba(22,184,194,.10),transparent 28%),radial-gradient(circle at 90% 85%,rgba(37,99,235,.07),transparent 26%);
+    }
+    #hourly .chart-btn-group{position:relative;z-index:2;gap:9px;margin-bottom:16px;}
+    #hourly .chart-tab-btn{
+      min-width:110px;
+      padding:9px 13px;
+      border:1px solid #dfeaed;
+      border-radius:13px;
+      background:#fff;
+      color:#536b78;
+      box-shadow:0 5px 14px rgba(15,71,84,.05);
+      backdrop-filter:none;
+    }
+    #hourly .chart-tab-btn:hover{
+      background:#f4fbfc;
+      color:#087b88;
+      border-color:#b9dfe3;
+      box-shadow:0 7px 18px rgba(13,91,105,.09);
+    }
+    #hourly .chart-tab-btn.active{
+      background:linear-gradient(135deg,#e9f9fa,#f7fdfe);
+      color:#087b88;
+      border-color:#9fd8dd;
+      box-shadow:0 7px 18px rgba(22,184,194,.13);
+      transform:translateY(-1px);
+    }
+    #hourly .chart-canvas-wrapper{
+      height:300px;
+      position:relative;
+      z-index:2;
+      padding:12px 4px;
+      background:rgba(255,255,255,.72);
+      border-radius:0;
+      box-shadow:0 10px 30px rgba(13,91,105,.06),inset 0 1px 0 rgba(255,255,255,.9);
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+    }
+    #hourly .chart-canvas-wrapper canvas{filter:drop-shadow(0 3px 5px rgba(8,123,136,.14));}
+    @media(max-width:700px){
+      #hourly .chart-container-box{padding:16px;}
+      #hourly .chart-btn-group{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));}
+      #hourly .chart-tab-btn{min-width:0;font-size:11px;padding:8px 7px;}
+      #hourly .chart-canvas-wrapper{height:260px;}
+    }
     /* رسم الأيام القادمة: مساحة أفقية كافية لكل يوم لمنع تداخل أسماء الأيام والتواريخ */
     #daysSection .chart-canvas-wrapper {
       overflow-x: auto;
@@ -959,7 +1020,39 @@
 .activity-day-btn .day-name{display:block;font-size:11px}
 .activity-day-btn .day-date{display:block;font-size:9px;color:#789080;margin-top:3px}
 
-  </style>
+  
+/* تحسينات وضوح مؤشر الخطورة الجوية */
+.alert-current-status{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;margin:4px 0 14px;padding:14px 16px;border:1px solid #dfeaed;border-radius:16px;background:linear-gradient(135deg,#fbfeff,#f5fafb);position:relative;z-index:2}
+.alert-current-badge{display:inline-flex;align-items:center;gap:8px;min-width:125px;justify-content:center;padding:10px 14px;border-radius:999px;font-size:13px;font-weight:900;border:1px solid transparent;white-space:nowrap}
+.alert-current-badge.green{background:#ecfdf5;color:#047857;border-color:#a7f3d0}.alert-current-badge.yellow{background:#fffbeb;color:#b45309;border-color:#fde68a}.alert-current-badge.orange{background:#fff7ed;color:#c2410c;border-color:#fdba74}.alert-current-badge.red{background:#fef2f2;color:#b91c1c;border-color:#fecaca}
+.alert-current-dot{width:10px;height:10px;border-radius:50%;background:currentColor;box-shadow:0 0 0 4px rgba(15,23,42,.04)}
+.alert-current-copy strong{display:block;color:#12344a;font-size:14px;margin-bottom:4px}.alert-current-copy span{display:block;color:#526c79;font-size:12px;line-height:1.65;font-weight:700}
+.alert-auto-disclaimer{margin-top:10px;padding:11px 13px;border-radius:12px;background:#f8fafc;border:1px dashed #cbd5e1;color:#52606d;font-size:11.5px;line-height:1.7;font-weight:700}
+@media(max-width:700px){.alert-current-status{grid-template-columns:1fr;gap:9px}.alert-current-badge{width:max-content;min-width:0}.alert-current-copy strong{font-size:13px}.alert-current-copy span,.alert-auto-disclaimer{font-size:11px}}
+
+/* مؤشر التنبيه: نافذة تفاصيل واحدة فقط، ومثبتة فوق النقطة على الهاتف */
+#alertTimelineSection .alert-detail-box{display:none!important;}
+#alertTimelineSection .alert-chart-wrap{overflow:visible!important;}
+#alertTimelineSection #alertPointPopover{
+  position:absolute!important;
+  z-index:30!important;
+  margin:0!important;
+  bottom:auto!important;
+  transform:translate(-50%,calc(-100% - 12px))!important;
+}
+@media(max-width:700px){
+  #alertTimelineSection #alertPointPopover{
+    min-width:0!important;
+    width:min(230px,calc(100vw - 44px))!important;
+    max-width:calc(100vw - 44px)!important;
+    padding:10px 12px!important;
+    transform:translate(-50%,calc(-100% - 10px))!important;
+  }
+  #alertTimelineSection .alert-point-popover-title{font-size:12px!important;}
+  #alertTimelineSection .alert-point-popover-text{font-size:11px!important;line-height:1.55!important;}
+}
+
+</style>
 
 <style>
 .current-details-accordion{
@@ -1132,6 +1225,124 @@
   #alertTimelineSection .alert-mini-item b{font-size:9.8px !important}
 }
 </style>
+
+<style id="share-menu-simple-style">
+/* ===== مشاركة بسيطة ومتناسقة مع هوية الموقع ===== */
+.current-share-dropdown{
+  min-width:230px !important;
+  padding:7px !important;
+  border:1px solid #dbecef !important;
+  border-radius:15px !important;
+  background:rgba(255,255,255,.98) !important;
+  box-shadow:0 12px 28px rgba(13,91,105,.12) !important;
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+.current-share-dropdown.open{
+  display:grid !important;
+  grid-template-columns:1fr 1fr !important;
+  gap:6px !important;
+}
+.current-share-dropdown .share-btn{
+  min-height:38px !important;
+  padding:7px 9px !important;
+  border:1px solid #e2eef0 !important;
+  border-radius:10px !important;
+  background:#fff !important;
+  color:#24485b !important;
+  box-shadow:none !important;
+  font-size:11.5px !important;
+  font-weight:800 !important;
+  justify-content:flex-start !important;
+  gap:6px !important;
+  transition:.18s ease !important;
+}
+.current-share-dropdown .share-btn:hover{
+  background:#f2fbfc !important;
+  border-color:#bfe6ea !important;
+  color:#087b88 !important;
+  transform:translateY(-1px);
+}
+.current-share-dropdown .share-btn-native{
+  grid-column:1/-1 !important;
+  background:linear-gradient(135deg,#f1fbfc,#ffffff) !important;
+  border-color:#c9e9ec !important;
+  color:#087b88 !important;
+}
+.current-share-dropdown .share-btn-copy{
+  grid-column:1/-1 !important;
+}
+.current-share-dropdown .share-btn-wa,
+.current-share-dropdown .share-btn-tg,
+.current-share-dropdown .share-btn-fb,
+.current-share-dropdown .share-btn-x,
+.current-share-dropdown .share-btn-li{
+  color:#24485b !important;
+}
+
+/* نافذة معاينة الصورة */
+.share-preview-modal{
+  width:min(94vw,620px) !important;
+  max-height:92vh !important;
+  padding:14px !important;
+  border-radius:22px !important;
+  background:#ffffff !important;
+  border:1px solid #dbecef !important;
+  box-shadow:0 24px 70px rgba(13,91,105,.22) !important;
+}
+.share-preview-modal canvas{
+  border-radius:16px !important;
+  box-shadow:0 10px 26px rgba(13,91,105,.10) !important;
+  border:1px solid #e2eef0 !important;
+}
+.share-preview-actions.social-share-actions{
+  display:grid !important;
+  grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+  gap:7px !important;
+  margin-top:10px !important;
+}
+.share-preview-actions .share-action{
+  min-height:40px !important;
+  padding:7px 8px !important;
+  border-radius:10px !important;
+  border:1px solid #e2eef0 !important;
+  background:#fff !important;
+  color:#24485b !important;
+  font-size:11px !important;
+  font-weight:800 !important;
+  box-shadow:none !important;
+  transition:.18s ease !important;
+}
+.share-preview-actions .share-action:hover{
+  background:#f2fbfc !important;
+  border-color:#bfe6ea !important;
+  color:#087b88 !important;
+  transform:translateY(-1px);
+}
+.share-preview-actions .share-action-native,
+.share-preview-actions .share-action-download{
+  background:linear-gradient(135deg,#f1fbfc,#ffffff) !important;
+  border-color:#c9e9ec !important;
+  color:#087b88 !important;
+}
+.share-preview-actions .share-action-download{
+  grid-column:auto !important;
+}
+.share-preview-note{
+  color:#6c8190 !important;
+  font-size:11px !important;
+  margin-top:8px !important;
+}
+@media(max-width:560px){
+  .current-share-dropdown.open{
+    grid-template-columns:1fr 1fr !important;
+  }
+  .share-preview-actions.social-share-actions{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+}
+</style>
+
 </head>
 <body>
   <!-- Google Tag Manager (noscript) -->
@@ -1281,21 +1492,29 @@
 </span> مؤشر التنبيه الجوي</h3>
         </div>
       </div>
+      <div class="alert-current-status" id="alertCurrentStatus" aria-live="polite">
+        <div class="alert-current-badge green" id="alertCurrentBadge"><i class="alert-current-dot"></i><span id="alertCurrentLevel">طبيعي — أخضر</span></div>
+        <div class="alert-current-copy">
+          <strong id="alertCurrentHeadline">مستوى الخطورة الحالي: منخفض</strong>
+          <span id="alertCurrentReason">جاري تحليل أبرز المؤثرات الجوية خلال الساعات القادمة...</span>
+        </div>
+      </div>
       <div class="alert-chart-wrap alert-reference-chart-wrap">
         <canvas id="alertTimelineChart"></canvas>
       </div>
       <div class="alert-point-popover" id="alertPointPopover" hidden></div>
       <div class="alert-mini-legend alert-reference-legend" aria-label="تعريف مستويات التنبيه">
-        <div class="alert-mini-item"><i class="alert-line-dot green"></i><span><b>أخضر — منخفض</b><small>أجواء مستقرة ولا مؤثرات مهمة.</small></span></div>
-        <div class="alert-mini-item"><i class="alert-line-dot yellow"></i><span><b>أصفر — متوسط</b><small>مؤثرات تستدعي الانتباه والاستعداد.</small></span></div>
-        <div class="alert-mini-item"><i class="alert-line-dot orange"></i><span><b>برتقالي — مرتفع</b><small>تأثيرات قوية قد تعطل بعض الأنشطة.</small></span></div>
-        <div class="alert-mini-item"><i class="alert-line-dot red"></i><span><b>أحمر — خطير</b><small>ظروف شديدة تستلزم الحذر وتجنب التعرض.</small></span></div>
+        <div class="alert-mini-item"><i class="alert-line-dot green"></i><span><b>طبيعي — أخضر</b><small>لا توجد مؤثرات جوية مهمة.</small></span></div>
+        <div class="alert-mini-item"><i class="alert-line-dot yellow"></i><span><b>انتباه — أصفر</b><small>مؤثرات تستدعي الانتباه.</small></span></div>
+        <div class="alert-mini-item"><i class="alert-line-dot orange"></i><span><b>تحذير — برتقالي</b><small>تأثيرات قوية قد تعطل بعض الأنشطة.</small></span></div>
+        <div class="alert-mini-item"><i class="alert-line-dot red"></i><span><b>خطر شديد — أحمر</b><small>ظروف شديدة تستلزم الحذر وتجنب التعرض.</small></span></div>
       </div>
       <div class="alert-reference-note">
         <span class="alert-reference-note-icon">ⓘ</span>
         <div>
-          <div><strong>كيف تُقرأ الألوان؟</strong> يعتمد مستوى التنبيه على أعلى مؤشر مؤثر خلال الفترة، مثل الرياح والهبات، شدة الهطول، الثلوج، ضعف الرؤية، الحرارة/البرودة، العواصف الرعدية ومؤشر UV.</div>
+          <div><strong>كيف تُقرأ الألوان؟</strong> يعتمد مؤشر الخطورة على أعلى عامل جوي مؤثر خلال الفترة، مثل الرياح والهبات، شدة الهطول، الثلوج، ضعف الرؤية، الحرارة/البرودة، العواصف الرعدية ومؤشر UV.</div>
           <div>يعرض الرسم <strong>12 ساعة قادمة</strong> مع نقطة كل <strong>ساعتين</strong>، وكلما ارتفع الخط زادت شدة الحالة الجوية.</div>
+          <div class="alert-auto-disclaimer">هذا مؤشر آلي إرشادي مبني على بيانات وتوقعات الطقس، ولا يمثل تحذيرًا رسميًا صادرًا عن جهة حكومية. عند الحالات الشديدة يُنصح بالرجوع إلى الجهات الرسمية المختصة.</div>
         </div>
       </div>
     </section>
@@ -2648,10 +2867,10 @@ function getAlertTimelineLevel(row){
 
 function getAlertTimelineMeta(level){
   return [
-    {name:'مستقر', color:'#10b981'},
-    {name:'تنبيه', color:'#f59e0b'},
-    {name:'مرتفع', color:'#f97316'},
-    {name:'خطير', color:'#ef4444'}
+    {name:'طبيعي', color:'#10b981'},
+    {name:'انتباه', color:'#f59e0b'},
+    {name:'تحذير', color:'#f97316'},
+    {name:'خطر شديد', color:'#ef4444'}
   ][Math.max(0,Math.min(3,Number(level)||0))];
 }
 
@@ -2734,6 +2953,26 @@ function updateAlertTimelineChart(){
     {hour:'numeric',minute:'2-digit',hour12:true}
   ));
 
+  // إبراز أعلى مستوى متوقع خلال نافذة الـ 12 ساعة وسبب الوصول إليه.
+  const peakLevel=Math.max(...levels);
+  const peakIndex=levels.indexOf(peakLevel);
+  const peakMeta=getAlertTimelineMeta(peakLevel);
+  const levelClasses=['green','yellow','orange','red'];
+  const levelColorNames=['أخضر','أصفر','برتقالي','أحمر'];
+  const headlineLabels=['منخفض','يستدعي الانتباه','مرتفع','شديد'];
+  const badge=document.getElementById('alertCurrentBadge');
+  const levelEl=document.getElementById('alertCurrentLevel');
+  const headlineEl=document.getElementById('alertCurrentHeadline');
+  const reasonEl=document.getElementById('alertCurrentReason');
+  if(badge){badge.classList.remove('green','yellow','orange','red');badge.classList.add(levelClasses[peakLevel]);}
+  if(levelEl) levelEl.textContent=`${peakMeta.name} — ${levelColorNames[peakLevel]}`;
+  if(headlineEl) headlineEl.textContent=`مستوى الخطورة خلال 12 ساعة: ${headlineLabels[peakLevel]}`;
+  if(reasonEl){
+    const peakTime=labels[peakIndex]||'';
+    const reason=getAlertTimelineReason(rows[peakIndex],peakLevel);
+    reasonEl.textContent=peakLevel===0 ? 'لا تظهر مؤثرات جوية مهمة خلال نافذة التوقع الحالية.' : `السبب الأبرز قرب ${peakTime}: ${reason}`;
+  }
+
   if(window.alertTimelineChartInstance) window.alertTimelineChartInstance.destroy();
 
   const ctx=canvas.getContext('2d');
@@ -2751,7 +2990,7 @@ function updateAlertTimelineChart(){
     afterDatasetsDraw(chart){
       const {ctx,chartArea,scales}=chart;
       if(!chartArea || !scales.y) return;
-      const labels=['منخفض','متوسط','مرتفع','خطير'];
+      const labels=['طبيعي','انتباه','تحذير','خطر شديد'];
       const dots=[colors.green,colors.yellow,colors.orange,colors.red];
       ctx.save();
       ctx.textAlign='right';
@@ -2816,7 +3055,7 @@ function updateAlertTimelineChart(){
       plugins:{
         legend:{display:false},
         tooltip:{
-          enabled: window.innerWidth > 700,
+          enabled:false,
           rtl:currentLang==='ar',
           displayColors:false,
           backgroundColor:'rgba(8,15,30,.96)',
@@ -2861,14 +3100,57 @@ function updateAlertTimelineChart(){
         if(!elements.length){if(pop)pop.hidden=true;return;}
         const i=elements[0].index,row=rows[i],level=levels[i],meta=getAlertTimelineMeta(level);
         if(pop){
-          pop.innerHTML=`<div class="alert-point-popover-title" style="color:${colorForLevel(level)}">${meta.name} — ${labels[i]}</div><div class="alert-point-popover-text"><b>لماذا هذا اللون؟</b><br>${getAlertTimelineReason(row,level)}</div>`;
+          // الضغط على نفس النقطة مرة ثانية يغلق الشرح.
+          if(!pop.hidden && pop.dataset.pointIndex === String(i)){
+            pop.hidden=true;
+            pop.dataset.pointIndex='';
+            return;
+          }
+          const colorNames=['أخضر','أصفر','برتقالي','أحمر'];
+          pop.innerHTML=`<div class="alert-point-popover-title" style="color:${colorForLevel(level)}">${colorNames[level]} — ${meta.name} — ${labels[i]}</div><div class="alert-point-popover-text"><b>لماذا هذا اللون؟</b><br>${getAlertTimelineReason(row,level)}</div>`;
+          pop.dataset.pointIndex=String(i);
           pop.hidden=false;
           const pos=window.alertTimelineChartInstance.getDatasetMeta(0).data[i];
-          if(pos){pop.style.left=pos.x+'px';pop.style.top=pos.y+'px';}
+          if(pos){
+            const canvasEl=window.alertTimelineChartInstance.canvas;
+            const wrap=canvasEl.closest('.alert-chart-wrap');
+            const canvasRect=canvasEl.getBoundingClientRect();
+            const wrapRect=wrap.getBoundingClientRect();
+            let left=(canvasRect.left-wrapRect.left)+pos.x;
+            const top=(canvasRect.top-wrapRect.top)+pos.y;
+
+            pop.style.bottom='auto';
+            pop.style.top=top+'px';
+            pop.style.left=left+'px';
+
+            // بعد إظهاره، امنعه من الخروج عن جانبي الشاشة مع إبقائه فوق النقطة.
+            requestAnimationFrame(()=>{
+              const half=(pop.offsetWidth||220)/2;
+              const minLeft=half+8;
+              const maxLeft=wrap.clientWidth-half-8;
+              if(maxLeft>minLeft){
+                left=Math.max(minLeft,Math.min(maxLeft,left));
+                pop.style.left=left+'px';
+              }
+            });
+          }
         }
       }
     },
     plugins:[alertReferencePlugin,shadowPlugin]
+  });
+}
+
+// إغلاق شرح نقطة مؤشر التنبيه عند الضغط في أي مكان خارج الرسم، مثل رسم الـ24 ساعة.
+if(!window.__alertPointPopoverDismissBound){
+  window.__alertPointPopoverDismissBound=true;
+  document.addEventListener('click',function(e){
+    const pop=document.getElementById('alertPointPopover');
+    if(!pop || pop.hidden) return;
+    const chartWrap=document.querySelector('#alertTimelineSection .alert-chart-wrap');
+    if(chartWrap && chartWrap.contains(e.target)) return;
+    pop.hidden=true;
+    pop.dataset.pointIndex='';
   });
 }
 
@@ -2890,7 +3172,23 @@ function updateTodayChart() {
 
   if (todayChartInstance) todayChartInstance.destroy();
   const options = getChartInteractionOptions();
-  options.scales.y.title = { display: true, text: activeTodayMetric === 'humidity' || activeTodayMetric === 'pop' ? 'النسبة المئوية' : 'كمية / سرعة' , color: '#94a3b8', font: { family: 'Tahoma', weight: 'bold' } };
+  // الرسم الساعي يتبع الآن نفس الهوية الفاتحة والهادئة لرسم التنبيهات.
+  options.interaction = { mode: 'nearest', intersect: false };
+  options.layout = { padding: window.innerWidth <= 700 ? {top:12,right:8,bottom:8,left:8} : {top:14,right:18,bottom:8,left:12} };
+  options.plugins.legend.labels.color = '#536b78';
+  options.plugins.legend.labels.padding = 14;
+  options.plugins.tooltip.backgroundColor = 'rgba(8,15,30,.96)';
+  options.plugins.tooltip.bodyColor = '#d7e2ee';
+  options.plugins.tooltip.borderColor = 'rgba(255,255,255,.16)';
+  options.plugins.zoom.zoom.drag.backgroundColor = 'rgba(22,184,194,.08)';
+  options.plugins.zoom.zoom.drag.borderColor = 'rgba(8,123,136,.42)';
+  options.scales.x.ticks.color = '#24485b';
+  options.scales.x.ticks.font = { family:'Tahoma', size: window.innerWidth <= 700 ? 10 : 12, weight:'800' };
+  options.scales.x.grid = { color:'rgba(99,115,125,.12)', borderDash:[3,5], drawBorder:false, drawTicks:false };
+  options.scales.y.ticks.color = '#607783';
+  options.scales.y.ticks.font = { family:'Tahoma', size:11, weight:'700' };
+  options.scales.y.grid = { color:'rgba(99,115,125,.13)', borderDash:[3,5], drawBorder:false, drawTicks:false };
+  options.scales.y.title = { display: true, text: activeTodayMetric === 'humidity' || activeTodayMetric === 'pop' ? 'النسبة المئوية' : 'كمية / سرعة' , color: '#607783', font: { family: 'Tahoma', weight: 'bold' } };
 
   todayChartInstance = new Chart(ctx, {
     type: 'line',
@@ -2899,7 +3197,7 @@ function updateTodayChart() {
       datasets: activeTodayMetric === 'wind' ? [
         { label: 'سرعة الرياح (كم/س)', data: currentHourlyData.wind_speed_10m.slice(0, 24), borderColor: '#fbbf24', backgroundColor: 'rgba(251,191,36,.12)', fill: true, tension: .38, borderWidth: 3, pointRadius: 2.5, pointHoverRadius: 6, pointHitRadius: 14 },
         { label: 'هبات الرياح (كم/س)', data: (currentHourlyData.wind_gusts_10m || currentHourlyData.wind_speed_10m).slice(0, 24), borderColor: '#fb7185', backgroundColor: 'transparent', fill: false, tension: .38, borderWidth: 2.5, borderDash: [8,5], pointRadius: 2.5, pointHoverRadius: 6, pointHitRadius: 14 }
-      ] : [{ label: labelText, data: datasetData, borderColor: color, backgroundColor: color + '20', fill: true, tension: .38, borderWidth: 3, pointRadius: 2.5, pointHoverRadius: 6, pointHitRadius: 14, pointBackgroundColor: color, pointBorderColor: '#0f172a', pointBorderWidth: 2 }]
+      ] : [{ label: labelText, data: datasetData, borderColor: color, backgroundColor: color + '20', fill: true, tension: .38, borderWidth: 3, pointRadius: 2.5, pointHoverRadius: 6, pointHitRadius: 14, pointBackgroundColor: color, pointBorderColor: '#fff', pointBorderWidth: 2 }]
     },
     options
   });
@@ -3170,231 +3468,243 @@ function drawWeatherShareCard() {
   const canvas = document.getElementById('weatherShareCanvas');
   if (!d || !canvas) return false;
 
-  // ارتفاع أكبر لإضافة الرسم البياني بشكل واضح داخل الصورة.
   canvas.width = 1200;
-  canvas.height = 1700;
+  canvas.height = 1600;
 
   const ctx = canvas.getContext('2d');
   const W = canvas.width, H = canvas.height;
   ctx.clearRect(0,0,W,H);
   ctx.direction='rtl';
+  ctx.textBaseline='alphabetic';
 
-  const night = !d.isDay;
+  // ===== خلفية نظيفة جداً مع بطاقة رئيسية واضحة =====
+  ctx.fillStyle='#f3f8f9';
+  ctx.fillRect(0,0,W,H);
 
-  // Premium social-share card.
-  const bg = ctx.createLinearGradient(0,0,W,H);
-  bg.addColorStop(0, night ? '#050816' : '#06131d');
-  bg.addColorStop(.48, night ? '#11152d' : '#0a2430');
-  bg.addColorStop(1, '#050b12');
-  ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+  const topGlow=ctx.createRadialGradient(1020,80,20,1020,80,480);
+  topGlow.addColorStop(0,'rgba(22,184,194,.14)');
+  topGlow.addColorStop(1,'rgba(22,184,194,0)');
+  ctx.fillStyle=topGlow; ctx.fillRect(0,0,W,520);
 
-  const glow1 = ctx.createRadialGradient(980,190,20,980,190,600);
-  glow1.addColorStop(0, night ? 'rgba(99,102,241,.22)' : 'rgba(45,212,191,.22)');
-  glow1.addColorStop(1, 'rgba(45,212,191,0)');
-  ctx.fillStyle=glow1; ctx.fillRect(0,0,W,H);
+  ctx.save();
+  ctx.shadowColor='rgba(15,74,88,.13)';
+  ctx.shadowBlur=38; ctx.shadowOffsetY=15;
+  roundRect(ctx,46,42,W-92,H-84,36);
+  ctx.fillStyle='#ffffff'; ctx.fill();
+  ctx.restore();
+  roundRect(ctx,46,42,W-92,H-84,36);
+  ctx.strokeStyle='#cfe3e7'; ctx.lineWidth=2.5; ctx.stroke();
 
-  const glow2 = ctx.createRadialGradient(160,1280,20,160,1280,430);
-  glow2.addColorStop(0,'rgba(56,189,248,.10)');
-  glow2.addColorStop(1,'rgba(56,189,248,0)');
-  ctx.fillStyle=glow2; ctx.fillRect(0,0,W,H);
+  // شريط هوية علوي بسيط.
+  roundRect(ctx,82,76,W-164,8,4);
+  const accent=ctx.createLinearGradient(82,0,W-82,0);
+  accent.addColorStop(0,'#0ea5b2'); accent.addColorStop(.5,'#16b8c2'); accent.addColorStop(1,'#8ddde2');
+  ctx.fillStyle=accent; ctx.fill();
 
-  ctx.globalAlpha=.045; ctx.strokeStyle='#dffcff'; ctx.lineWidth=1;
-  for(let x=0;x<W;x+=80){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
-  for(let y=0;y<H;y+=80){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
-  ctx.globalAlpha=1;
-
-  // Top brand strip.
-  roundRect(ctx,58,48,W-116,72,22);
-  ctx.fillStyle='rgba(255,255,255,.045)'; ctx.fill();
-  ctx.strokeStyle='rgba(103,232,249,.13)'; ctx.lineWidth=1.5; ctx.stroke();
+  // ===== اسم المنطقة — العنصر الأبرز =====
   ctx.textAlign='right';
-  ctx.fillStyle='#5eead4'; ctx.font='900 24px Arial';
-  ctx.fillText('MAAN WEATHER',W-86,79);
-  ctx.fillStyle='rgba(226,252,255,.62)'; ctx.font='700 17px Arial';
-  ctx.fillText('LIVE WEATHER',W-86,103);
-  ctx.textAlign='left'; ctx.fillStyle='#ffffff'; ctx.font='800 18px Arial';
-  ctx.fillText('طقس مباشر',86,92);
-
-  ctx.textAlign='right'; ctx.fillStyle='#ffffff'; ctx.font='900 52px Arial';
-  ctx.fillText('حالة الطقس الآن',W-72,182);
-  ctx.fillStyle='rgba(226,252,255,.66)'; ctx.font='600 23px Arial';
-  ctx.fillText(d.date,W-72,220);
-
-  roundRect(ctx,72,255,395,58,18);
-  ctx.fillStyle=night?'rgba(99,102,241,.18)':'rgba(16,185,129,.14)'; ctx.fill();
-  ctx.strokeStyle=night?'rgba(129,140,248,.48)':'rgba(52,211,153,.38)'; ctx.lineWidth=2; ctx.stroke();
-  ctx.textAlign='center'; ctx.font='900 20px Arial'; ctx.fillStyle=night?'#c7d2fe':'#86efac';
-  ctx.fillText(`${night ? '🌙' : '☀️'} ${d.dayLabel} • مُحدث ${d.updatedAt}`,270,292);
-
-  // Hero weather card.
-  roundRect(ctx,58,345,W-116,360,32);
-  const hero=ctx.createLinearGradient(58,345,W-58,705);
-  hero.addColorStop(0, night ? 'rgba(49,46,129,.48)' : 'rgba(14,116,144,.42)');
-  hero.addColorStop(1, 'rgba(15,23,42,.90)');
-  ctx.fillStyle=hero; ctx.fill();
-  ctx.strokeStyle='rgba(103,232,249,.20)'; ctx.lineWidth=2; ctx.stroke();
-
-  ctx.textAlign='right'; ctx.fillStyle='#fff'; ctx.font='900 48px Arial';
-  ctx.fillText(d.place,W-94,415);
-  ctx.fillStyle='rgba(226,252,255,.66)'; ctx.font='600 24px Arial';
-  ctx.fillText(d.sub,W-94,455);
-
-  ctx.textAlign='left'; ctx.fillStyle='#fff'; ctx.font='900 142px Arial';
-  ctx.fillText(`${d.temp}°`,88,615);
-  ctx.textAlign='right'; ctx.font='800 34px Arial'; ctx.fillStyle='#e6fbff';
-  ctx.fillText(d.cond,W-94,530);
-  ctx.font='600 24px Arial'; ctx.fillStyle='rgba(226,252,255,.72)';
-  ctx.fillText(`المحسوسة ${d.feels}°م  •  ${d.windDir}`,W-94,574);
-
-  const severe = d.gust >= 55 || d.wind >= 45 || d.pop >= 75;
-  roundRect(ctx,88,635,410,50,16);
-  ctx.fillStyle=severe?'rgba(239,68,68,.20)':'rgba(16,185,129,.16)'; ctx.fill();
-  ctx.strokeStyle=severe?'rgba(248,113,113,.48)':'rgba(52,211,153,.32)'; ctx.stroke();
-  ctx.textAlign='center'; ctx.font='900 19px Arial'; ctx.fillStyle=severe?'#fca5a5':'#86efac';
-  ctx.fillText(severe?'⚠ ظروف جوية تستدعي الانتباه':'✓ الحالة الجوية مستقرة حالياً',293,667);
-
-  // Metrics section.
-  ctx.textAlign='right'; ctx.fillStyle='#e6fbff'; ctx.font='900 30px Arial';
-  ctx.fillText('أهم التفاصيل',W-72,770);
-  const metrics=[
-    ['الرياح',`${d.wind} كم/س`,'الهبات',`${d.gust} كم/س`],
-    ['الرطوبة',`${d.humidity}%`,'الضغط',`${d.pressure} hPa`],
-    ['احتمال الهطول',`${d.pop}%`,'الهطول الآن',`${d.precipitation} مم`],
-    ['ثلوج اليوم',`${d.snow} سم`,'مطر اليوم',`${d.rain} مم`]
-  ];
-  metrics.forEach((m,i)=>{
-    const col=i%2, row=Math.floor(i/2), x=72+col*540, y=805+row*125;
-    roundRect(ctx,x,y,500,100,20);
-    ctx.fillStyle='rgba(255,255,255,.055)'; ctx.fill();
-    ctx.strokeStyle='rgba(103,232,249,.11)'; ctx.stroke();
-    ctx.textAlign='right'; ctx.font='800 20px Arial'; ctx.fillStyle='#9cc9d2';
-    ctx.fillText(m[0],x+465,y+35);
-    ctx.font='900 27px Arial'; ctx.fillStyle='#fff';
-    ctx.fillText(m[1],x+465,y+72);
-    ctx.font='700 17px Arial'; ctx.fillStyle='rgba(226,252,255,.55)';
-    ctx.fillText(`${m[2]}: ${m[3]}`,x+465,y+91);
-  });
-
-  // ===== الرسم البياني: درجة الحرارة للساعات القادمة =====
-  const hourly = currentHourlyData || {};
-  const times = Array.isArray(hourly.time) ? hourly.time : [];
-  const temps = Array.isArray(hourly.temperature_2m) ? hourly.temperature_2m : [];
-  const dayFlags = Array.isArray(hourly.is_day) ? hourly.is_day : [];
-  const nowMs = Date.now();
-  let startIdx = times.findIndex(t => new Date(t).getTime() >= nowMs - 30*60*1000);
-  if (startIdx < 0) startIdx = 0;
-
-  const count = Math.min(12, Math.max(0, times.length - startIdx));
-  const chartX=58, chartY=1080, chartW=W-116, chartH=330;
-  roundRect(ctx,chartX,chartY,chartW,chartH,28);
-  ctx.fillStyle='rgba(2,6,23,.76)'; ctx.fill();
-  ctx.strokeStyle='rgba(103,232,249,.15)'; ctx.lineWidth=1.5; ctx.stroke();
-
-  ctx.textAlign='right'; ctx.fillStyle='#f8fafc'; ctx.font='900 28px Arial';
-  ctx.fillText('الرسم البياني • الحرارة خلال الساعات القادمة',W-86,1125);
-  ctx.textAlign='left'; ctx.fillStyle='rgba(226,252,255,.58)'; ctx.font='700 16px Arial';
-  ctx.fillText('🌙 ليل  •  ☀️ نهار',86,1125);
-
-  if(count > 0){
-    const px=105, py=1170, pw=W-210, ph=170;
-    const values = temps.slice(startIdx,startIdx+count).map(v=>Number(v));
-    const valid = values.filter(Number.isFinite);
-    const minT = Math.floor((Math.min(...valid)-2));
-    const maxT = Math.ceil((Math.max(...valid)+2));
-    const range = Math.max(4,maxT-minT);
-
-    // Day/night bands.
-    for(let i=0;i<count;i++){
-      const x=px + (count===1 ? pw/2 : (i/(count-1))*pw);
-      const nextX = (i===count-1) ? x : px + ((i+1)/(count-1))*pw;
-      const isDay = dayFlags[startIdx+i] !== 0;
-      ctx.fillStyle = isDay ? 'rgba(56,189,248,.045)' : 'rgba(99,102,241,.12)';
-      ctx.fillRect(i===0 ? px : x, py, Math.max(1,nextX-x), ph);
-    }
-
-    // Grid + labels.
-    ctx.textAlign='right'; ctx.font='600 15px Arial'; ctx.fillStyle='rgba(226,252,255,.42)';
-    for(let g=0;g<=3;g++){
-      const gy=py+(g/3)*ph;
-      const val=Math.round(maxT-(g/3)*range);
-      ctx.strokeStyle='rgba(255,255,255,.09)'; ctx.lineWidth=1;
-      ctx.beginPath(); ctx.moveTo(px,gy); ctx.lineTo(px+pw,gy); ctx.stroke();
-      ctx.fillText(`${val}°`,px-12,gy+5);
-    }
-
-    // Line + gradient fill.
-    const points=[];
-    for(let i=0;i<count;i++){
-      const value=Number(values[i]);
-      const x=count===1 ? px+pw/2 : px+(i/(count-1))*pw;
-      const y=py+ph-((value-minT)/range)*ph;
-      points.push({x,y,value});
-    }
-
-    const area=ctx.createLinearGradient(0,py,0,py+ph);
-    area.addColorStop(0,'rgba(45,212,191,.28)');
-    area.addColorStop(1,'rgba(45,212,191,.015)');
-    ctx.beginPath();
-    points.forEach((p,i)=> i ? ctx.lineTo(p.x,p.y) : ctx.moveTo(p.x,p.y));
-    ctx.lineTo(points[points.length-1].x,py+ph);
-    ctx.lineTo(points[0].x,py+ph);
-    ctx.closePath();
-    ctx.fillStyle=area; ctx.fill();
-
-    ctx.beginPath();
-    points.forEach((p,i)=> i ? ctx.lineTo(p.x,p.y) : ctx.moveTo(p.x,p.y));
-    ctx.strokeStyle='#5eead4'; ctx.lineWidth=5; ctx.lineJoin='round'; ctx.lineCap='round'; ctx.stroke();
-
-    points.forEach((p,i)=>{
-      const isDay = dayFlags[startIdx+i] !== 0;
-      ctx.beginPath(); ctx.arc(p.x,p.y,8,0,Math.PI*2);
-      ctx.fillStyle=isDay?'#67e8f9':'#a5b4fc'; ctx.fill();
-      ctx.strokeStyle='#07131d'; ctx.lineWidth=3; ctx.stroke();
-
-      const dt=new Date(times[startIdx+i]);
-      const timeLabel=dt.toLocaleTimeString(currentLang==='ar'?'ar-JO':'en-US',{hour:'2-digit',minute:'2-digit',hour12:true});
-      ctx.textAlign='center'; ctx.font='700 15px Arial';
-      ctx.fillStyle='rgba(226,252,255,.72)';
-      ctx.fillText(timeLabel,p.x,py+ph+28);
-
-      ctx.font='900 17px Arial'; ctx.fillStyle='#fff';
-      ctx.fillText(`${Math.round(p.value)}°`,p.x,p.y-15);
-      ctx.font='600 14px Arial'; ctx.fillStyle=isDay?'#67e8f9':'#a5b4fc';
-      ctx.fillText(isDay?'☀':'🌙',p.x,p.y+23);
-    });
-  } else {
-    ctx.textAlign='center'; ctx.fillStyle='rgba(226,252,255,.65)'; ctx.font='700 19px Arial';
-    ctx.fillText('لا تتوفر بيانات ساعية كافية للرسم البياني حالياً',W/2,1245);
+  ctx.fillStyle='#087b88'; ctx.font='900 21px Tahoma, Arial, sans-serif';
+  ctx.fillText('النشرة الجوية اليومية',W-92,126);
+  ctx.fillStyle='#12344a'; ctx.font='900 62px Tahoma, Arial, sans-serif';
+  ctx.fillText(d.place,W-92,196);
+  if(d.sub){
+    ctx.fillStyle='#718793'; ctx.font='700 20px Tahoma, Arial, sans-serif';
+    ctx.fillText(d.sub,W-92,232);
   }
 
-  // Today summary moved below the chart.
-  roundRect(ctx,58,1435,W-116,125,28);
-  ctx.fillStyle='rgba(2,6,23,.70)'; ctx.fill();
-  ctx.strokeStyle='rgba(103,232,249,.15)'; ctx.stroke();
-  ctx.textAlign='right'; ctx.fillStyle='#f8fafc'; ctx.font='900 27px Arial';
-  ctx.fillText('ملخص اليوم',W-86,1472);
+  // التاريخ والتحديث داخل كبسولة هادئة.
+  roundRect(ctx,82,112,360,104,20);
+  ctx.fillStyle='#f7fbfc'; ctx.fill();
+  ctx.strokeStyle='#e0ecef'; ctx.lineWidth=1.7; ctx.stroke();
+  ctx.textAlign='left';
+  ctx.fillStyle='#355767'; ctx.font='800 17px Tahoma, Arial, sans-serif';
+  ctx.fillText(d.date,104,152);
+  ctx.fillStyle='#7a909b'; ctx.font='700 15px Tahoma, Arial, sans-serif';
+  ctx.fillText(`آخر تحديث ${d.updatedAt}`,104,188);
 
-  const info=[
-    ['العظمى / الصغرى',`${d.max}° / ${d.min}°م`],
-    ['أقصى رياح',`${d.maxWind} كم/س`],
-    ['أقصى هبات',`${d.maxGust} كم/س`],
-    ['الشروق / الغروب',`${d.sunrise}  •  ${d.sunset}`]
+  ctx.strokeStyle='#e5eef0'; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.moveTo(86,268); ctx.lineTo(W-86,268); ctx.stroke();
+
+  // ===== الطقس طيلة اليوم =====
+  ctx.textAlign='right';
+  ctx.fillStyle='#12344a'; ctx.font='900 34px Tahoma, Arial, sans-serif';
+  ctx.fillText('الطقس طيلة اليوم',W-92,322);
+  ctx.fillStyle='#647b88'; ctx.font='700 19px Tahoma, Arial, sans-serif';
+  ctx.fillText(d.cond,W-92,357);
+
+  // بطاقة الحرارة الرئيسية.
+  roundRect(ctx,82,392,312,196,26);
+  const tempBg=ctx.createLinearGradient(82,392,394,588);
+  tempBg.addColorStop(0,'#effbfc'); tempBg.addColorStop(1,'#f9fefe');
+  ctx.fillStyle=tempBg; ctx.fill();
+  ctx.strokeStyle='#cde8eb'; ctx.lineWidth=2; ctx.stroke();
+  ctx.textAlign='center';
+  ctx.fillStyle='#087b88'; ctx.font='900 88px Tahoma, Arial, sans-serif';
+  ctx.fillText(`${d.temp}°`,238,493);
+  ctx.fillStyle='#456675'; ctx.font='800 17px Tahoma, Arial, sans-serif';
+  ctx.fillText(`المحسوسة ${d.feels}°م`,238,538);
+  ctx.fillStyle='#78909b'; ctx.font='700 14px Tahoma, Arial, sans-serif';
+  ctx.fillText(d.dayLabel,238,568);
+
+  // أرقام اليوم: 4 فقط، أكبر وأوضح.
+  const metrics=[
+    ['العظمى / الصغرى',`${d.max}° / ${d.min}°م`,'↕'],
+    ['الرطوبة',`${d.humidity}%`,'◉'],
+    ['الرياح',`${d.wind} كم/س`,'≈'],
+    ['احتمال الهطول',`${d.pop}%`,'●']
   ];
-  info.forEach((m,i)=>{
-    const x=92+(i%2)*520, y=1490+Math.floor(i/2)*48;
-    ctx.fillStyle='rgba(255,255,255,.045)'; roundRect(ctx,x,y,480,40,12); ctx.fill();
-    ctx.textAlign='right'; ctx.font='700 15px Arial'; ctx.fillStyle='#8fb9c3'; ctx.fillText(m[0],x+455,y+18);
-    ctx.font='900 18px Arial'; ctx.fillStyle='#fff'; ctx.fillText(m[1],x+455,y+35);
+  const mx=430, my=392, mw=322, mh=90, gx=22, gy=16;
+  metrics.forEach((m,i)=>{
+    const col=i%2,row=Math.floor(i/2);
+    const x=mx+col*(mw+gx), y=my+row*(mh+gy);
+    roundRect(ctx,x,y,mw,mh,18);
+    ctx.fillStyle='#ffffff'; ctx.fill();
+    ctx.strokeStyle='#dce9ec'; ctx.lineWidth=1.8; ctx.stroke();
+    ctx.textAlign='right';
+    ctx.fillStyle='#708690'; ctx.font='800 15px Tahoma, Arial, sans-serif';
+    ctx.fillText(m[0],x+mw-22,y+31);
+    ctx.fillStyle='#12344a'; ctx.font='900 24px Tahoma, Arial, sans-serif';
+    ctx.fillText(m[1],x+mw-22,y+66);
+    ctx.textAlign='left'; ctx.fillStyle='#16aab4'; ctx.font='900 23px Tahoma, Arial, sans-serif';
+    ctx.fillText(m[2],x+20,y+59);
   });
 
-  ctx.textAlign='center'; ctx.fillStyle='rgba(226,252,255,.58)'; ctx.font='700 16px Arial';
-  ctx.fillText('بيانات حية • Open-Meteo • تم التحديث حسب وقت إنشاء البطاقة',W/2,1615);
+  // سطر معلومات ثانوي بدون صناديق إضافية.
+  ctx.textAlign='right'; ctx.fillStyle='#69808b'; ctx.font='700 15px Tahoma, Arial, sans-serif';
+  const smallInfo=`الهبات ${d.maxGust} كم/س   •   مطر اليوم ${d.rain} مم   •   الشروق ${d.sunrise}   •   الغروب ${d.sunset}`;
+  ctx.fillText(smallInfo,W-92,628);
 
-  roundRect(ctx,245,1628,W-490,42,14);
-  ctx.fillStyle='rgba(94,234,212,.10)'; ctx.fill();
-  ctx.strokeStyle='rgba(94,234,212,.30)'; ctx.lineWidth=1.5; ctx.stroke();
-  ctx.fillStyle='#99f6e4'; ctx.font='900 17px Arial';
-  ctx.fillText('تم التطوير بواسطة أحمد المحتسب',W/2,1655);
+  // ===== مؤشر التنبيه الجوي =====
+  const chartX=82, chartY=678, chartW=W-164, chartH=650;
+  roundRect(ctx,chartX,chartY,chartW,chartH,28);
+  ctx.fillStyle='#ffffff'; ctx.fill();
+  ctx.strokeStyle='#d4e5e9'; ctx.lineWidth=2.2; ctx.stroke();
+
+  // عنوان الرسم.
+  ctx.textAlign='right';
+  ctx.fillStyle='#12344a'; ctx.font='900 32px Tahoma, Arial, sans-serif';
+  ctx.fillText('مؤشر التنبيه الجوي',W-112,734);
+  ctx.fillStyle='#6b818d'; ctx.font='700 17px Tahoma, Arial, sans-serif';
+  ctx.fillText('تطور مستوى التأثير المتوقع خلال الساعات القادمة',W-112,767);
+
+  const hourly=currentHourlyData || {};
+  const times=Array.isArray(hourly.time)?hourly.time:[];
+  const now=new Date();
+  let nowIdx=times.findIndex(t=>new Date(t)>=now);
+  if(nowIdx<0) nowIdx=0;
+  // 8 نقاط، كل ساعتين تقريباً: توازن أفضل بين الدقة ووضوح الصورة.
+  const idxs=Array.from({length:8},(_,n)=>nowIdx+n*2).filter(i=>i<times.length);
+  const num=(arr,i,fb=0)=>Number.isFinite(Number(arr?.[i]))?Number(arr[i]):fb;
+  const rows=idxs.map(i=>({
+    i,time:hourly.time?.[i],
+    temp:num(hourly.temperature_2m,i), feels:num(hourly.apparent_temperature,i),
+    humidity:num(hourly.relative_humidity_2m,i), wind:num(hourly.wind_speed_10m,i),
+    gust:num(hourly.wind_gusts_10m,i,num(hourly.wind_speed_10m,i)),
+    pop:num(hourly.precipitation_probability,i), rain:num(hourly.rain,i), showers:num(hourly.showers,i),
+    snow:num(hourly.snowfall,i), visibility:num(hourly.visibility,i,100000), cloud:num(hourly.cloud_cover,i),
+    uv:num(hourly.uv_index,i), code:num(hourly.weather_code,i)
+  }));
+  const levels=rows.map(getAlertTimelineLevel);
+  const labels=rows.map(r=>new Date(r.time).toLocaleTimeString(currentLang==='ar'?'ar-JO':'en-US',{hour:'numeric',minute:'2-digit',hour12:true}));
+  const alertNames=['طبيعي','انتباه','تحذير','خطر شديد'];
+  const colorNames=['أخضر','أصفر','برتقالي','أحمر'];
+  const alertColors=['#22b455','#f5c52d','#f57c17','#e5252a'];
+  const alertLight=['#effaf3','#fffbea','#fff5ea','#fff0f1'];
+  const alertBorder=['#bce7ca','#f5dfa0','#f3c18f','#efb6b8'];
+
+  const peakLevel=levels.length?Math.max(...levels):0;
+  // ضع مربع مستوى التنبيه مباشرة تحت عنوان مؤشر التنبيه الجوي وبنفس محاذاة اليمين.
+  const statusW=382, statusH=56;
+  const statusX=W-112-statusW, statusY=790;
+  roundRect(ctx,statusX,statusY,statusW,statusH,17);
+  ctx.fillStyle=alertLight[peakLevel]; ctx.fill();
+  ctx.strokeStyle=alertBorder[peakLevel]; ctx.lineWidth=1.8; ctx.stroke();
+  ctx.textAlign='center'; ctx.fillStyle=alertColors[peakLevel]; ctx.font='900 19px Tahoma, Arial, sans-serif';
+  ctx.fillText(`${alertNames[peakLevel]} — ${colorNames[peakLevel]}`,statusX+statusW/2,statusY+36);
+
+  // مفتاح الألوان بخطوط قصيرة مثل تصميم الرسم في الموقع.
+  const legendY=900;
+  alertNames.forEach((name,i)=>{
+    const cx=chartX+120+i*228;
+    roundRect(ctx,cx-30,legendY-4,60,8,4);
+    ctx.fillStyle=alertColors[i]; ctx.fill();
+    ctx.textAlign='center'; ctx.fillStyle='#385666'; ctx.font='800 14px Tahoma, Arial, sans-serif';
+    ctx.fillText(`${name} — ${colorNames[i]}`,cx,legendY+31);
+  });
+
+  if(rows.length){
+    const px=174, py=984, pw=W-348, ph=210;
+
+    // خلفيات مستويات خفيفة جداً لقراءة أسرع من دون تشويش.
+    for(let level=0;level<4;level++){
+      const top=py+ph-((level+.5)/4)*ph;
+      ctx.fillStyle=['rgba(34,180,85,.035)','rgba(245,197,45,.04)','rgba(245,124,23,.035)','rgba(229,37,42,.03)'][level];
+      ctx.fillRect(px,top-ph/4,pw,ph/4);
+    }
+
+    for(let level=0;level<4;level++){
+      const y=py+ph-(level/3)*ph;
+      ctx.strokeStyle='rgba(84,111,123,.16)'; ctx.lineWidth=1.3;
+      ctx.setLineDash([6,8]); ctx.beginPath(); ctx.moveTo(px,y); ctx.lineTo(px+pw,y); ctx.stroke(); ctx.setLineDash([]);
+      ctx.textAlign='right'; ctx.fillStyle='#718690'; ctx.font='800 13px Tahoma, Arial, sans-serif';
+      ctx.fillText(alertNames[level],px-20,y+5);
+    }
+
+    const pts=levels.map((level,i)=>({
+      x:levels.length===1?px+pw/2:px+(i/(levels.length-1))*pw,
+      y:py+ph-(level/3)*ph,
+      level
+    }));
+
+    if(pts.length>1){
+      for(let i=0;i<pts.length-1;i++){
+        // القطعة تأخذ لون المستوى الأعلى بين النقطتين لدقة التنبيه بصرياً.
+        const segLevel=Math.max(pts[i].level,pts[i+1].level);
+        ctx.beginPath(); ctx.moveTo(pts[i].x,pts[i].y); ctx.lineTo(pts[i+1].x,pts[i+1].y);
+        ctx.strokeStyle=alertColors[segLevel]; ctx.lineWidth=6; ctx.lineCap='round'; ctx.lineJoin='round'; ctx.stroke();
+      }
+    }
+
+    pts.forEach((p,i)=>{
+      ctx.beginPath(); ctx.arc(p.x,p.y,11,0,Math.PI*2);
+      ctx.fillStyle='#fff'; ctx.fill();
+      ctx.strokeStyle=alertColors[p.level]; ctx.lineWidth=5; ctx.stroke();
+      ctx.beginPath(); ctx.arc(p.x,p.y,4,0,Math.PI*2); ctx.fillStyle=alertColors[p.level]; ctx.fill();
+      ctx.textAlign='center'; ctx.fillStyle='#496674'; ctx.font='800 13px Tahoma, Arial, sans-serif';
+      ctx.fillText(labels[i],p.x,py+ph+37);
+    });
+  }else{
+    ctx.textAlign='center'; ctx.fillStyle='#718690'; ctx.font='700 18px Tahoma, Arial, sans-serif';
+    ctx.fillText('لا تتوفر بيانات كافية لمؤشر التنبيه حالياً',W/2,1080);
+  }
+
+  // ملاحظة التأثير الفعلي لأعلى مستوى.
+  if(rows.length){
+    const peakIndex=levels.indexOf(peakLevel);
+    const reason=getAlertTimelineReason(rows[peakIndex],peakLevel);
+    roundRect(ctx,110,1238,W-220,60,16);
+    ctx.fillStyle='#f8fbfc'; ctx.fill();
+    ctx.strokeStyle='#e1eaed'; ctx.lineWidth=1.5; ctx.stroke();
+    ctx.textAlign='center'; ctx.fillStyle='#536d79'; ctx.font='700 15px Tahoma, Arial, sans-serif';
+    shareText(ctx,reason,W/2,1274,W-290,22,2);
+  }
+
+  // ===== التذييل =====
+  ctx.strokeStyle='#e3edef'; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.moveTo(90,1370); ctx.lineTo(W-90,1370); ctx.stroke();
+
+  ctx.textAlign='center';
+  ctx.fillStyle='#7a909b'; ctx.font='700 15px Tahoma, Arial, sans-serif';
+  ctx.fillText('بيانات الطقس محدثة وقت إنشاء البطاقة',W/2,1416);
+
+  roundRect(ctx,310,1452,W-620,62,18);
+  ctx.fillStyle='#eef9fa'; ctx.fill();
+  ctx.strokeStyle='#bfe4e7'; ctx.lineWidth=1.8; ctx.stroke();
+  ctx.fillStyle='#087b88'; ctx.font='900 20px Tahoma, Arial, sans-serif';
+  ctx.fillText('تم التطوير بواسطة احمد المحتسب',W/2,1492);
+
+  ctx.fillStyle='#a3b3ba'; ctx.font='700 12px Tahoma, Arial, sans-serif';
+  ctx.fillText('Ma’an Weather',W/2,1540);
 
   return true;
 }
@@ -4254,6 +4564,53 @@ img, svg, canvas { max-width:100%; }
   }
   #alertTimelineSection .alert-mini-item small{
     font-size:9.2px !important;
+  }
+}
+</style>
+
+
+<style>
+/* ===== FINAL alert point popup fix: one box, always above selected point ===== */
+#alertTimelineSection.alert-timeline-card{
+  overflow:visible !important;
+}
+#alertTimelineSection .alert-chart-wrap{
+  position:relative !important;
+  overflow:visible !important;
+}
+#alertTimelineSection .alert-detail-box{
+  display:none !important;
+}
+#alertTimelineSection #alertPointPopover{
+  position:absolute !important;
+  z-index:999 !important;
+  right:auto !important;
+  bottom:auto !important;
+  margin:0 !important;
+  width:auto !important;
+  min-width:210px !important;
+  max-width:300px !important;
+  transform:translate(-50%,calc(-100% - 14px)) !important;
+  pointer-events:none !important;
+}
+#alertTimelineSection #alertPointPopover::after{
+  display:block !important;
+  left:50% !important;
+  bottom:-7px !important;
+}
+@media(max-width:700px){
+  #alertTimelineSection #alertPointPopover{
+    top:0;
+    right:auto !important;
+    bottom:auto !important;
+    width:min(230px,calc(100vw - 36px)) !important;
+    min-width:170px !important;
+    max-width:calc(100vw - 36px) !important;
+    padding:10px 12px !important;
+    transform:translate(-50%,calc(-100% - 12px)) !important;
+  }
+  #alertTimelineSection #alertPointPopover::after{
+    display:block !important;
   }
 }
 </style>
