@@ -1343,6 +1343,64 @@
 }
 </style>
 
+
+<style>
+/* تنظيم شرح مؤشر التنبيه إلى نقاط واضحة وسهلة القراءة */
+#alertTimelineSection .alert-guide-box{
+  display:grid !important;
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  gap:10px !important;
+  margin-top:14px !important;
+  padding:0 !important;
+  border:0 !important;
+  background:transparent !important;
+  border-radius:0 !important;
+  color:#29495b !important;
+  box-shadow:none !important;
+}
+#alertTimelineSection .alert-guide-row{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:13px 14px;border:1px solid #dfeaec;border-radius:14px;
+  background:#fff;box-shadow:0 5px 14px rgba(13,91,105,.045);
+  min-width:0;
+}
+#alertTimelineSection .alert-guide-icon{
+  width:30px;height:30px;flex:0 0 30px;border-radius:9px;
+  display:flex;align-items:center;justify-content:center;
+  background:#eaf7f8;color:#087b88;font-size:15px;font-weight:900;line-height:1;
+}
+#alertTimelineSection .alert-guide-copy{display:flex;flex-direction:column;gap:4px;min-width:0}
+#alertTimelineSection .alert-guide-copy strong{font-size:12px;color:#12344a;font-weight:900;line-height:1.4}
+#alertTimelineSection .alert-guide-copy span{font-size:10.5px;color:#526b78;font-weight:650;line-height:1.65}
+#alertTimelineSection .alert-guide-copy b{color:#087b88;font-weight:900}
+#alertTimelineSection .alert-guide-official{background:#f8fafc;border-style:dashed}
+#alertTimelineSection .alert-guide-official .alert-guide-icon{background:#eef2f6;color:#52606d}
+@media(max-width:700px){
+  #alertTimelineSection .alert-guide-box{grid-template-columns:1fr !important;gap:8px !important;margin-top:10px !important}
+  #alertTimelineSection .alert-guide-row{padding:11px 12px;gap:9px;border-radius:12px}
+  #alertTimelineSection .alert-guide-icon{width:27px;height:27px;flex-basis:27px;font-size:13px}
+  #alertTimelineSection .alert-guide-copy strong{font-size:11.5px}
+  #alertTimelineSection .alert-guide-copy span{font-size:10.5px;line-height:1.6}
+}
+</style>
+
+
+<style>
+/* ===== UX additions: refresh, daily decisions, browser alerts, mobile polish ===== */
+.status-actions{display:flex;align-items:center;gap:8px}.weather-refresh-btn{border:1px solid #cfe4e8;background:#fff;color:#087b88;border-radius:999px;padding:7px 11px;display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:900;box-shadow:0 4px 12px rgba(13,91,105,.05);transition:.2s}.weather-refresh-btn:hover{background:#effafb;border-color:#9fd8dd}.weather-refresh-btn:disabled{opacity:.6;cursor:default}.weather-refresh-btn.is-refreshing .refresh-icon{animation:refreshSpin .8s linear infinite}@keyframes refreshSpin{to{transform:rotate(360deg)}}
+
+.day-decision-mini{margin-top:7px;padding:4px 6px;border-radius:8px;font-size:9.5px;line-height:1.25;font-weight:900;background:#f1f5f9;color:#536b78;border:1px solid #e2e8f0;white-space:normal}.day-decision-mini.best,.day-decision-badge.best,.day-decision-mini.good,.day-decision-badge.good{background:#ecfdf5;color:#047857;border-color:#a7f3d0}.day-decision-mini.rain,.day-decision-badge.rain{background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe}.day-decision-mini.wind,.day-decision-badge.wind,.day-decision-mini.watch,.day-decision-badge.watch{background:#fffbeb;color:#b45309;border-color:#fde68a}.day-decision-mini.heat,.day-decision-badge.heat,.day-decision-mini.poor,.day-decision-badge.poor{background:#fff7ed;color:#c2410c;border-color:#fed7aa}.day-decision-mini.cold,.day-decision-badge.cold{background:#eff6ff;color:#1e40af;border-color:#bfdbfe}.day-decision-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}.day-decision-head strong{font-size:14px;color:#12344a}.day-decision-badge{display:inline-flex;padding:6px 9px;border-radius:999px;border:1px solid #e2e8f0;font-size:11px;font-weight:900}.day-decision-detail{font-size:13px;font-weight:800;color:#24485b;line-height:1.65;margin-bottom:6px}.day-weather-facts{font-size:12px;line-height:1.75;color:#607783;font-weight:600}
+@media(max-width:430px){
+  .content{padding:0 12px}.hero{padding-left:14px;padding-right:14px}.status{align-items:flex-start;gap:8px}.status-actions{gap:5px}.weather-refresh-btn{padding:7px 9px}.refresh-text{display:none}
+  .integrated-current-wrapper,.integrated-hourly-card,.section,.alert-timeline-card{border-radius:18px!important}.integrated-hourly-card,.section{padding:16px}.weather-card{grid-template-columns:1fr!important}.weather-scene{min-height:205px!important;border-inline-end:0!important}.main-temp{padding:22px 16px!important;border-inline-end:0!important;border-bottom:1px solid rgba(22,184,194,.12)}.details{padding:15px 14px!important}.temp{font-size:64px!important}
+  .weather-summary-compact{padding:13px 14px!important}.current-share-row,.current-share-menu,.share-main-btn{width:100%}.share-main-btn{justify-content:center}
+  #daysSection{padding:16px 12px}.days-horizontal{gap:9px}.day-card-hz{min-width:118px!important;padding:12px 8px!important}.days-popup-box{padding:13px!important}.day-decision-head{align-items:flex-start;flex-direction:column}.day-decision-badge{max-width:100%}
+  #hourly .chart-btn-group{grid-template-columns:repeat(2,minmax(0,1fr))!important}.chart-tab-btn{min-height:40px}.hourly{gap:8px}.hour-card{min-width:82px!important}
+  .alert-guide-box{padding:10px!important}.alert-guide-row{padding:9px!important}.alert-reference-legend{gap:7px!important}.alert-reference-legend .alert-mini-item{min-width:0!important}
+  .footer{padding-left:14px!important;padding-right:14px!important;gap:10px!important}
+}
+@media(max-width:370px){.temp-range-badge{flex-wrap:wrap}.day-card-hz{min-width:108px!important}.section-shortcut-btn{padding:8px 12px}.brand{font-size:18px}.brand-icon{width:40px;height:40px}}
+</style>
 </head>
 <body>
   <!-- Google Tag Manager (noscript) -->
@@ -1417,7 +1475,7 @@
 </section>
 
 <main class="content">
-  <div class="status"><span id="selectedLabel" data-i18n="status_select">اختر منطقة لعرض حالة الطقس</span><span class="pill" id="updated" data-i18n="status_updating">جاري التحديث...</span></div>
+  <div class="status"><span id="selectedLabel" data-i18n="status_select">اختر منطقة لعرض حالة الطقس</span><div class="status-actions"><span class="pill" id="updated" data-i18n="status_updating">جاري التحديث...</span><button type="button" class="weather-refresh-btn" id="weatherRefreshBtn" onclick="refreshCurrentWeather()" aria-label="تحديث بيانات الطقس" title="تحديث البيانات"><span class="refresh-icon" aria-hidden="true">↻</span><span class="refresh-text">تحديث</span></button></div></div>
 
   <!-- قسم الطقس الحالي والمدمج معه قسم الملبس والألوان المصغر والتنبيهات بتصميم متناسق وجديد -->
   <div class="integrated-current-wrapper" id="current">
@@ -1509,12 +1567,27 @@
         <div class="alert-mini-item"><i class="alert-line-dot orange"></i><span><b>تحذير — برتقالي</b><small>تأثيرات قوية قد تعطل بعض الأنشطة.</small></span></div>
         <div class="alert-mini-item"><i class="alert-line-dot red"></i><span><b>خطر شديد — أحمر</b><small>ظروف شديدة تستلزم الحذر وتجنب التعرض.</small></span></div>
       </div>
-      <div class="alert-reference-note">
-        <span class="alert-reference-note-icon">ⓘ</span>
-        <div>
-          <div><strong>كيف تُقرأ الألوان؟</strong> يعتمد مؤشر الخطورة على أعلى عامل جوي مؤثر خلال الفترة، مثل الرياح والهبات، شدة الهطول، الثلوج، ضعف الرؤية، الحرارة/البرودة، العواصف الرعدية ومؤشر UV.</div>
-          <div>يعرض الرسم <strong>12 ساعة قادمة</strong> مع نقطة كل <strong>ساعتين</strong>، وكلما ارتفع الخط زادت شدة الحالة الجوية.</div>
-          <div class="alert-auto-disclaimer">هذا مؤشر آلي إرشادي مبني على بيانات وتوقعات الطقس، ولا يمثل تحذيرًا رسميًا صادرًا عن جهة حكومية. عند الحالات الشديدة يُنصح بالرجوع إلى الجهات الرسمية المختصة.</div>
+      <div class="alert-reference-note alert-guide-box">
+        <div class="alert-guide-row">
+          <span class="alert-guide-icon">🎨</span>
+          <div class="alert-guide-copy">
+            <strong>كيف تُقرأ الألوان؟</strong>
+            <span>لون المؤشر يعبّر عن <b>أعلى عامل جوي مؤثر</b> خلال الفترة، مثل الرياح والهبات، الهطول، الثلوج، ضعف الرؤية، الحرارة أو البرودة، العواصف الرعدية ومؤشر UV.</span>
+          </div>
+        </div>
+        <div class="alert-guide-row">
+          <span class="alert-guide-icon">↗</span>
+          <div class="alert-guide-copy">
+            <strong>كيف تُقرأ حركة الخط؟</strong>
+            <span>يعرض الرسم <b>12 ساعة قادمة</b> بنقطة كل <b>ساعتين</b>. كلما ارتفع الخط، ارتفعت شدة الحالة الجوية المتوقعة.</span>
+          </div>
+        </div>
+        <div class="alert-guide-row alert-guide-official">
+          <span class="alert-guide-icon">ⓘ</span>
+          <div class="alert-guide-copy">
+            <strong>ملاحظة مهمة</strong>
+            <span>المؤشر <b>آلي وإرشادي</b> ولا يُعد تحذيرًا رسميًا. في الحالات الشديدة، يُنصح بالرجوع إلى الجهات الرسمية المختصة.</span>
+          </div>
         </div>
       </div>
     </section>
@@ -2012,6 +2085,14 @@ function selectLocation(key) {
 
   const loc = locations[key];
   fetchWeatherData(key);
+}
+
+async function refreshCurrentWeather(){
+  const btn=document.getElementById('weatherRefreshBtn');
+  if(!activeLocationKey) return;
+  if(btn){btn.disabled=true;btn.classList.add('is-refreshing');}
+  try{ await fetchWeatherData(activeLocationKey); }
+  finally{ if(btn){btn.disabled=false;btn.classList.remove('is-refreshing');} }
 }
 
 async function fetchWeatherData(locationKey) {
@@ -2729,6 +2810,46 @@ function showHourlyDetail(idx) {
   box.classList.add("show");
 }
 
+function getDailyDecision(idx) {
+  if (!currentDailyData) return {label:'', cls:'neutral', detail:''};
+  const d=currentDailyData;
+  const max=Number(d.temperature_2m_max?.[idx] ?? 0);
+  const min=Number(d.temperature_2m_min?.[idx] ?? 0);
+  const pop=Number(d.precipitation_probability_max?.[idx] ?? 0);
+  const wind=Number(d.wind_speed_10m_max?.[idx] ?? 0);
+  const gust=Number(d.wind_gusts_10m_max?.[idx] ?? wind);
+  const snow=Number(d.snowfall_sum?.[idx] ?? 0);
+  const rain=Number(d.precipitation_sum?.[idx] ?? 0);
+  const code=Number(d.weather_code?.[idx] ?? 0);
+  let score=100;
+  score-=Math.min(pop*.55,45);
+  score-=Math.max(0,wind-22)*1.25;
+  score-=Math.max(0,gust-35)*.8;
+  if(rain>=5) score-=18; else if(rain>=1) score-=8;
+  if(snow>0) score-=25;
+  if(max>=36) score-=20; else if(max>=32) score-=10;
+  if(max<=7) score-=12;
+  if([95,96,99].includes(code)) score-=35;
+  score=Math.max(0,Math.min(100,score));
+
+  const scores=d.time.slice(0,7).map((_,i)=>{
+    if(i===idx) return score;
+    const p=Number(d.precipitation_probability_max?.[i] ?? 0), w=Number(d.wind_speed_10m_max?.[i] ?? 0), g=Number(d.wind_gusts_10m_max?.[i] ?? w), mx=Number(d.temperature_2m_max?.[i] ?? 0), r=Number(d.precipitation_sum?.[i] ?? 0), sn=Number(d.snowfall_sum?.[i] ?? 0), c=Number(d.weather_code?.[i] ?? 0);
+    let sc=100-Math.min(p*.55,45)-Math.max(0,w-22)*1.25-Math.max(0,g-35)*.8;
+    if(r>=5) sc-=18; else if(r>=1) sc-=8; if(sn>0) sc-=25; if(mx>=36) sc-=20; else if(mx>=32) sc-=10; if(mx<=7) sc-=12; if([95,96,99].includes(c)) sc-=35;
+    return Math.max(0,Math.min(100,sc));
+  });
+  const best=Math.max(...scores);
+  if(idx>0 && score===best && score>=72) return {label:'أفضل يوم للخروج',cls:'best',detail:'الظروف تبدو الأكثر ملاءمة مقارنة بباقي الأيام القادمة.'};
+  if(pop>=60 || rain>=5) return {label:'فرصة أمطار مرتفعة',cls:'rain',detail:'خطط للأنشطة الخارجية مع بديل داخلي وراقب تحديثات الهطول.'};
+  if(gust>=55 || wind>=38) return {label:'رياح قوية متوقعة',cls:'wind',detail:'قد تتأثر الأنشطة الخارجية، خصوصًا في المناطق المكشوفة.'};
+  if(max>=36) return {label:'حرارة مرتفعة نهارًا',cls:'heat',detail:'الأفضل تقديم الأنشطة الخارجية للصباح أو تأخيرها للمساء.'};
+  if(max<=7) return {label:'أجواء باردة',cls:'cold',detail:'ملابس دافئة مناسبة، خصوصًا في الصباح والليل.'};
+  if(score>=78) return {label:'يوم مناسب للخروج',cls:'good',detail:'الظروف العامة ملائمة نسبيًا للأنشطة الخارجية.'};
+  if(score>=55) return {label:'مناسب مع بعض الحذر',cls:'watch',detail:'اليوم قابل للأنشطة، لكن راقب الرياح والهطول ووقت الخروج.'};
+  return {label:'الأفضل تقليل الأنشطة الخارجية',cls:'poor',detail:'توجد عوامل جوية قد تجعل الأنشطة الخارجية أقل راحة.'};
+}
+
 function renderDays(daily) {
   const container = document.getElementById("daysListHz");
   const days = daily.time.slice(0,7);
@@ -2749,6 +2870,7 @@ function renderDays(daily) {
           ${getWeatherIconSVG(code, 1, "#087b88")}
         </div>
         <div style="font-size:15px; font-weight:800; color:var(--teal-dark);">${maxTemp}° / <span style="color:var(--muted); font-size:13px;">${minTemp}°</span></div>
+        <div class="day-decision-mini ${getDailyDecision(idx).cls}">${getDailyDecision(idx).label}</div>
       </div>
     `;
   }).join("");
@@ -2768,8 +2890,9 @@ function showDaysDetail(idx) {
   const pop = currentDailyData.precipitation_probability_max ? currentDailyData.precipitation_probability_max[idx] : 0;
   const condText = getWmoDescription(currentDailyData.weather_code[idx], currentLang);
 
+  const decision=getDailyDecision(idx);
   const box = document.getElementById("daysPopupBox");
-  box.innerHTML = `<strong> يوم ${dayName}:</strong> الحالة المتوقعة <b>${condText}</b>. الحرارة العظمى <b>${maxTemp}°م</b> والصغرى <b>${minTemp}°م</b>، هبات الرياح العظمى <b>${wind} كم/س</b>، واحتمال الأمطار يصل إلى <b>${pop}%</b>.`;
+  box.innerHTML = `<div class="day-decision-head"><span class="day-decision-badge ${decision.cls}">${decision.label}</span><strong>${dayName}</strong></div><div class="day-decision-detail">${decision.detail}</div><div class="day-weather-facts">الحالة المتوقعة <b>${condText}</b> · العظمى <b>${maxTemp}°م</b> والصغرى <b>${minTemp}°م</b> · الرياح/الهبات حتى <b>${wind} كم/س</b> · احتمال الأمطار <b>${pop}%</b>.</div>`;
   box.classList.add("show");
 }
 
@@ -3613,9 +3736,9 @@ function drawWeatherShareCard() {
   const alertBorder=['#bce7ca','#f5dfa0','#f3c18f','#efb6b8'];
 
   const peakLevel=levels.length?Math.max(...levels):0;
-  // ضع مربع مستوى التنبيه مباشرة تحت عنوان مؤشر التنبيه الجوي وبنفس محاذاة اليمين.
-  const statusW=382, statusH=56;
-  const statusX=W-112-statusW, statusY=790;
+  // مربع مستوى التنبيه بعرض الرسم بالكامل تحت العنوان مباشرة.
+  // يبدأ من نفس الحافة الداخلية اليسرى وينتهي عند محاذاة عنوان الرسم من اليمين.
+  const statusX=112, statusW=W-224, statusH=56, statusY=790;
   roundRect(ctx,statusX,statusY,statusW,statusH,17);
   ctx.fillStyle=alertLight[peakLevel]; ctx.fill();
   ctx.strokeStyle=alertBorder[peakLevel]; ctx.lineWidth=1.8; ctx.stroke();
