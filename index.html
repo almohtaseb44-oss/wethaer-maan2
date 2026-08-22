@@ -2764,10 +2764,8 @@ function updateAlertTimelineChart(){
         ctx.fillStyle=dots[i];
         ctx.arc(chartArea.left-(isMobile?9:24),y,isMobile?3.5:5,0,Math.PI*2);
         ctx.fill();
-        if(!isMobile){
-          ctx.fillStyle='#17384c';
-          ctx.fillText(label,chartArea.left-36,y);
-        }
+        ctx.fillStyle='#17384c';
+        ctx.fillText(label,chartArea.left-(isMobile?18:36),y);
       });
       ctx.restore();
     }
@@ -2814,7 +2812,7 @@ function updateAlertTimelineChart(){
       maintainAspectRatio:false,
       animation:{duration:650,easing:'easeOutCubic'},
       interaction:{mode:'nearest',intersect:false},
-      layout:{padding: window.innerWidth<=700 ? {top:10,right:8,bottom:6,left:18} : {top:14,right:22,bottom:6,left:58}},
+      layout:{padding: window.innerWidth<=700 ? {top:14,right:8,bottom:8,left:48} : {top:14,right:22,bottom:6,left:58}},
       plugins:{
         legend:{display:false},
         tooltip:{
@@ -4200,3 +4198,62 @@ img, svg, canvas { max-width:100%; }
 </script>
 </body>
 </html>
+
+<style>
+/* ===== Mobile alert legend + side labels + popover above point ===== */
+@media(max-width:700px){
+  #alertTimelineSection .alert-reference-legend,
+  #alertTimelineSection .alert-mini-legend{
+    display:grid !important;
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:8px !important;
+  }
+  #alertTimelineSection .alert-mini-item{
+    width:auto !important;
+    min-width:0 !important;
+    align-items:flex-start !important;
+    justify-content:flex-start !important;
+    padding:8px !important;
+    gap:7px !important;
+  }
+  #alertTimelineSection .alert-mini-item span{
+    min-width:0 !important;
+  }
+  #alertTimelineSection .alert-mini-item b{
+    display:block !important;
+    font-size:10.5px !important;
+    line-height:1.35 !important;
+  }
+  #alertTimelineSection .alert-mini-item small{
+    display:block !important;
+    font-size:9px !important;
+    line-height:1.4 !important;
+    color:#667b87 !important;
+  }
+
+  #alertTimelineSection .alert-point-popover{
+    position:absolute !important;
+    bottom:auto !important;
+    width:min(250px,76vw) !important;
+    min-width:170px !important;
+    max-width:250px !important;
+    padding:9px 10px !important;
+    border-radius:11px !important;
+    transform:translate(-50%,-118%) !important;
+    pointer-events:none !important;
+  }
+  #alertTimelineSection .alert-point-popover::after{
+    display:block !important;
+  }
+}
+
+@media(max-width:390px){
+  #alertTimelineSection .alert-reference-legend,
+  #alertTimelineSection .alert-mini-legend{
+    grid-template-columns:1fr !important;
+  }
+  #alertTimelineSection .alert-mini-item small{
+    font-size:9.2px !important;
+  }
+}
+</style>
